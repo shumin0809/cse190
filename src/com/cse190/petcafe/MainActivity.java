@@ -34,10 +34,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         loginButton = (LoginButton)findViewById(R.id.fbLoginButton);
+        loginButton.setReadPermissions(Arrays.asList("public_profile"));
         loginButton.setUserInfoChangedCallback(new UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
                 if (user != null) {
+                	
                 	Log.i(LOGTAG, "You are now logged in");
                 } else {
                 	Log.i(LOGTAG, "You are now not logged in");
