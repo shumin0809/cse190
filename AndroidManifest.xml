@@ -26,6 +26,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+              <activity
+            android:name=".ActivityBlog"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.test.ActivityProfile"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.test.ActivityEditProfile"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.example.test.ActivityBlogPost"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
         <activity android:name="com.facebook.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <meta-data android:value="@string/facebook_app_id" android:name="com.facebook.sdk.ApplicationId"/>
