@@ -52,6 +52,9 @@ public class MainActivity extends Activity {
                 	
                 	prefEditor.commit();
                 	
+                	// invoke GET method to server to see if user already exists.
+                	// If user not exist invoke POST method to server
+                	
                 	goToBlog();
                 } else {
                 	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
@@ -62,7 +65,7 @@ public class MainActivity extends Activity {
     
     private void goToBlog()
     {
-    	Intent i = new Intent(this, ActivityBase.class);
+    	Intent i = new Intent(this, ActivityBlog.class);
     	startActivity(i);
     }
     
@@ -113,6 +116,12 @@ public class MainActivity extends Activity {
     	super.onDestroy();
     	uiHelper.onDestroy();
     }
+    
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		uiHelper.onActivityResult(requestCode, resultCode, data);
+	}
 
     @Override
     public void onSaveInstanceState(Bundle savedState) {
