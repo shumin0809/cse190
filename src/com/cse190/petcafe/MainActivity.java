@@ -12,17 +12,20 @@ import com.facebook.widget.LoginButton.UserInfoChangedCallback;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.cse190.petcafe.GlobalStrings;
+
 public class MainActivity extends Activity {
 	
 	private LoginButton loginButton;
 	private UiLifecycleHelper uiHelper;
+	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
-	private final String LOGTAG = "Pet Cafe";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +37,36 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         
         loginButton = (LoginButton)findViewById(R.id.fbLoginButton);
+        loginButton.setReadPermissions(Arrays.asList("public_profile"));
         loginButton.setUserInfoChangedCallback(new UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
                 if (user != null) {
-                	Log.i(LOGTAG, "You are now logged in");
+                	Log.i(GlobalStrings.LOGTAG, "You are now logged in");
+
+                	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
+                	SharedPreferences.Editor prefEditor = localCache.edit();
+                	
+                	prefEditor.putString(GlobalStrings.USERNAME_CACHE_KEY, user.getName());
+                	prefEditor.putString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, user.getId());
+                	
+                	prefEditor.commit();
+                	
+                	// invoke GET method to server to see if user already exists.
+                	// If user not exist invoke POST method to server
+                	
+                	goToBlog();
                 } else {
-                	Log.i(LOGTAG, "You are now not logged in");
+                	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
                 }
             }
         });
+    }
+    
+    private void goToBlog()
+    {
+    	Intent i = new Intent(this, ActivityBlog.class);
+    	startActivity(i);
     }
     
     private Session.StatusCallback statusCallback = new Session.StatusCallback() {
@@ -51,9 +74,9 @@ public class MainActivity extends Activity {
         public void call(Session session, SessionState state,
                 Exception exception) {
             if (state.isOpened()) {
-                Log.i(LOGTAG, "Facebook session opened");
+                Log.i(GlobalStrings.LOGTAG, "Facebook session opened");
             } else if (state.isClosed()) {
-                Log.i(LOGTAG, "Facebook session closed");
+                Log.i(GlobalStrings.LOGTAG, "Facebook session closed");
             }
         }
     };
@@ -93,6 +116,12 @@ public class MainActivity extends Activity {
     	super.onDestroy();
     	uiHelper.onDestroy();
     }
+    
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		uiHelper.onActivityResult(requestCode, resultCode, data);
+	}
 
     @Override
     public void onSaveInstanceState(Bundle savedState) {
