@@ -1,4 +1,4 @@
-package com.cse190.petcafe;
+package com.cse190.petcafe.ui;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.cse190.petcafe.R;
+import com.cse190.petcafe.drawer.ActivityBase;
 
 public class ActivityEditProfile extends ActivityBase {
 

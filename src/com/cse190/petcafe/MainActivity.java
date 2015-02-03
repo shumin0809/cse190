@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.cse190.petcafe.GlobalStrings;
+import com.cse190.petcafe.ui.ActivityBlog;
 
 public class MainActivity extends Activity {
 	

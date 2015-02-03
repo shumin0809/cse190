@@ -1,4 +1,4 @@
-package com.cse190.petcafe;
+package com.cse190.petcafe.ui;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -9,7 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.TabsPagerAdapter;
+import com.cse190.petcafe.drawer.ActivityBaseTab;
 
 @SuppressWarnings("deprecation")
 public class ActivityBlog extends ActivityBaseTab implements
@@ -19,7 +21,7 @@ public class ActivityBlog extends ActivityBaseTab implements
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	// Tab titles
-	private String[] tabs = { "Blog 1", "Blog 2", "Blog 3" };
+	private String[] tabs = { "Stories", "Experiences", "News", "Wiki"};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
