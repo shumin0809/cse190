@@ -9,6 +9,7 @@ public class UserProfileInformation
 	private long latitude;
 	private long longitude;
 	private String status;
+	// need space for profile picture.
 	
 	
 	public UserProfileInformation(String facebookUID, String userName, 

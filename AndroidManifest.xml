@@ -24,22 +24,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-              <activity
-            android:name=".ActivityBlog"
+        <activity
+            android:name="com.cse190.petcafe.ActivityBlog"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.test.ActivityProfile"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.example.test.ActivityEditProfile"
+            android:name="com.cse190.petcafe.ActivityProfile"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.example.test.ActivityBlogPost"
+            android:name="com.cse190.petcafe.ActivityEditProfile"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.cse190.petcafe.ActivityBlogPost"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait" />
