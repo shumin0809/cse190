@@ -67,6 +67,7 @@ public class MainActivity extends Activity {
     {
     	Intent i = new Intent(this, ActivityBlog.class);
     	startActivity(i);
+    	finish();
     }
     
     private Session.StatusCallback statusCallback = new Session.StatusCallback() {
