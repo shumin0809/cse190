@@ -1,5 +1,6 @@
 package com.cse190.petcafe.adapter;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,6 +11,11 @@ import com.cse190.petcafe.blog.FragmentBlogStories;
 import com.cse190.petcafe.blog.FragmentBlogWiki;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
+	
+	final int PAGE_COUNT = 4;
+	// Tab Titles
+	private String tabtitles[] = new String[] { "Stories", "Experience", "News", "Wiki" };
+	Context context;
 
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);
@@ -39,7 +45,12 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getCount() {
 		// get item count - equal to number of tabs
-		return 4;
+		return PAGE_COUNT;
 	}
 
+	@Override
+	public CharSequence getPageTitle(int position) {
+		return tabtitles[position];
+	}
+	
 }

@@ -36,22 +36,23 @@ public class ActivityBlog extends ActivityBaseTab implements
 
 		viewPager.setAdapter(mAdapter);
 		actionBar.setHomeButtonEnabled(true);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+	//	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 
 		// Adding Tabs
+		/*
 		for (String tab_name : tabs) {
 			actionBar.addTab(actionBar.newTab().setText(tab_name)
 					.setTabListener(this));
 		}
-
+*/
 		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
 				// on changing the page
 				// make respected tab selected
-				actionBar.setSelectedNavigationItem(position);
+			//	actionBar.setSelectedNavigationItem(position);
 			}
 
 			@Override
@@ -95,7 +96,7 @@ public class ActivityBlog extends ActivityBaseTab implements
 		// TODO Auto-generated method stub
 		// on tab selected
 		// show respected fragment view
-		viewPager.setCurrentItem(tab.getPosition());
+		//viewPager.setCurrentItem(tab.getPosition());
 
 	}
 
