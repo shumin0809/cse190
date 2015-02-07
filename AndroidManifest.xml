@@ -25,31 +25,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityBlog"
+            android:name=".ui.ActivityBlog"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityProfile"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.cse190.petcafe.ui.ActivityEditProfile"
+            android:name=".ui.ActivityProfile"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityBlogPost"
+            android:name=".ui.ActivityEditProfile"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityMyFriends"
+            android:name=".ui.ActivityBlogPost"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityFindFriends"
+            android:name=".ui.ActivityMyFriends"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ActivityFindFriends"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait" />
@@ -60,6 +60,11 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".ActivityinitialSetup"
+            android:label="@string/title_activity_activityinitial_setup" >
+        </activity>
     </application>
 
 </manifest>

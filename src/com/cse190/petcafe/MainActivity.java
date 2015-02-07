@@ -25,6 +25,7 @@ public class MainActivity extends Activity {
 	
 	private LoginButton loginButton;
 	private UiLifecycleHelper uiHelper;
+	private Boolean firstInstall; 
 	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	
@@ -32,6 +33,17 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+    	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
+    	firstInstall = false;
+    	
+    	if (localCache.getBoolean(GlobalStrings.FIRST_INSTALL_KEY, true))
+    	{
+    		SharedPreferences.Editor prefEditor = localCache.edit();
+    		prefEditor.putBoolean(GlobalStrings.FIRST_INSTALL_KEY, false);
+    		prefEditor.commit();
+    		firstInstall = true;
+    	}
+
         uiHelper = new UiLifecycleHelper(this, statusCallback);
         uiHelper.onCreate(savedInstanceState);
         
@@ -44,7 +56,7 @@ public class MainActivity extends Activity {
             public void onUserInfoFetched(GraphUser user) {
                 if (user != null) {
                 	Log.i(GlobalStrings.LOGTAG, "You are now logged in");
-
+                	
                 	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
                 	SharedPreferences.Editor prefEditor = localCache.edit();
                 	
@@ -66,7 +78,13 @@ public class MainActivity extends Activity {
     
     private void goToBlog()
     {
-    	Intent i = new Intent(this, ActivityBlog.class);
+    	Intent i = null;
+    	
+    	if (firstInstall)
+    		i = new Intent(this, ActivityinitialSetup.class);
+    	else
+    		i = new Intent(this, ActivityBlog.class);
+    		
     	startActivity(i);
     	finish();
     }

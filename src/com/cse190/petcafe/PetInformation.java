@@ -3,15 +3,19 @@ package com.cse190.petcafe;
 public class PetInformation {
 	private String petName;
 	private String petSpecies;
+	private String petBreed;
 	private String petGender;
 	private String petAge;
+	private String petDescription;
 	
-	public PetInformation(String petName, String petSpecies, String petGender, String petAge)
+	public PetInformation(String petName, String petSpecies, String petBreed, String petGender, String petAge, String petDescription)
 	{
 		this.setPetName(petName);
 		this.setPetSpecies(petSpecies);
+		this.setPetBreed(petBreed);
 		this.setPetGender(petGender);
 		this.setPetAge(petAge);
+		this.setPetDescription(petDescription);
 	}
 
 	public String getPetName() {
@@ -44,5 +48,21 @@ public class PetInformation {
 
 	public void setPetAge(String petAge) {
 		this.petAge = petAge;
+	}
+
+	public String getPetBreed() {
+		return petBreed;
+	}
+
+	public void setPetBreed(String petBreed) {
+		this.petBreed = petBreed;
+	}
+
+	public String getPetDescription() {
+		return petDescription;
+	}
+
+	public void setPetDescription(String petDescription) {
+		this.petDescription = petDescription;
 	}
 }
