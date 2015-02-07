@@ -3,7 +3,9 @@ package com.cse190.petcafe.ui;
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +20,7 @@ public class ActivityBlog extends ActivityBaseTab implements
 		ActionBar.TabListener {
 
 	private ViewPager viewPager;
+	private PagerTabStrip tabStrip;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
 	// Tab titles
@@ -31,28 +34,21 @@ public class ActivityBlog extends ActivityBaseTab implements
 
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
+		tabStrip = (PagerTabStrip) findViewById(R.id.tabstrip);
 		actionBar = getActionBar();
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
 		actionBar.setHomeButtonEnabled(true);
-	//	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		tabStrip.setTabIndicatorColor(Color.parseColor("#FFA375"));
 
-
-		// Adding Tabs
-		/*
-		for (String tab_name : tabs) {
-			actionBar.addTab(actionBar.newTab().setText(tab_name)
-					.setTabListener(this));
-		}
-*/
 		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
 			@Override
 			public void onPageSelected(int position) {
 				// on changing the page
 				// make respected tab selected
-			//	actionBar.setSelectedNavigationItem(position);
+				//	actionBar.setSelectedNavigationItem(position);
 			}
 
 			@Override
@@ -63,6 +59,14 @@ public class ActivityBlog extends ActivityBaseTab implements
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
+		
+		/*
+		//	actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		for (String tab_name : tabs) {
+			actionBar.addTab(actionBar.newTab().setText(tab_name)
+					.setTabListener(this));
+		}
+		 */
 	}
 
 	@Override

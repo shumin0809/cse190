@@ -1,8 +1,11 @@
 package com.cse190.petcafe.drawer;
 
 //Drawer base for for all fragment activities extending it
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentActivity;
@@ -44,6 +47,10 @@ public class ActivityBaseTab extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
+		
+		ActionBar bar = getActionBar();
+		// Change actionbar tab color
+		bar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#FFC2A3")));
 
 		mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
