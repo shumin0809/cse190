@@ -6,15 +6,16 @@ public class UserProfileInformation
 	private String userName;
 	private String firstLanguage;
 	private String secondLanguage;
-	private long latitude;
-	private long longitude;
+	private double latitude;
+	private double longitude;
 	private String status;
+	private int age;
 	// need space for profile picture.
 	
 	
 	public UserProfileInformation(String facebookUID, String userName, 
-			String firstLanguage, String secondLanguage, long latitude, long longitude,
-			String status)
+			String firstLanguage, String secondLanguage, double latitude, double longitude,
+			String status, int age)
 	{
 		setFacebookUID(facebookUID);
 		setUserName(userName);
@@ -48,14 +49,14 @@ public class UserProfileInformation
 		this.secondLanguage = secondLanguage;
 	}
 	
-	private void setLatitude(long latitude)
+	private void setLatitude(double latitude2)
 	{
-		this.latitude = latitude;
+		this.latitude = latitude2;
 	}
 	
-	private void setLongitude(long longitude)
+	private void setLongitude(double longitude2)
 	{
-		this.longitude = longitude;
+		this.longitude = longitude2;
 	}
 	
 	private void setStatus(String status)
@@ -86,12 +87,12 @@ public class UserProfileInformation
 		return secondLanguage;
 	}
 	
-	public long getLatitude()
+	public double getLatitude()
 	{
 		return latitude;
 	}
 	
-	public long getLongitude()
+	public double getLongitude()
 	{
 		return longitude;
 	}
@@ -99,5 +100,13 @@ public class UserProfileInformation
 	public String getStatus()
 	{
 		return status;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 }
