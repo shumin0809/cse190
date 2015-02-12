@@ -1,4 +1,4 @@
-package com.cse190.petcafe;
+package cse190;
 
 public class UserProfileInformation 
 {
