@@ -3,6 +3,8 @@ package com.cse190.petcafe;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONException;
+
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -67,6 +69,16 @@ public class MainActivity extends Activity {
                 	
                 	// invoke GET method to server to see if user already exists.
                 	// If user not exist invoke POST method to server
+                	Petcafe_api api = new Petcafe_api();
+                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "", "", 0.0, 0.0, "", 0);
+                	try {
+						api.addUser(profile);
+						Log.i(GlobalStrings.LOGTAG, "It worked");
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Log.e(GlobalStrings.LOGTAG, e.toString());
+					}
                 	
                 	goToBlog();
                 } else {
