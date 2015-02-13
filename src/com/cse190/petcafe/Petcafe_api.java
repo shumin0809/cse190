@@ -49,15 +49,15 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            jsonObject.put("fbID", person.getFacebookUID());
+            jsonObject.put("fb_id", person.getFacebookUID());
             jsonObject.put("name", person.getUserName());
-            jsonObject.put("first language", person.getFirstLanguage());
-            jsonObject.put("second language", person.getSecondLanguage());
+            jsonObject.put("first_lang", person.getFirstLanguage());
+            jsonObject.put("second_lang", person.getSecondLanguage());
             jsonObject.put("latitude", person.getLatitude());
             jsonObject.put("longitude", person.getLongitude());
             //jsonObject.put("Available Time", person.availableTime());
             jsonObject.put("status", person.getStatus());
-            jsonObject.put("age",  person.getAge());
+            //jsonObject.put("age",  person.getAge());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -98,15 +98,15 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            jsonObject.put("fbID", person.getFacebookUID());
+            jsonObject.put("fb_id", person.getFacebookUID());
             jsonObject.put("name", person.getUserName());
-            jsonObject.put("first language", person.getFirstLanguage());
-            jsonObject.put("second language", person.getSecondLanguage());
+            jsonObject.put("first_lang", person.getFirstLanguage());
+            jsonObject.put("second_lang", person.getSecondLanguage());
             jsonObject.put("latitude", person.getLatitude());
             jsonObject.put("longitude", person.getLongitude());
             //jsonObject.put("Available Time", person.availableTime());
             jsonObject.put("status", person.getStatus());
-            jsonObject.put("age",  person.getAge());
+            //jsonObject.put("age",  person.getAge());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -148,7 +148,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            jsonObject.put("fbID", person.getFacebookUID());
+            jsonObject.put("fb_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -190,7 +190,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            jsonObject.put("fbID", person.getFacebookUID());
+            jsonObject.put("fb_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -232,8 +232,8 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            jsonObject.put("fbID1", person1.getFriendFacebookID());
-            jsonObject.put("fbID2", person2.getFriendName());
+            jsonObject.put("fb_id1", person1.getFriendFacebookID());
+            jsonObject.put("fb_id2", person2.getFriendName());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -274,8 +274,8 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("fbID1", person1.getFriendFacebookID());
-            jsonObject.put("fbID2", person2.getFriendName());
+            jsonObject.put("fb_id1", person1.getFriendFacebookID());
+            jsonObject.put("fb_id2", person2.getFriendName());
             
 			ja.put(jsonObject);
 			json = ja.toString();
