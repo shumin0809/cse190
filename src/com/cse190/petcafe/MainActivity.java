@@ -15,6 +15,7 @@ import com.facebook.widget.LoginButton.UserInfoChangedCallback;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -69,16 +70,8 @@ public class MainActivity extends Activity {
                 	
                 	// invoke GET method to server to see if user already exists.
                 	// If user not exist invoke POST method to server
-                	Petcafe_api api = new Petcafe_api();
-                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "", "", 0.0, 0.0, "", 0);
-                	try {
-						api.addUser(profile);
-						Log.i(GlobalStrings.LOGTAG, "It worked");
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-						Log.e(GlobalStrings.LOGTAG, e.toString());
-					}
+                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "Korean", "Belgian", 0.0, 0.0, "FML", 0);
+                	new AddUserTask().execute(profile);
                 	
                 	goToBlog();
                 } else {
@@ -179,4 +172,30 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+    
+    public class AddUserTask extends AsyncTask<Object, Void, String> {
+    	 
+        @Override protected String doInBackground(Object... params) {
+          // Do work
+          //return result;
+        	Petcafe_api api = new Petcafe_api();
+        	UserProfileInformation profile = (UserProfileInformation)params[0];
+        	try {
+				api.addUser(profile);
+				Log.i(GlobalStrings.LOGTAG, "It worked");
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				Log.e(GlobalStrings.LOGTAG, e.toString());
+			}
+        	
+        	return "It's good!";
+        }
+     
+        @Override protected void onPostExecute(String result) {
+          Log.d("MyAsyncTask", "Received result: " + result);
+        }
+      }
 }
+
+
