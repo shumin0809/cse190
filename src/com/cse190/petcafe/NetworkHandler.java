@@ -14,8 +14,7 @@ public final class NetworkHandler extends Application {
 	
 	public static NetworkHandler getInstance() { return instance; }
 	
-	public NetworkHandler()
-	{ }
+	public NetworkHandler() { }
 	
 	/**
 	 ************** *************** *************** **************
