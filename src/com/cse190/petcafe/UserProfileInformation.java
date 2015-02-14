@@ -9,13 +9,13 @@ public class UserProfileInformation
 	private double latitude;
 	private double longitude;
 	private String status;
-	private int age;
+	//private int age;
 	// need space for profile picture.
 	
 	
 	public UserProfileInformation(String facebookUID, String userName, 
 			String firstLanguage, String secondLanguage, double latitude, double longitude,
-			String status, int age)
+			String status)
 	{
 		setFacebookUID(facebookUID);
 		setUserName(userName);
@@ -101,12 +101,12 @@ public class UserProfileInformation
 	{
 		return status;
 	}
-
+/*
 	public int getAge() {
 		return age;
 	}
 
 	public void setAge(int age) {
 		this.age = age;
-	}
+	}*/
 }

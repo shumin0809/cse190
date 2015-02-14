@@ -3,7 +3,9 @@ package com.cse190.petcafe;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.facebook.Session;
 import com.facebook.SessionState;
@@ -28,7 +30,7 @@ public class MainActivity extends Activity {
 	
 	private LoginButton loginButton;
 	private UiLifecycleHelper uiHelper;
-	private Boolean firstInstall; 
+	private Boolean firstInstall;
 	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	
@@ -70,9 +72,15 @@ public class MainActivity extends Activity {
                 	
                 	// invoke GET method to server to see if user already exists.
                 	// If user not exist invoke POST method to server
-                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "Korean", "Belgian", 0.0, 0.0, "FML", 0);
-                	new AddUserTask().execute(profile);
                 	
+                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "Korean", "Belgian", 0.0, 0.0, "FML");
+                	UserProfileInformation myProfile = NetworkHandler.getInstance().getUser(profile);
+
+                	if (myProfile == null)
+                	{
+                    	NetworkHandler.getInstance().addUser(profile);
+                	}
+                	                	
                 	goToBlog();
                 } else {
                 	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
@@ -172,30 +180,6 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    public class AddUserTask extends AsyncTask<Object, Void, String> {
-    	 
-        @Override protected String doInBackground(Object... params) {
-          // Do work
-          //return result;
-        	Petcafe_api api = new Petcafe_api();
-        	UserProfileInformation profile = (UserProfileInformation)params[0];
-        	try {
-				api.addUser(profile);
-				Log.i(GlobalStrings.LOGTAG, "It worked");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				Log.e(GlobalStrings.LOGTAG, e.toString());
-			}
-        	
-        	return "It's good!";
-        }
-     
-        @Override protected void onPostExecute(String result) {
-          Log.d("MyAsyncTask", "Received result: " + result);
-        }
-      }
 }
 
 
