@@ -43,6 +43,10 @@ public class Petcafe_api {
 		client = new HttpPost();
 	}
 
+	/*
+	 * USER FUNCTIONS
+	 */
+	
 	public JSONArray addUser(UserProfileInformation person) throws JSONException{
         try {
             client = new HttpPost(url + "user");
@@ -226,14 +230,19 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
+	/*
+	 * FRIEND FUNCTIONS
+	 */
+	
+	// This function is only for REQUESTING for 'friending"
 	public JSONArray addFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
         try {
-            client = new HttpPost(url+"/friend");
+            client = new HttpPost(url+"/request");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
             jsonObject.put("fb_id1", person1.getFriendFacebookID());
-            jsonObject.put("fb_id2", person2.getFriendName());
+            jsonObject.put("fb_id2", person2.getFriendFacebookID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -267,15 +276,16 @@ public class Petcafe_api {
         }
         return new JSONArray(body);
     }
-	
+
+	// FOR "UNFRIEND" OPTION
 	public JSONArray deleteFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
         try {
-            client = new HttpPost(url+"/friend");
+            client = new HttpPost(url+"/friends");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
             jsonObject.put("fb_id1", person1.getFriendFacebookID());
-            jsonObject.put("fb_id2", person2.getFriendName());
+            jsonObject.put("fb_id2", person2.getFriendFacebookID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -311,16 +321,14 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray addPet(PetInformation pet) throws JSONException{
+	public JSONArray rejectFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
         try {
-            client = new HttpPost(url+"/pet");
+            client = new HttpPost(url+"/reject");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("name", pet.getPetName());
-            jsonObject.put("species", pet.getPetSpecies());
-            jsonObject.put("gender", pet.getPetGender());
-            jsonObject.put("age", pet.getPetAge());
+            jsonObject.put("fb_id1", person1.getFriendFacebookID());
+            jsonObject.put("fb_id2", person2.getFriendFacebookID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -356,7 +364,138 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray deletePet(PetInformation pet) throws JSONException{
+	public JSONArray getRequest(UserProfileInformation person) throws JSONException{
+        try {
+            client = new HttpPost(url+"/request");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("fb_id", person.getFacebookUID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray getReject(UserProfileInformation person) throws JSONException{
+        try {
+            client = new HttpPost(url+"/reject");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("fb_id", person.getFacebookUID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray verifyFriend(String[] friendsFbIDArray) throws JSONException{
+        try {
+            client = new HttpPost(url+"/friends");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            for(int i = 0; i < friendsFbIDArray.length; i++) {
+            	jsonObject.put("fb_id" + i, friendsFbIDArray[i]);
+            }
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	/*
+	 * PET FUNCTIONS
+	 */
+	public JSONArray addPet(PetInformation pet) throws JSONException{
         try {
             client = new HttpPost(url+"/pet");
             JSONArray ja = new JSONArray();
@@ -366,6 +505,95 @@ public class Petcafe_api {
             jsonObject.put("species", pet.getPetSpecies());
             jsonObject.put("gender", pet.getPetGender());
             jsonObject.put("age", pet.getPetAge());
+            jsonObject.put("description", pet.getPetDescription());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "CREATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray modifyPet(PetInformation pet) throws JSONException{
+        try {
+            client = new HttpPost(url+"/pet");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("name", pet.getPetName());
+            jsonObject.put("species", pet.getPetSpecies());
+            jsonObject.put("gender", pet.getPetGender());
+            jsonObject.put("age", pet.getPetAge());
+            jsonObject.put("description", pet.getPetDescription());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "UPDATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray deletePet(PetInformation pet) throws JSONException{
+        try {
+            client = new HttpPost(url+"/pet");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("name", pet.getPetName());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -446,7 +674,408 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	// helper
+	public JSONArray getMyPets(UserProfileInformation person) throws JSONException{
+        try {
+            client = new HttpPost(url+"/pet");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("uid", person.getFacebookUID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	/*
+	 * IMAGE FUNCTIONS
+	 */
+	public JSONArray addImage(byte[] byteA) throws JSONException{
+        try {
+            client = new HttpPost(url+"/image");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("pid", 0);
+            jsonObject.put("image", byteA);
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "CREATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	/*
+	public JSONArray getImage(byte[] byteA) throws JSONException{
+        try {
+            client = new HttpPost(url+"/image");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("pid", 0);
+            jsonObject.put("image", byteA);
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "CREATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }*/
+	
+	/*
+	 * POST FUNCTIONS
+	 */
+	public JSONArray addPost(BlogPostInformation post) throws JSONException{
+        try {
+            client = new HttpPost(url+"/posts");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("author_id", post.getFacebookId());
+            jsonObject.put("title", post.getTitle());
+            jsonObject.put("type", post.getType());
+            jsonObject.put("body", post.getBody());
+            jsonObject.put("rating", post.getRating());
+            jsonObject.put("tag", post.getTag());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "CREATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray modifyPost(BlogPostInformation post) throws JSONException{
+        try {
+            client = new HttpPost(url+"/posts");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("author_id", post.getFacebookId());
+            jsonObject.put("title", post.getTitle());
+            jsonObject.put("type", post.getType());
+            jsonObject.put("body", post.getBody());
+            jsonObject.put("rating", post.getRating());
+            jsonObject.put("tag", post.getTag());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "UPDATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray deletePost(BlogPostInformation post) throws JSONException{
+        try {
+            client = new HttpPost(url+"/posts");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("author_id", post.getFacebookId());
+            jsonObject.put("title", post.getTitle());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "DELETE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray getMyPost(UserProfileInformation person) throws JSONException{
+        try {
+            client = new HttpPost(url+"/posts");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("author_id", person.getFacebookUID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray getFriendsPost(UserProfileInformation person) throws JSONException{
+        try {
+            client = new HttpPost(url+"/posts");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("author_id", person.getFacebookUID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	// SEARCHING FUNCTION FOR THE POST
+	public JSONArray getPostByTag(String tag) throws JSONException{
+        try {
+            client = new HttpPost(url+"/posts");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("tag", tag);
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	
+	/*
+	 * HELPER FUNCTION
+	 */
     private JSONObject inputStreamToJSON(InputStream inputStream) throws IOException, JSONException {
     		 
     	StringBuffer buffer = new StringBuffer();
