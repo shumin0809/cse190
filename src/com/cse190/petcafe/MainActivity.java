@@ -13,6 +13,9 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.LoginButton.UserInfoChangedCallback;
+//import com.quickblox.auth.QBAuth;
+//import com.quickblox.auth.model.QBSession;
+//import com.quickblox.core.QBEntityCallbackImpl;
 
 import android.app.Activity;
 import android.content.Intent;

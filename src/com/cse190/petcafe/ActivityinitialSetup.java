@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -72,10 +73,12 @@ public class ActivityinitialSetup extends Activity {
 	            	   String species = ((EditText)view.findViewById(R.id.petSpeciesInput)).getText().toString();
 	            	   String breed = ((EditText)view.findViewById(R.id.petBreedInput)).getText().toString();
 	            	   String gender = ((EditText)view.findViewById(R.id.petGenderInput)).getText().toString();
-	            	   String age = ((EditText)view.findViewById(R.id.petAgeInput)).getText().toString();
+	            	   int age = Integer.valueOf(((EditText)view.findViewById(R.id.petAgeInput)).getText().toString());
 	            	   String description = ((EditText)view.findViewById(R.id.petDescriptionInput)).getText().toString();
 	            	   
-	            	   PetInformation pet = new PetInformation(name, species, breed, gender, age, description);
+	            	   String fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+ 
+	            	   PetInformation pet = new PetInformation(name, species, breed, gender, age, description, fbuid);
 	            	   pets.add(pet);
 	            	   petNames.add(name);
 	            	   adapter.notifyDataSetChanged();

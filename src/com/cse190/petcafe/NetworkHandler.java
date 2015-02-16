@@ -288,7 +288,7 @@ public final class NetworkHandler extends Application {
 				if (!ja.isNull(0))
 				{
 					JSONObject jo = ja.getJSONObject(0);
-					result = new PetInformation(jo.getString("name"), jo.getString("species"), jo.getString("breed"), jo.getString("gender"), jo.getInt("age"), jo.getString("description"));
+					result = new PetInformation(jo.getString("name"), jo.getString("species"), jo.getString("breed"), jo.getString("gender"), jo.getInt("age"), jo.getString("description"), jo.getString("fb_id"));
 				}
 			}
 			catch (JSONException e)

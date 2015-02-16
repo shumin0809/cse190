@@ -7,8 +7,9 @@ public class PetInformation {
 	private String petGender;
 	private int petAge;
 	private String petDescription;
+	private String petOwnerFacebookID;
 	
-	public PetInformation(String petName, String petSpecies, String petBreed, String petGender, int petAge, String petDescription)
+	public PetInformation(String petName, String petSpecies, String petBreed, String petGender, int petAge, String petDescription, String petOwnerFacebookID)
 	{
 		this.setPetName(petName);
 		this.setPetSpecies(petSpecies);
@@ -16,6 +17,7 @@ public class PetInformation {
 		this.setPetGender(petGender);
 		this.setPetAge(petAge);
 		this.setPetDescription(petDescription);
+		this.setPetOwnerFacebookID(petOwnerFacebookID);
 	}
 
 	public String getPetName() {
@@ -65,4 +67,13 @@ public class PetInformation {
 	public void setPetDescription(String petDescription) {
 		this.petDescription = petDescription;
 	}
+
+	public String getPetOwnerFacebookID() {
+		return petOwnerFacebookID;
+	}
+
+	public void setPetOwnerFacebookID(String petOwnerFacebookID) {
+		this.petOwnerFacebookID = petOwnerFacebookID;
+	}
 }
+
