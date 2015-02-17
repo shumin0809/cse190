@@ -5,11 +5,11 @@ public class PetInformation {
 	private String petSpecies;
 	private String petBreed;
 	private String petGender;
-	private String petAge;
+	private int petAge;
 	private String petDescription;
 	private String petOwnerFacebookID;
 	
-	public PetInformation(String petName, String petSpecies, String petBreed, String petGender, String petAge, String petDescription, String petOwnerFacebookID)
+	public PetInformation(String petName, String petSpecies, String petBreed, String petGender, int petAge, String petDescription, String petOwnerFacebookID)
 	{
 		this.setPetName(petName);
 		this.setPetSpecies(petSpecies);
@@ -44,11 +44,11 @@ public class PetInformation {
 		this.petGender = petGender;
 	}
 
-	public String getPetAge() {
+	public int getPetAge() {
 		return petAge;
 	}
 
-	public void setPetAge(String petAge) {
+	public void setPetAge(int petAge) {
 		this.petAge = petAge;
 	}
 

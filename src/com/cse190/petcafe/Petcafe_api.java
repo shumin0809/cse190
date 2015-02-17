@@ -19,7 +19,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.net.http.AndroidHttpClient;
+//import android.net.http.AndroidHttpClient;
 
 public class Petcafe_api {
 	
@@ -114,6 +114,8 @@ public class Petcafe_api {
             
 			ja.put(jsonObject);
 			json = ja.toString();
+			
+			System.out.println("Print out json: "  + json);
 			
             StringEntity se = new StringEntity(json);
             client.setEntity(se);
@@ -233,16 +235,23 @@ public class Petcafe_api {
 	/*
 	 * FRIEND FUNCTIONS
 	 */
-	
-	// This function is only for REQUESTING for 'friending"
-	public JSONArray addFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
+
+	public JSONArray addFriend(FriendInformation person1, FriendInformation person2, boolean fromFacebook) throws JSONException{
         try {
-            client = new HttpPost(url+"/request");
+            client = new HttpPost(url+"friends");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            jsonObject.put("fb_id1", person1.getFriendFacebookID());
-            jsonObject.put("fb_id2", person2.getFriendFacebookID());
+            if(Integer.parseInt(person1.getFriendFacebookID()) < Integer.parseInt(person2.getFriendFacebookID())) {
+            	jsonObject.put("fb_id1", person1.getFriendFacebookID());
+            	jsonObject.put("fb_id2", person2.getFriendFacebookID());
+            }
+            
+            else {
+            	jsonObject.put("fb_id1", person2.getFriendFacebookID());
+            	jsonObject.put("fb_id2", person1.getFriendFacebookID());
+            }
+            jsonObject.put("from_facebook", fromFacebook ? "1" : "0");
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -280,12 +289,19 @@ public class Petcafe_api {
 	// FOR "UNFRIEND" OPTION
 	public JSONArray deleteFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
         try {
-            client = new HttpPost(url+"/friends");
+            client = new HttpPost(url+"friends");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("fb_id1", person1.getFriendFacebookID());
-            jsonObject.put("fb_id2", person2.getFriendFacebookID());
+            if(Integer.parseInt(person1.getFriendFacebookID()) < Integer.parseInt(person2.getFriendFacebookID())) {
+            	jsonObject.put("fb_id1", person1.getFriendFacebookID());
+            	jsonObject.put("fb_id2", person2.getFriendFacebookID());
+            }
+            
+            else {
+            	jsonObject.put("fb_id1", person2.getFriendFacebookID());
+            	jsonObject.put("fb_id2", person1.getFriendFacebookID());
+            }
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -321,14 +337,101 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray rejectFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
+	public JSONArray getFriends(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"/reject");
+            client = new HttpPost(url+"friends");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("fb_id1", person1.getFriendFacebookID());
-            jsonObject.put("fb_id2", person2.getFriendFacebookID());
+            jsonObject.put("fb_id1", person.getFacebookUID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	// This function is only for REQUESTING for 'friending"
+	public JSONArray requestFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
+        try {
+            client = new HttpPost(url+"request_friend");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+            
+            jsonObject.put("requester_id", person1.getFriendFacebookID());
+            jsonObject.put("friend_id", person2.getFriendFacebookID());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "CREATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+        return new JSONArray(body);
+    }
+	
+	
+	// IMPORTANT!!!!!! REQUESTER ALWAYS COMES FIRST!!!
+	public JSONArray rejectFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
+        try {
+            client = new HttpPost(url+"reject_friend");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            jsonObject.put("requester_id", person1.getFriendFacebookID());
+            jsonObject.put("rejecter_id", person2.getFriendFacebookID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -366,11 +469,11 @@ public class Petcafe_api {
 	
 	public JSONArray getRequest(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"/request");
+            client = new HttpPost(url+"request_friend");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("fb_id", person.getFacebookUID());
+            jsonObject.put("friend_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -408,11 +511,11 @@ public class Petcafe_api {
 	
 	public JSONArray getReject(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"/reject");
+            client = new HttpPost(url+"reject_friend");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("fb_id", person.getFacebookUID());
+            jsonObject.put("requester_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -450,7 +553,7 @@ public class Petcafe_api {
 	
 	public JSONArray verifyFriend(String[] friendsFbIDArray) throws JSONException{
         try {
-            client = new HttpPost(url+"/friends");
+            client = new HttpPost(url+"friends");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -463,7 +566,7 @@ public class Petcafe_api {
 			
             StringEntity se = new StringEntity(json);
             client.setEntity(se);
-	 		client.setHeader("METHOD", "GET");
+	 		client.setHeader("METHOD", "UPDATE");
 			client.setHeader("Content-type", "application/json");
             
             httpResponse = httpclient.execute(client);		// execute!
@@ -495,14 +598,16 @@ public class Petcafe_api {
 	/*
 	 * PET FUNCTIONS
 	 */
-	public JSONArray addPet(PetInformation pet) throws JSONException{
+	public JSONArray addPet(UserProfileInformation person, PetInformation pet) throws JSONException{
         try {
-            client = new HttpPost(url+"/pet");
+            client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
+            jsonObject.put("owner_id", person.getFacebookUID());
             jsonObject.put("name", pet.getPetName());
             jsonObject.put("species", pet.getPetSpecies());
+            jsonObject.put("breed", pet.getPetBreed());
             jsonObject.put("gender", pet.getPetGender());
             jsonObject.put("age", pet.getPetAge());
             jsonObject.put("description", pet.getPetDescription());
@@ -541,14 +646,16 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray modifyPet(PetInformation pet) throws JSONException{
+	public JSONArray modifyPet(UserProfileInformation person, PetInformation pet) throws JSONException{
         try {
-            client = new HttpPost(url+"/pet");
+            client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
+            jsonObject.put("owner_id", person.getFacebookUID());
             jsonObject.put("name", pet.getPetName());
             jsonObject.put("species", pet.getPetSpecies());
+            jsonObject.put("breed", pet.getPetBreed());
             jsonObject.put("gender", pet.getPetGender());
             jsonObject.put("age", pet.getPetAge());
             jsonObject.put("description", pet.getPetDescription());
@@ -587,12 +694,13 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray deletePet(PetInformation pet) throws JSONException{
+	public JSONArray deletePet(UserProfileInformation person, PetInformation pet) throws JSONException{
         try {
-            client = new HttpPost(url+"/pet");
+            client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
+            jsonObject.put("owner_id", person.getFacebookUID());
             jsonObject.put("name", pet.getPetName());
             
 			ja.put(jsonObject);
@@ -629,14 +737,16 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
+	
 	public JSONArray getPet(PetInformation pet) throws JSONException{
         try {
-            client = new HttpPost(url+"/pet");
+            client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
             jsonObject.put("name", pet.getPetName());
             jsonObject.put("species", pet.getPetSpecies());
+            jsonObject.put("breed", pet.getPetBreed());
             jsonObject.put("gender", pet.getPetGender());
             jsonObject.put("age", pet.getPetAge());
             
@@ -676,7 +786,7 @@ public class Petcafe_api {
 	
 	public JSONArray getMyPets(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"/pet");
+            client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -721,7 +831,7 @@ public class Petcafe_api {
 	 */
 	public JSONArray addImage(byte[] byteA) throws JSONException{
         try {
-            client = new HttpPost(url+"/image");
+            client = new HttpPost(url+"image");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -764,7 +874,7 @@ public class Petcafe_api {
 	/*
 	public JSONArray getImage(byte[] byteA) throws JSONException{
         try {
-            client = new HttpPost(url+"/image");
+            client = new HttpPost(url+"image");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -810,7 +920,7 @@ public class Petcafe_api {
 	 */
 	public JSONArray addPost(BlogPostInformation post) throws JSONException{
         try {
-            client = new HttpPost(url+"/posts");
+            client = new HttpPost(url+"post");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -857,7 +967,7 @@ public class Petcafe_api {
 	
 	public JSONArray modifyPost(BlogPostInformation post) throws JSONException{
         try {
-            client = new HttpPost(url+"/posts");
+            client = new HttpPost(url+"post");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -904,7 +1014,7 @@ public class Petcafe_api {
 	
 	public JSONArray deletePost(BlogPostInformation post) throws JSONException{
         try {
-            client = new HttpPost(url+"/posts");
+            client = new HttpPost(url+"post");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -947,7 +1057,7 @@ public class Petcafe_api {
 	
 	public JSONArray getMyPost(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"/posts");
+            client = new HttpPost(url+"post");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -989,7 +1099,7 @@ public class Petcafe_api {
 	
 	public JSONArray getFriendsPost(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"/posts");
+            client = new HttpPost(url+"post");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -1032,7 +1142,7 @@ public class Petcafe_api {
 	// SEARCHING FUNCTION FOR THE POST
 	public JSONArray getPostByTag(String tag) throws JSONException{
         try {
-            client = new HttpPost(url+"/posts");
+            client = new HttpPost(url+"post");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -1072,6 +1182,140 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
+	/*
+	 * COMMENTS FUNCTIONS
+	 */
+	public JSONArray addComment(UserProfileInformation person, String body) throws JSONException{
+        try {
+            client = new HttpPost(url+"comment");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            //TODO: determine "pid" jsonObject.put("pid", post.getFacebookId());
+            jsonObject.put("commenter_id", person.getFacebookUID());
+            jsonObject.put("body", body);
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "CREATE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray deleteComment(UserProfileInformation person, String body) throws JSONException{
+        try {
+            client = new HttpPost(url+"comment");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            //TODO: determine "pid" jsonObject.put("pid", post.getFacebookId());
+            jsonObject.put("commenter_id", person.getFacebookUID());
+            jsonObject.put("body", body);
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "DELETE");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
+	
+	public JSONArray getComment(UserProfileInformation person, String body) throws JSONException{
+        try {
+            client = new HttpPost(url+"comment");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+
+            //TODO: determine "pid" jsonObject.put("pid", post.getFacebookId());
+            jsonObject.put("commenter_id", person.getFacebookUID());
+            jsonObject.put("body", body);
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+
+        return new JSONArray(body);
+    }
 	
 	/*
 	 * HELPER FUNCTION
