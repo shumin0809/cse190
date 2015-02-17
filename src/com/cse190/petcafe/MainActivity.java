@@ -3,6 +3,7 @@ package com.cse190.petcafe;
 import java.util.Arrays;
 import java.util.List;
 
+import org.jivesoftware.smack.SmackException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,12 +17,16 @@ import com.facebook.widget.LoginButton.UserInfoChangedCallback;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBProvider;
 import com.quickblox.auth.model.QBSession;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
+import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.server.BaseService;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -34,12 +39,13 @@ import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.ui.ActivityBlog;
 
 public class MainActivity extends Activity {
+    static final int AUTO_PRESENCE_INTERVAL_IN_SECONDS = 30;
 	
 	private LoginButton loginButton;
 	private UiLifecycleHelper uiHelper;
 	private Boolean firstInstall;
 	private String fbAccessToken;
-	private String fbAccessTokenSecret;
+    private QBChatService chatService;
 	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	
@@ -90,6 +96,7 @@ public class MainActivity extends Activity {
                     	NetworkHandler.getInstance().addUser(profile);
                 	}
                 	                	
+                	// quickblox stuff
                     QBSettings.getInstance().fastConfigInit(GlobalStrings.APP_ID, GlobalStrings.AUTH_KEY, GlobalStrings.AUTH_SECRET);
                 	QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
                 		
@@ -105,6 +112,8 @@ public class MainActivity extends Activity {
                 	    }
                 	});
                 	
+                	//final QBUser qbUser = new QBUser(GlobalStrings.USER_LOGIN, GlobalStrings.USER_PASSWORD);
+                	//checkChatServiceStatus(qbUser);
                 } else {
                 	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
                 }
@@ -112,12 +121,47 @@ public class MainActivity extends Activity {
         });
     }
     
+    @SuppressWarnings("rawtypes")
+	private void checkChatServiceStatus(final QBUser user)
+    {
+    	if (!QBChatService.isInitialized())
+    	{
+    	    QBChatService.init(this);
+    	}
+        chatService = QBChatService.getInstance();
+        
+        chatService.login(user, new QBEntityCallbackImpl() {
+            @Override
+            public void onSuccess() {
+
+                // Start sending presences
+                //
+                try {
+                    chatService.startAutoSendPresence(AUTO_PRESENCE_INTERVAL_IN_SECONDS);
+                } catch (SmackException.NotLoggedInException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(List errors) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setMessage("chat login errors: " + errors).create().show();
+            }
+        });
+    }
+    
     private void signUpUserToChat(GraphUser user)
     {
-    	String passwordHash = String.valueOf(user.getId().hashCode());
     	String username = user.getId();
-    	Log.i(GlobalStrings.LOGTAG, "User information: pass " + passwordHash + "username " + username);
-    	final QBUser qbUser = new QBUser(username, passwordHash);
+    	Log.i(GlobalStrings.LOGTAG, "User information: pass " + "username " + username);
+    	QBUser qbUser = null;
+		try {
+			qbUser = new QBUser(username, BaseService.getBaseService().getToken());
+		} catch (BaseServiceException e) {
+			e.printStackTrace();
+			Log.e(GlobalStrings.LOGTAG, e.toString());
+		}
     	qbUser.setFacebookId(user.getId());
     	QBUsers.signUp(qbUser, new QBEntityCallbackImpl<QBUser>()
     	{

@@ -2,10 +2,13 @@ package com.cse190.petcafe;
 
 import java.util.ArrayList;
 
+import com.cse190.petcafe.ui.ActivityBlog;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -43,7 +46,7 @@ public class ActivityinitialSetup extends Activity {
 		petList = (ListView)findViewById(R.id.petList);
 		petNames = new ArrayList<String>();
 		
-		adapter = new ArrayAdapter<String>(this, R.layout.listitem_initialsetup, petNames);
+		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, petNames);
 		petList.setAdapter(adapter);
 
 		addPetButton.setOnClickListener(new OnClickListener()
@@ -108,14 +111,15 @@ public class ActivityinitialSetup extends Activity {
 		int id = item.getItemId();
 		if (id == R.id.done_button) 
 		{
-			// TODO: do when done editing bullshit
+			// TODO: update the server
 			
-			return true;
 		}
 		else if (id == R.id.skip_button)
 		{
 			// TODO: do when skipping the initial setup
 		}
+		
+		
 		return super.onOptionsItemSelected(item);
 	}
 }
