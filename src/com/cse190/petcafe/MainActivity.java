@@ -13,6 +13,13 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.facebook.widget.LoginButton.UserInfoChangedCallback;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.model.QBProvider;
+import com.quickblox.auth.model.QBSession;
+import com.quickblox.core.QBEntityCallbackImpl;
+import com.quickblox.core.QBSettings;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,13 +38,16 @@ public class MainActivity extends Activity {
 	private LoginButton loginButton;
 	private UiLifecycleHelper uiHelper;
 	private Boolean firstInstall;
+	private String fbAccessToken;
+	private String fbAccessTokenSecret;
 	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        
+        setContentView(R.layout.activity_main);
+
     	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
     	firstInstall = false;
     	
@@ -51,9 +61,7 @@ public class MainActivity extends Activity {
 
         uiHelper = new UiLifecycleHelper(this, statusCallback);
         uiHelper.onCreate(savedInstanceState);
-        
-        setContentView(R.layout.activity_main);
-        
+    	
         loginButton = (LoginButton)findViewById(R.id.fbLoginButton);
         loginButton.setReadPermissions(Arrays.asList("public_profile"));
         loginButton.setUserInfoChangedCallback(new UserInfoChangedCallback() {
@@ -61,6 +69,7 @@ public class MainActivity extends Activity {
             public void onUserInfoFetched(GraphUser user) {
                 if (user != null) {
                 	Log.i(GlobalStrings.LOGTAG, "You are now logged in");
+                	final GraphUser userToPass = user;
                 	
                 	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
                 	SharedPreferences.Editor prefEditor = localCache.edit();
@@ -81,7 +90,21 @@ public class MainActivity extends Activity {
                     	NetworkHandler.getInstance().addUser(profile);
                 	}
                 	                	
-                	goToBlog();
+                    QBSettings.getInstance().fastConfigInit(GlobalStrings.APP_ID, GlobalStrings.AUTH_KEY, GlobalStrings.AUTH_SECRET);
+                	QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
+                		
+                	    @Override
+                	    public void onSuccess(QBSession session, Bundle params) {
+                	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
+                        	checkQuickbloxAuth(userToPass);
+                	    }
+                	    
+                	    @Override
+                	    public void onError(List<String> errors) {
+                	 
+                	    }
+                	});
+                	
                 } else {
                 	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
                 }
@@ -89,15 +112,69 @@ public class MainActivity extends Activity {
         });
     }
     
+    private void signUpUserToChat(GraphUser user)
+    {
+    	String passwordHash = String.valueOf(user.getId().hashCode());
+    	String username = user.getId();
+    	Log.i(GlobalStrings.LOGTAG, "User information: pass " + passwordHash + "username " + username);
+    	final QBUser qbUser = new QBUser(username, passwordHash);
+    	qbUser.setFacebookId(user.getId());
+    	QBUsers.signUp(qbUser, new QBEntityCallbackImpl<QBUser>()
+    	{
+    		@Override
+    		public void onSuccess(QBUser user, Bundle args)
+    		{
+    			signInUserToQuickblox();
+    			Log.i(GlobalStrings.LOGTAG, "Successfully added user to quickblox");
+    		}
+    		
+    		@Override
+    		public void onError(List<String> errors)
+    		{
+    			Log.e(GlobalStrings.LOGTAG, "Something went horribly wrong!");
+    		}
+    	});
+    }
+    
+    private void signInUserToQuickblox()
+    {
+    	Log.i(GlobalStrings.LOGTAG, fbAccessToken);
+    	QBUsers.signInUsingSocialProvider(QBProvider.FACEBOOK, fbAccessToken, null, new QBEntityCallbackImpl<QBUser>()
+    	{
+    		@Override
+    		public void onSuccess(QBUser user, Bundle args)
+    		{
+    			goToBlog();
+    			Log.i(GlobalStrings.LOGTAG, "Successfully signed into quickblox");
+    		}
+    		
+    		@Override
+    		public void onError(List<String> errors)
+    		{
+    			Log.e(GlobalStrings.LOGTAG, "Something went horribly wrong!");
+    		}
+    	});
+       }
+    
+    private void checkQuickbloxAuth(GraphUser user)
+    {    	
+    	if (firstInstall)
+    	{
+    		signUpUserToChat(user);
+    	}
+    	else
+    	{
+    		signInUserToQuickblox();
+    	}
+    }
+    
     private void goToBlog()
     {
     	Intent i = null;
-    	
     	if (firstInstall)
-    		i = new Intent(this, ActivityinitialSetup.class);
+    		i = new Intent(this, ActivityinitialSetup.class);	
     	else
     		i = new Intent(this, ActivityBlog.class);
-    		
     	startActivity(i);
     	finish();
     }
@@ -107,6 +184,7 @@ public class MainActivity extends Activity {
         public void call(Session session, SessionState state,
                 Exception exception) {
             if (state.isOpened()) {
+            	fbAccessToken = session.getAccessToken();
                 Log.i(GlobalStrings.LOGTAG, "Facebook session opened");
             } else if (state.isClosed()) {
                 Log.i(GlobalStrings.LOGTAG, "Facebook session closed");
