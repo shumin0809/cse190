@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
-	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/commons-codec-1.6.jar"/>
@@ -12,5 +11,8 @@
 	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpclient-cache-4.3.6.jar"/>
 	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpcore-4.3.3.jar"/>
 	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpmime-4.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/michaelchang/Downloads/quickblox-android-sdk-master/jars/quickblox-android-sdk-chat-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/michaelchang/Downloads/quickblox-android-sdk-master/jars/quickblox-android-sdk-core-2.1.jar"/>
+	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
