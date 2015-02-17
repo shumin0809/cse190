@@ -98,12 +98,16 @@ public class MainActivity extends Activity {
                 	                	
                 	// quickblox stuff
                     QBSettings.getInstance().fastConfigInit(GlobalStrings.APP_ID, GlobalStrings.AUTH_KEY, GlobalStrings.AUTH_SECRET);
-                	QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
+                	final QBUser qbUser = new QBUser(GlobalStrings.USER_LOGIN, GlobalStrings.USER_PASSWORD);
+                	
+                    QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
                 		
                 	    @Override
                 	    public void onSuccess(QBSession session, Bundle params) {
                 	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
-                        	checkQuickbloxAuth(userToPass);
+                	        qbUser.setId(session.getUserId());
+                        	checkChatServiceStatus(qbUser);
+                        	signInUserToQuickblox(userToPass);
                 	    }
                 	    
                 	    @Override
@@ -112,8 +116,6 @@ public class MainActivity extends Activity {
                 	    }
                 	});
                 	
-                	//final QBUser qbUser = new QBUser(GlobalStrings.USER_LOGIN, GlobalStrings.USER_PASSWORD);
-                	//checkChatServiceStatus(qbUser);
                 } else {
                 	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
                 }
@@ -168,7 +170,6 @@ public class MainActivity extends Activity {
     		@Override
     		public void onSuccess(QBUser user, Bundle args)
     		{
-    			signInUserToQuickblox();
     			Log.i(GlobalStrings.LOGTAG, "Successfully added user to quickblox");
     		}
     		
@@ -180,7 +181,7 @@ public class MainActivity extends Activity {
     	});
     }
     
-    private void signInUserToQuickblox()
+    private void signInUserToQuickblox(final GraphUser graphUser)
     {
     	Log.i(GlobalStrings.LOGTAG, fbAccessToken);
     	QBUsers.signInUsingSocialProvider(QBProvider.FACEBOOK, fbAccessToken, null, new QBEntityCallbackImpl<QBUser>()
@@ -188,7 +189,12 @@ public class MainActivity extends Activity {
     		@Override
     		public void onSuccess(QBUser user, Bundle args)
     		{
+    	    	if (firstInstall)
+    	    	{
+    	    		signUpUserToChat(graphUser);
+    	    	}
     			goToBlog();
+    			
     			Log.i(GlobalStrings.LOGTAG, "Successfully signed into quickblox");
     		}
     		
@@ -198,18 +204,6 @@ public class MainActivity extends Activity {
     			Log.e(GlobalStrings.LOGTAG, "Something went horribly wrong!");
     		}
     	});
-       }
-    
-    private void checkQuickbloxAuth(GraphUser user)
-    {    	
-    	if (firstInstall)
-    	{
-    		signUpUserToChat(user);
-    	}
-    	else
-    	{
-    		signInUserToQuickblox();
-    	}
     }
     
     private void goToBlog()

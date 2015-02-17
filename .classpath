@@ -4,15 +4,15 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/commons-logging-1.1.3.jar"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/fluent-hc-4.3.6.jar"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpclient-4.3.6.jar"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpclient-cache-4.3.6.jar"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpcore-4.3.3.jar"/>
-	<classpathentry kind="lib" path="/Users/michaelchang/Downloads/cse190/lib/httpmime-4.3.6.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/michaelchang/Downloads/quickblox-android-sdk-master/jars/quickblox-android-sdk-chat-2.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="/Users/michaelchang/Downloads/quickblox-android-sdk-master/jars/quickblox-android-sdk-core-2.1.jar"/>
+	<classpathentry kind="lib" path="libs/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.1.3.jar"/>
+	<classpathentry kind="lib" path="libs/fluent-hc-4.3.6.jar"/>
+	<classpathentry kind="lib" path="libs/httpclient-4.3.6.jar"/>
+	<classpathentry kind="lib" path="libs/httpclient-cache-4.3.6.jar"/>
+	<classpathentry kind="lib" path="libs/httpcore-4.3.3.jar"/>
+	<classpathentry kind="lib" path="libs/httpmime-4.3.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/quickblox-android-sdk-chat-2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/quickblox-android-sdk-core-2.1.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
