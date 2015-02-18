@@ -65,6 +65,14 @@
             android:name=".ActivityinitialSetup"
             android:label="@string/title_activity_activityinitial_setup" >
         </activity>
+        <activity
+            android:name=".ui.ActivityChat"
+            android:label="@string/title_activity_activity_chat" >
+        </activity>
+        <activity
+            android:name="com.cse190.petcafe.ui.ActivityChat"
+            android:label="@string/title_activity_activity_chat" >
+        </activity>
     </application>
 
 </manifest>

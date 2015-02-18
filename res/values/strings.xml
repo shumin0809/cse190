@@ -30,27 +30,29 @@
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
     <string name="title_activity_activityinitial_setup">ActivityinitialSetup</string>
-    
-    <!--  Some extra stuff -->
-	<string name="initialSetupFirstLanguage">First Language</string>
-	<string name="initialSetupFirstLanguageHint">Your first language&#8230;</string>
-	<string name="initialSetupSecondLanguage">Second Language</string>
-	<string name="initialSetupSecondLanguageHint">Your second language&#8230;</string>
-	<string name="initialSetupStatus">Status</string>
-	<string name="initialSetupStatusHint">Your message to the world&#8230;?</string>
-	<string name="initialSetupAddPet">Add Pet</string>
-	<string name="doneButtonLabel">Done</string>
-	<string name="skipButtonLabel">Skip</string>
-	<string name="addPetDialogPetName">Pet Name:</string>
-	<string name="addPetDialogPetNameHint">Enter your pet\'s name&#8230;</string>
-	<string name="addPetDialogPetSpecies">Pet Species:</string>
-	<string name="addPetDialogPetSpeciesHint">Enter your pet\'s species&#8230;</string>
-	<string name="addPetDialogPetBreed">Pet Breed:</string>
-	<string name="addPetDialogPetBreedHint">Enter your pet\'s breed&#8230;</string>
-	<string name="addPetDialogPetGender">Pet Gender:</string>
-	<string name="addPetDialogPetGenderHint">Enter your pet\'s gender&#8230;</string>
-	<string name="addPetDialogPetAge">Pet Age:</string>
-	<string name="addPetDialogPetAgeHint">Enter your pet\'s age&#8230;</string>
-	<string name="addPetDialogDescription">Pet Description:</string>
-	<string name="addPetDialogDescriptionHint">Enter a brief desription of your pet!</string>
+
+    <!-- Some extra stuff -->
+    <string name="initialSetupFirstLanguage">First Language</string>
+    <string name="initialSetupFirstLanguageHint">Your first language&#8230;</string>
+    <string name="initialSetupSecondLanguage">Second Language</string>
+    <string name="initialSetupSecondLanguageHint">Your second language&#8230;</string>
+    <string name="initialSetupStatus">Status</string>
+    <string name="initialSetupStatusHint">Your message to the world&#8230;?</string>
+    <string name="initialSetupAddPet">Add Pet</string>
+    <string name="doneButtonLabel">Done</string>
+    <string name="skipButtonLabel">Skip</string>
+    <string name="addPetDialogPetName">Pet Name:</string>
+    <string name="addPetDialogPetNameHint">Enter your pet\'s name&#8230;</string>
+    <string name="addPetDialogPetSpecies">Pet Species:</string>
+    <string name="addPetDialogPetSpeciesHint">Enter your pet\'s species&#8230;</string>
+    <string name="addPetDialogPetBreed">Pet Breed:</string>
+    <string name="addPetDialogPetBreedHint">Enter your pet\'s breed&#8230;</string>
+    <string name="addPetDialogPetGender">Pet Gender:</string>
+    <string name="addPetDialogPetGenderHint">Enter your pet\'s gender&#8230;</string>
+    <string name="addPetDialogPetAge">Pet Age:</string>
+    <string name="addPetDialogPetAgeHint">Enter your pet\'s age&#8230;</string>
+    <string name="addPetDialogDescription">Pet Description:</string>
+    <string name="addPetDialogDescriptionHint">Enter a brief desription of your pet!</string>
+    <string name="title_activity_activity_chat">ActivityChat</string>
+
 </resources>

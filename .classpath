@@ -10,7 +10,6 @@
 	<classpathentry kind="lib" path="libs/httpclient-4.3.6.jar"/>
 	<classpathentry kind="lib" path="libs/httpclient-cache-4.3.6.jar"/>
 	<classpathentry kind="lib" path="libs/httpcore-4.3.3.jar"/>
-	<classpathentry kind="lib" path="libs/httpmime-4.3.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/quickblox-android-sdk-chat-2.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/quickblox-android-sdk-core-2.1.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
