@@ -16,6 +16,7 @@ import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.adapter.ChatDialogAdapter;
+import com.cse190.petcafe.drawer.ActivityBase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,7 +26,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-public class ActivityChat extends Activity {
+public class ActivityChat extends ActivityBase {
 	
 	private ListView chatDialogsList;
 
