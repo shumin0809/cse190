@@ -2,18 +2,19 @@ package com.cse190.petcafe.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse190.petcafe.R;
-import com.cse190.petcafe.drawer.ActivityBase;
 
 public class ActivityProfile extends ActivityBase {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
 		getLayoutInflater().inflate(R.layout.activity_profile, content, true);
@@ -38,27 +39,37 @@ public class ActivityProfile extends ActivityBase {
 		TextView emailText = (TextView) findViewById(R.id.prof_email);
 		emailText.setText(email);
 
+		toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem menuItem) {
+				Intent intent = null;
+				switch (menuItem.getItemId()) {
+				case R.id.post_blog:
+					Toast.makeText(ActivityProfile.this, "Post Blog",
+							Toast.LENGTH_SHORT).show();
+					break;
+				case R.id.edit_profile:
+					Toast.makeText(ActivityProfile.this, "Edit Profile",
+							Toast.LENGTH_SHORT).show();
+					intent = new Intent(ActivityProfile.this,
+							ActivityEditProfile.class);
+					break;
+				default:
+					break;
+				}
+				if (intent != null) {
+					startActivity(intent);
+					overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+				}
+				return false;
+			}
+		});
+
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.menu_profile, menu);
+		getMenuInflater().inflate(R.menu.toolbar_profilemenu, menu);
 		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-		case R.id.edit:
-			Intent intent = new Intent(this, ActivityEditProfile.class);
-			startActivity(intent);
-			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-			return true;
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
 	}
 }

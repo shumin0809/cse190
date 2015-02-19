@@ -2,13 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cse190.petcafe"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
+        android:targetSdkVersion="21" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +14,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name="com.cse190.petcafe.MainActivity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,41 +24,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityBlog"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" />
+            android:name="com.cse190.petcafe.ui.ActivityNewPost"
+            android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityProfile"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.cse190.petcafe.ui.ActivityEditProfile"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.cse190.petcafe.ui.ActivityBlogPost"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.cse190.petcafe.ui.ActivityMyFriends"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
+            android:name="com.cse190.petcafe.ui.ActivityEditPofile"
+            android:noHistory="true" />
         <activity
             android:name="com.cse190.petcafe.ui.ActivityFindFriends"
-            android:label="@string/app_name"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
+            android:noHistory="true" />
         <activity
-            android:name="com.facebook.LoginActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:name="com.cse190.petcafe.ui.ActivityProfile"
+            android:noHistory="true" />
+        <activity
+            android:name="com.cse190.petcafe.ui.ActivityMyFriends"
+            android:noHistory="true" />
     </application>
 
 </manifest>
