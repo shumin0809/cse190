@@ -19,6 +19,7 @@ import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 import com.cse190.petcafe.ui.ActivityBlog;
 import com.cse190.petcafe.ui.ActivityBlogPost;
+import com.cse190.petcafe.ui.ActivityChat;
 import com.cse190.petcafe.ui.ActivityFindFriends;
 import com.cse190.petcafe.ui.ActivityMyFriends;
 import com.cse190.petcafe.ui.ActivityProfile;
@@ -31,6 +32,7 @@ public class ActivityBase extends Activity {
 	private final int ACTIVITY_POSTBLOG = 2;
 	private final int ACTIVITY_MYFRIENDS = 3;
 	private final int ACTIVITY_FINDFRIENDS = 4;
+	private final int ACTIVITY_CHATS = 5;
 
 	public String[] mDrawerTitles;
 	public DrawerLayout mDrawerLayout;
@@ -53,7 +55,7 @@ public class ActivityBase extends Activity {
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[5];
+		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[6];
 
 		drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_blog, "Blogs");
 		drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_profile, "Profile");
@@ -63,6 +65,7 @@ public class ActivityBase extends Activity {
 				"My Friends");
 		drawerItem[4] = new ObjectDrawerItem(R.drawable.ic_findfriends,
 				"Find Friends");
+		drawerItem[5] = new ObjectDrawerItem(R.drawable.ic_room, "Chats");
 
 		DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
 				R.layout.listitem_drawer, drawerItem);
@@ -164,6 +167,8 @@ public class ActivityBase extends Activity {
 		case ACTIVITY_FINDFRIENDS:
 			intent = new Intent(this, ActivityFindFriends.class);
 			break;
+		case ACTIVITY_CHATS:
+			intent = new Intent(this, ActivityChat.class);
 		default:
 			break;
 		}

@@ -15,6 +15,7 @@
         <item>Post Blog</item>
         <item>My Friends</item>
         <item>Find Friends</item>
+        <item>Chats</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
@@ -25,6 +26,7 @@
         <item>@drawable/ic_postblog</item>
         <item>@drawable/ic_myfriends</item>
         <item>@drawable/ic_findfriends</item>
+        <item>@drawable/ic_room</item>
     </array>
 
     <!-- Content Description -->

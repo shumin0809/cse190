@@ -23,6 +23,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -33,7 +34,8 @@ public class ActivityChat extends ActivityBase {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_activity_chat);
+		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+		getLayoutInflater().inflate(R.layout.activity_activity_chat, content, true);
 		
 		chatDialogsList = (ListView)findViewById(R.id.chatLists);
 		
