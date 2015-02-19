@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="background_tab_pressed">#66FF8533</color>
-    <color name="background_tab">#66999999</color>
-    <color name="frame">#b4b4b4</color>
-    <color name="frame_solid">#fff0e6</color>
-    <color name="frame_background">#ffa366</color>
-</resources>

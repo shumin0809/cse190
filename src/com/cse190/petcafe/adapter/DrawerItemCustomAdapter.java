@@ -1,9 +1,5 @@
 package com.cse190.petcafe.adapter;
 
-import com.cse190.petcafe.ObjectDrawerItem;
-import com.cse190.petcafe.R;
-import com.cse190.petcafe.R.id;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.cse190.petcafe.R;
+import com.cse190.petcafe.drawer.ObjectDrawerItem;
 
 public class DrawerItemCustomAdapter extends ArrayAdapter<ObjectDrawerItem> {
 
