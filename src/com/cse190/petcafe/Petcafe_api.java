@@ -112,10 +112,10 @@ public class Petcafe_api {
             jsonObject.put("status", person.getStatus());
             //jsonObject.put("age",  person.getAge());
             
+            jsonObject.put("key", makeKey("fb_id", person.getFacebookUID()));
+            
 			ja.put(jsonObject);
 			json = ja.toString();
-			
-			System.out.println("Print out json: "  + json);
 			
             StringEntity se = new StringEntity(json);
             client.setEntity(se);
@@ -293,6 +293,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
+            /*
             if(Integer.parseInt(person1.getFriendFacebookID()) < Integer.parseInt(person2.getFriendFacebookID())) {
             	jsonObject.put("fb_id1", person1.getFriendFacebookID());
             	jsonObject.put("fb_id2", person2.getFriendFacebookID());
@@ -301,7 +302,17 @@ public class Petcafe_api {
             else {
             	jsonObject.put("fb_id1", person2.getFriendFacebookID());
             	jsonObject.put("fb_id2", person1.getFriendFacebookID());
-            }
+            }*/
+            
+            jsonObject.put("fb_id", person1.getFriendFacebookID());
+            
+            JSONArray ja2 = new JSONArray();
+            ja2.put(person2.getFriendFacebookID());
+            
+            jsonObject.put("friends", ja2);
+            
+            
+            jsonObject.put("verify", "false");
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -343,7 +354,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("fb_id1", person.getFacebookUID());
+            jsonObject.put("fb_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -382,7 +393,7 @@ public class Petcafe_api {
 	// This function is only for REQUESTING for 'friending"
 	public JSONArray requestFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
         try {
-            client = new HttpPost(url+"request_friend");
+            client = new HttpPost(url+"requestFriend");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
@@ -426,7 +437,7 @@ public class Petcafe_api {
 	// IMPORTANT!!!!!! REQUESTER ALWAYS COMES FIRST!!!
 	public JSONArray rejectFriend(FriendInformation person1, FriendInformation person2) throws JSONException{
         try {
-            client = new HttpPost(url+"reject_friend");
+            client = new HttpPost(url+"rejectFriend");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -469,7 +480,7 @@ public class Petcafe_api {
 	
 	public JSONArray getRequest(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"request_friend");
+            client = new HttpPost(url+"requestFriend");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -511,7 +522,7 @@ public class Petcafe_api {
 	
 	public JSONArray getReject(UserProfileInformation person) throws JSONException{
         try {
-            client = new HttpPost(url+"reject_friend");
+            client = new HttpPost(url+"rejectFriend");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
@@ -659,6 +670,8 @@ public class Petcafe_api {
             jsonObject.put("gender", pet.getPetGender());
             jsonObject.put("age", pet.getPetAge());
             jsonObject.put("description", pet.getPetDescription());
+            
+            jsonObject.put("key", makeKey("owner_id", person.getFacebookUID()));
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -978,6 +991,8 @@ public class Petcafe_api {
             jsonObject.put("rating", post.getRating());
             jsonObject.put("tag", post.getTag());
             
+            jsonObject.put("key", makeKey("author_id", post.getFacebookId()));
+            
 			ja.put(jsonObject);
 			json = ja.toString();
 			
@@ -1103,7 +1118,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("author_id", person.getFacebookUID());
+            jsonObject.put("fb_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -1185,13 +1200,14 @@ public class Petcafe_api {
 	/*
 	 * COMMENTS FUNCTIONS
 	 */
-	public JSONArray addComment(UserProfileInformation person, String body) throws JSONException{
+	public JSONArray addComment(UserProfileInformation person, BlogPostInformation post, String body) throws JSONException{
         try {
             client = new HttpPost(url+"comment");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
             //TODO: determine "pid" jsonObject.put("pid", post.getFacebookId());
+            jsonObject.put("post_id", post.getId());
             jsonObject.put("commenter_id", person.getFacebookUID());
             jsonObject.put("body", body);
             
@@ -1229,15 +1245,14 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray deleteComment(UserProfileInformation person, String body) throws JSONException{
+	public JSONArray deleteComment(CommentInformation comment) throws JSONException{
         try {
             client = new HttpPost(url+"comment");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
             //TODO: determine "pid" jsonObject.put("pid", post.getFacebookId());
-            jsonObject.put("commenter_id", person.getFacebookUID());
-            jsonObject.put("body", body);
+            jsonObject.put("id", comment.getComment_id());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -1339,4 +1354,11 @@ public class Petcafe_api {
 
   		return jsonObject;
 	}
+    
+    private JSONObject makeKey(String key, String val) throws JSONException {
+    	
+    	JSONObject j = new JSONObject();
+    	j.put(key, val);
+    	return j;
+    }
 }

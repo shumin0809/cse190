@@ -1,6 +1,7 @@
 package com.cse190.petcafe;
 
 public class BlogPostInformation {
+	private int id;
 	private String facebookId;
 	private String title;
 	private String type;
@@ -18,6 +19,14 @@ public class BlogPostInformation {
 		setTag(tag);
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getFacebookId() {
 		return facebookId;
 	}
