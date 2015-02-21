@@ -52,9 +52,18 @@ public class ActivityMyFriends extends ActivityBase {
 					int position, long id) {
 
 				Intent i = new Intent(view.getContext(), ActivityChat.class);
-				i.putExtra("name", "Dong Sung Chang");
-				i.putExtra("uid", 2359813);
-				i.putExtra("originClass", "MyFriends");
+				if (position == 0)
+				{
+					i.putExtra("name", "Dong Sung Chang");
+					i.putExtra("uid", 2359813);
+					i.putExtra("originClass", "MyFriends");
+				}
+				else
+				{
+					i.putExtra("name", "Michael Chang");
+					i.putExtra("uid", 2353102);
+					i.putExtra("originClass", "MyFriends");
+				}
 				startActivity(i);
 			}
 		});

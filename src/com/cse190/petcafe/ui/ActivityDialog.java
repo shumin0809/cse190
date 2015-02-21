@@ -105,10 +105,12 @@ public class ActivityDialog extends Activity {
         {
         	companionLabel.setText(((ApplicationSingleton)getApplication()).getDialogsUsers().get(opponentID).getLogin());
         	dialog.setType(QBDialogType.PRIVATE);
-            loadChatHistory();
+	        loadChatHistory();
         }
         else
         {
+            //((ApplicationSingleton)getApplication()).addDialogsUsers(usersAdapter.getSelected());
+
         	QBDialog dialogToCreate = new QBDialog();
             dialogToCreate.setName("Fuck you");
             dialogToCreate.setType(QBDialogType.PRIVATE);
@@ -118,7 +120,6 @@ public class ActivityDialog extends Activity {
                 @Override
                 public void onSuccess(QBDialog dialog, Bundle args) {
                     // Load CHat history
-                    //
                     loadChatHistory();
                 }
 
@@ -128,9 +129,13 @@ public class ActivityDialog extends Activity {
                     //dialog.setMessage("dialog creation errors: " + errors).create().show();
                 }
             });
-            
         }
-            
+        
+        adapter = new ChatAdapter(ActivityDialog.this, new ArrayList<QBChatMessage>());
+        messagesContainer.setAdapter(adapter);
+
+        progressBar.setVisibility(View.GONE);
+
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -166,6 +171,7 @@ public class ActivityDialog extends Activity {
         customObjectRequestBuilder.setPagesLimit(100);
         customObjectRequestBuilder.sortDesc("date_sent");
 
+        QBChatService chatService = QBChatService.getInstance();
         QBChatService.getDialogMessages(dialog, customObjectRequestBuilder, new QBEntityCallbackImpl<ArrayList<QBChatMessage>>() {
             @Override
             public void onSuccess(ArrayList<QBChatMessage> messages, Bundle args) {

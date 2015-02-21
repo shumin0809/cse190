@@ -48,9 +48,12 @@ public class ActivityChat extends ActivityBase {
 		{
 			if (origin.equals("MyFriends"))
 			{
+				//((ApplicationSingleton)getActivity().getApplication()).addDialogsUsers(usersAdapter.getSelected());
+				
 				String name = i.getStringExtra("name");
 				int id = i.getIntExtra("uid", 0);
 				int myId = ((ApplicationSingleton)getApplication()).getCurrentUser().getId();
+				
 				ArrayList<Integer> occupants = new ArrayList<Integer>();
 				occupants.add(id);
 				occupants.add(myId);
@@ -62,6 +65,7 @@ public class ActivityChat extends ActivityBase {
 				i = new Intent(this, ActivityDialog.class);
 				i.putExtra(EXTRA_DIALOG, dialog);
 				startActivity(i);
+				return;
 			}
 		}
 		chatDialogsList = (ListView)findViewById(R.id.chatLists);

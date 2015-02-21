@@ -2,7 +2,9 @@ package com.cse190.petcafe;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.SmackException.NotLoggedInException;
@@ -10,6 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -24,6 +29,7 @@ import com.quickblox.chat.model.QBDialog;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
 import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBPagedRequestBuilder;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.core.server.BaseService;
@@ -52,6 +58,11 @@ public class MainActivity extends Activity {
 	private Boolean firstInstall;
 	private String fbAccessToken;
     private QBChatService chatService;
+    private GraphUser facebookUser;
+    private Session fbSession;
+    
+    private ArrayList<String> fbFriendUIDs;
+    private HashMap<String, String> fbFriendNamesWUIDs;
 	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	
@@ -75,7 +86,7 @@ public class MainActivity extends Activity {
         uiHelper.onCreate(savedInstanceState);
     	
         loginButton = (LoginButton)findViewById(R.id.fbLoginButton);
-        loginButton.setReadPermissions(Arrays.asList("public_profile"));
+        loginButton.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
         
         QBSettings.getInstance().fastConfigInit(GlobalStrings.APP_ID, GlobalStrings.AUTH_KEY, GlobalStrings.AUTH_SECRET);
     	
@@ -91,7 +102,8 @@ public class MainActivity extends Activity {
             public void onUserInfoFetched(GraphUser user) {
                 if (user != null) {
                 	Log.i(GlobalStrings.LOGTAG, "You are now logged in");
-                	final GraphUser userToPass = user;
+//                	final GraphUser userToPass = user;
+                	facebookUser = user;
                 	
                 	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
                 	SharedPreferences.Editor prefEditor = localCache.edit();
@@ -111,33 +123,38 @@ public class MainActivity extends Activity {
                 	{
                     	NetworkHandler.getInstance().addUser(profile);
                 	}
-                	                	
-                	final QBUser qbUser = new QBUser();
-        	    	qbUser.setLogin(GlobalStrings.USER_LOGIN);
-        	    	qbUser.setPassword(GlobalStrings.USER_PASSWORD);
-                	// quickblox stuff                    
-                    QBAuth.createSession(qbUser, new QBEntityCallbackImpl<QBSession>() {
-                		
-                	    @Override
-                	    public void onSuccess(QBSession session, Bundle params) {
-                	    	
-                	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
-                	        qbUser.setId(session.getUserId());
-                        	signInUserToQuickblox(userToPass);
-                        	checkChatServiceStatus(qbUser);
-                	    }
-                	    
-                	    @Override
-                	    public void onError(List<String> errors) {
-                	    	Log.i("This is", "Stupid");
-                	    }
-                	});
+                	
+                	createQBSession(facebookUser);
                 	
                 } else {
                 	Log.i(GlobalStrings.LOGTAG, "You are now not logged in");
                 }
             }
         });
+    }
+    
+    private void createQBSession(final GraphUser userToPass)
+    {
+    	final QBUser qbUser = new QBUser();
+    	qbUser.setLogin(GlobalStrings.USER_LOGIN);
+    	qbUser.setPassword(GlobalStrings.USER_PASSWORD);
+    	// quickblox stuff                    
+        QBAuth.createSession(qbUser, new QBEntityCallbackImpl<QBSession>() {
+    		
+    	    @Override
+    	    public void onSuccess(QBSession session, Bundle params) {
+    	    	
+    	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
+    	        qbUser.setId(session.getUserId());
+            	signInUserToQuickblox(userToPass);
+            	checkChatServiceStatus(qbUser);
+    	    }
+    	    
+    	    @Override
+    	    public void onError(List<String> errors) {
+    	    	Log.i("This is", "Stupid");
+    	    }
+    	});
     }
     
 	private void checkChatServiceStatus(final QBUser user)
@@ -204,6 +221,7 @@ public class MainActivity extends Activity {
     	    		signUpUserToChat(graphUser);
     	    	}
     	    	((ApplicationSingleton)getApplication()).setCurrentUser(user);
+    	    	getAllFriendUsers();
     			goToBlog();
     			
     			Log.i(GlobalStrings.LOGTAG, "Successfully signed into quickblox");
@@ -215,6 +233,58 @@ public class MainActivity extends Activity {
     			Log.e(GlobalStrings.LOGTAG, "Something went horribly wrong!");
     		}
     	});
+    }
+    
+    private void getAllFriendUsers()
+    {
+    	new Request(
+			fbSession,
+			"/me/friends",
+			null,
+			HttpMethod.GET,
+			new Request.Callback() {
+				
+				@Override
+				public void onCompleted(Response response) {
+					try {
+						fbFriendUIDs = new ArrayList<String>();
+						fbFriendNamesWUIDs = new HashMap<String, String>();
+						JSONObject resp = new JSONObject(response.getRawResponse());
+						JSONArray arr = resp.getJSONArray("data");
+						for (int i = 0; i < arr.length(); ++i)
+						{
+							JSONObject obj = arr.getJSONObject(i);
+							
+							String uid = obj.getString("id");
+							String name = obj.getString("name");
+							
+							fbFriendUIDs.add(uid);
+							fbFriendNamesWUIDs.put(uid, name);
+							Log.i(GlobalStrings.LOGTAG, uid);
+						}
+						
+						getAllUsersFromChatApi();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+    	).executeAsync();
+    }
+    
+    private void getAllUsersFromChatApi()
+    {
+    	List<QBUser> chatFriendsList = null;
+    	
+		try {
+			chatFriendsList = new RetrieveFacebookFriends().execute("").get();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+        if (chatFriendsList != null)
+        	((ApplicationSingleton)getApplication()).setFriendUsers(chatFriendsList);
     }
     
     private void goToBlog()
@@ -234,7 +304,8 @@ public class MainActivity extends Activity {
                 Exception exception) {
             if (state.isOpened()) {
             	fbAccessToken = session.getAccessToken();
-                Log.i(GlobalStrings.LOGTAG, "Facebook session opened");
+            	fbSession = session;
+            	Log.i(GlobalStrings.LOGTAG, "Facebook session opened");
             } else if (state.isClosed()) {
                 Log.i(GlobalStrings.LOGTAG, "Facebook session closed");
             }
@@ -307,6 +378,28 @@ public class MainActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-}
+    
+    private class RetrieveFacebookFriends extends AsyncTask<String, Void, List<QBUser>>
+    {
 
+		@Override
+		protected List<QBUser> doInBackground(String... params) {
+	        QBPagedRequestBuilder requestBuilder = null;
+	        Bundle _params = new Bundle();
+	        
+	        List<QBUser> chatFriendsList = null;
+
+	        if (!fbFriendUIDs.isEmpty())
+	        {
+				try {
+					chatFriendsList = QBUsers.getUsersByFacebookId(fbFriendUIDs, requestBuilder, _params);
+				} catch (QBResponseException e) {
+					e.printStackTrace();
+				}
+	        }
+			
+			return chatFriendsList;
+		}
+    }
+}
 

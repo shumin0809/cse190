@@ -13,6 +13,7 @@ public class ApplicationSingleton extends Application {
     private QBUser currentUser;
 
     private Map<Integer, QBUser> dialogsUsers = new HashMap<Integer, QBUser>();
+    private Map<Integer, QBUser> friendUsers = new HashMap<Integer, QBUser>();
 
     @Override
     public void onCreate() {
@@ -31,12 +32,33 @@ public class ApplicationSingleton extends Application {
     public Map<Integer, QBUser> getDialogsUsers() {
         return dialogsUsers;
     }
+    
+    public Map<Integer, QBUser> getFriendUsers()
+    {
+    	return friendUsers;
+    }
 
     public void setDialogsUsers(List<QBUser> setUsers) {
         dialogsUsers.clear();
 
         for (QBUser user : setUsers) {
             dialogsUsers.put(user.getId(), user);
+        }
+    }
+    
+    public void setFriendUsers(List<QBUser> friendUsers)
+    {
+    	this.friendUsers.clear();
+
+        for (QBUser user : friendUsers) {
+        	this.friendUsers.put(user.getId(), user);
+        }
+    }
+    
+    public void addFriendUsers(List<QBUser> friendUsers)
+    {
+    	for (QBUser user : friendUsers) {
+            this.friendUsers.put(user.getId(), user);
         }
     }
 
