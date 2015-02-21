@@ -14,5 +14,5 @@ public class GlobalStrings {
 	public static final String AUTH_SECRET = "MvEEXW-TcaAwnSc";
 	
 	public static final String USER_LOGIN = "dscormc";
-	public static final String USER_PASSWORD = "B5Ri;iFu";
+	public static final String USER_PASSWORD = "abcdefghijklmnop";
 }

@@ -1,6 +1,7 @@
 package com.cse190.petcafe.ui;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.cse190.petcafe.R;
@@ -8,6 +9,7 @@ import com.cse190.petcafe.R.id;
 import com.cse190.petcafe.R.layout;
 import com.cse190.petcafe.R.menu;
 import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.request.QBPagedRequestBuilder;
@@ -20,6 +22,7 @@ import com.cse190.petcafe.drawer.ActivityBase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,15 +31,39 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ActivityChat extends ActivityBase {
-	
+    public static final String EXTRA_DIALOG = "dialog";
+
 	private ListView chatDialogsList;
 
+	@SuppressWarnings("unused")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
 		getLayoutInflater().inflate(R.layout.activity_activity_chat, content, true);
 		
+		Intent i = getIntent();
+		String origin = i.getStringExtra("originClass");
+		if (origin != null)
+		{
+			if (origin.equals("MyFriends"))
+			{
+				String name = i.getStringExtra("name");
+				int id = i.getIntExtra("uid", 0);
+				int myId = ((ApplicationSingleton)getApplication()).getCurrentUser().getId();
+				ArrayList<Integer> occupants = new ArrayList<Integer>();
+				occupants.add(id);
+				occupants.add(myId);
+				
+				QBDialog dialog = new QBDialog();
+				dialog.setName(name);
+				dialog.setOccupantsIds(occupants);
+				
+				i = new Intent(this, ActivityDialog.class);
+				i.putExtra(EXTRA_DIALOG, dialog);
+				startActivity(i);
+			}
+		}
 		chatDialogsList = (ListView)findViewById(R.id.chatLists);
 		
 		QBRequestGetBuilder builder = new QBRequestGetBuilder();

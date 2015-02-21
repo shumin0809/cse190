@@ -1,6 +1,10 @@
 package com.cse190.petcafe.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -9,9 +13,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.cse190.petcafe.ApplicationSingleton;
+import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.TabsPagerAdapter;
 import com.cse190.petcafe.drawer.ActivityBaseTab;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBDialog;
+import com.quickblox.core.QBEntityCallbackImpl;
+import com.quickblox.core.request.QBPagedRequestBuilder;
+import com.quickblox.core.request.QBRequestGetBuilder;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 @SuppressWarnings("deprecation")
 public class ActivityBlog extends ActivityBaseTab implements
@@ -62,7 +75,57 @@ public class ActivityBlog extends ActivityBaseTab implements
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
+		
+    	getAllChatDialogs();
 	}
+	
+    private void getAllChatDialogs()
+    {
+		QBRequestGetBuilder builder = new QBRequestGetBuilder();
+		builder.setPagesLimit(100);
+		
+		QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
+		{
+			@Override
+			public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
+			{
+				List<Integer> userIDs = new ArrayList<Integer>();
+				for (QBDialog dialog : dialogs)
+				{
+					userIDs.addAll(dialog.getOccupants());
+				}
+				
+                QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();
+                requestBuilder.setPage(1);
+                requestBuilder.setPerPage(userIDs.size());
+                //
+                QBUsers.getUsersByIDs(userIDs, requestBuilder, new QBEntityCallbackImpl<ArrayList<QBUser>>() {
+                    @Override
+                    public void onSuccess(ArrayList<QBUser> users, Bundle params) {
+
+                        ((ApplicationSingleton)getApplication()).setDialogsUsers(users);
+
+                        // build list view
+                        //
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityBlog.this);
+                        dialog.setMessage("get occupants errors: " + errors).create().show();
+                    }
+
+                });
+			}
+			
+			@Override
+			public void onError(List<String> errors)
+			{
+                AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityBlog.this);
+                dialog.setMessage("get dialogs errors: " + errors).create().show();
+			}
+		});
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

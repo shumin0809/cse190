@@ -1,9 +1,11 @@
 package com.cse190.petcafe;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.SmackException.NotLoggedInException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,9 +20,12 @@ import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBProvider;
 import com.quickblox.auth.model.QBSession;
 import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBDialog;
 import com.quickblox.core.QBEntityCallbackImpl;
 import com.quickblox.core.QBSettings;
 import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.request.QBPagedRequestBuilder;
+import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.core.server.BaseService;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
@@ -37,6 +42,7 @@ import android.view.MenuItem;
 
 import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.ui.ActivityBlog;
+import com.cse190.petcafe.ui.ActivityChat;
 
 public class MainActivity extends Activity {
     static final int AUTO_PRESENCE_INTERVAL_IN_SECONDS = 30;
@@ -70,6 +76,16 @@ public class MainActivity extends Activity {
     	
         loginButton = (LoginButton)findViewById(R.id.fbLoginButton);
         loginButton.setReadPermissions(Arrays.asList("public_profile"));
+        
+        QBSettings.getInstance().fastConfigInit(GlobalStrings.APP_ID, GlobalStrings.AUTH_KEY, GlobalStrings.AUTH_SECRET);
+    	
+        QBChatService.setDebugEnabled(true);
+    	if (!QBChatService.isInitialized())
+    	{
+    	    QBChatService.init(this);
+    	}
+        chatService = QBChatService.getInstance();
+        
         loginButton.setUserInfoChangedCallback(new UserInfoChangedCallback() {
             @Override
             public void onUserInfoFetched(GraphUser user) {
@@ -96,23 +112,24 @@ public class MainActivity extends Activity {
                     	NetworkHandler.getInstance().addUser(profile);
                 	}
                 	                	
-                	// quickblox stuff
-                    QBSettings.getInstance().fastConfigInit(GlobalStrings.APP_ID, GlobalStrings.AUTH_KEY, GlobalStrings.AUTH_SECRET);
-                	final QBUser qbUser = new QBUser(GlobalStrings.USER_LOGIN, GlobalStrings.USER_PASSWORD);
-                	
-                    QBAuth.createSession(new QBEntityCallbackImpl<QBSession>() {
+                	final QBUser qbUser = new QBUser();
+        	    	qbUser.setLogin(GlobalStrings.USER_LOGIN);
+        	    	qbUser.setPassword(GlobalStrings.USER_PASSWORD);
+                	// quickblox stuff                    
+                    QBAuth.createSession(qbUser, new QBEntityCallbackImpl<QBSession>() {
                 		
                 	    @Override
                 	    public void onSuccess(QBSession session, Bundle params) {
+                	    	
                 	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
                 	        qbUser.setId(session.getUserId());
-                        	checkChatServiceStatus(qbUser);
                         	signInUserToQuickblox(userToPass);
+                        	checkChatServiceStatus(qbUser);
                 	    }
                 	    
                 	    @Override
                 	    public void onError(List<String> errors) {
-                	 
+                	    	Log.i("This is", "Stupid");
                 	    }
                 	});
                 	
@@ -123,16 +140,9 @@ public class MainActivity extends Activity {
         });
     }
     
-    @SuppressWarnings("rawtypes")
 	private void checkChatServiceStatus(final QBUser user)
-    {
-    	if (!QBChatService.isInitialized())
-    	{
-    	    QBChatService.init(this);
-    	}
-        chatService = QBChatService.getInstance();
-        
-        chatService.login(user, new QBEntityCallbackImpl() {
+    {   
+		chatService.login(user, new QBEntityCallbackImpl() {
             @Override
             public void onSuccess() {
 
@@ -193,6 +203,7 @@ public class MainActivity extends Activity {
     	    	{
     	    		signUpUserToChat(graphUser);
     	    	}
+    	    	((ApplicationSingleton)getApplication()).setCurrentUser(user);
     			goToBlog();
     			
     			Log.i(GlobalStrings.LOGTAG, "Successfully signed into quickblox");

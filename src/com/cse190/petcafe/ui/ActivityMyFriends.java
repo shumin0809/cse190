@@ -3,10 +3,16 @@ package com.cse190.petcafe.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -38,7 +44,20 @@ public class ActivityMyFriends extends ActivityBase {
 
 		// assign the list adapter
 		friendList.setAdapter(myAdapter);
+				
+		friendList.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
 
+				Intent i = new Intent(view.getContext(), ActivityChat.class);
+				i.putExtra("name", "Dong Sung Chang");
+				i.putExtra("uid", 2359813);
+				i.putExtra("originClass", "MyFriends");
+				startActivity(i);
+			}
+		});
 	}
 
 	@Override

@@ -70,6 +70,10 @@
             android:name=".ui.ActivityChat"
             android:label="@string/title_activity_activity_chat" >
         </activity>
+        <activity
+            android:name="com.cse190.petcafe.ui.ActivityDialog"
+            android:label="@string/title_activity_actvitiy_dialog" >
+        </activity>
     </application>
 
 </manifest>
