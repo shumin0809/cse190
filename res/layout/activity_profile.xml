@@ -16,7 +16,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:clickable="true"
-            android:background="#4DB6AC" />
+            android:src="@drawable/ic_sponge" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -82,12 +82,19 @@
         </LinearLayout>
     </LinearLayout>
 
+    <Button
+        android:id="@+id/edit_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Edit Profile" />
+
     <TextView
         android:id="@+id/pets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
         android:layout_marginTop="20dp"
+        android:paddingLeft="20dp"
         android:text="PETS:"
         android:textSize="20sp" />
 

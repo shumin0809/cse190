@@ -3,23 +3,26 @@ package com.cse190.petcafe.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cse190.petcafe.R;
-import com.cse190.petcafe.drawer.ActivityBase;
 
 public class ActivityMyFriends extends ActivityBase {
 
 	private List<String> listValues;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
 		getLayoutInflater().inflate(R.layout.activity_myfriends, content, true);
 
@@ -39,22 +42,22 @@ public class ActivityMyFriends extends ActivityBase {
 		// assign the list adapter
 		friendList.setAdapter(myAdapter);
 
+		friendList.setOnItemClickListener(new OnItemClickListener() {
+			  @Override
+			  public void onItemClick(AdapterView<?> parent, View view,
+			    int position, long id) {
+			    Toast.makeText(getApplicationContext(),
+			      "Friend: " + listValues.get(position).toString(), Toast.LENGTH_LONG)
+			      .show();
+			    Intent intent = new Intent(ActivityMyFriends.this, ActivityMyFriendsPosts.class);
+			    startActivity(intent);
+				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			  }
+			}); 
+
+
 	}
+	
+	
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main1, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 }
