@@ -104,38 +104,12 @@ public class ActivityDialog extends Activity {
         if (((ApplicationSingleton)getApplication()).getDialogsUsers().get(opponentID) != null)
         {
         	companionLabel.setText(((ApplicationSingleton)getApplication()).getDialogsUsers().get(opponentID).getLogin());
-        	dialog.setType(QBDialogType.PRIVATE);
 	        loadChatHistory();
         }
-        else
-        {
-            //((ApplicationSingleton)getApplication()).addDialogsUsers(usersAdapter.getSelected());
-
-        	QBDialog dialogToCreate = new QBDialog();
-            dialogToCreate.setName("Fuck you");
-            dialogToCreate.setType(QBDialogType.PRIVATE);
-            dialogToCreate.setOccupantsIds(dialog.getOccupants());
-            
-            QBChatService.getInstance().getGroupChatManager().createDialog(dialogToCreate, new QBEntityCallbackImpl<QBDialog>() {
-                @Override
-                public void onSuccess(QBDialog dialog, Bundle args) {
-                    // Load CHat history
-                    loadChatHistory();
-                }
-
-                @Override
-                public void onError(List<String> errors) {
-                    //AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityDialog.class);
-                    //dialog.setMessage("dialog creation errors: " + errors).create().show();
-                }
-            });
-        }
-        
+/*        
         adapter = new ChatAdapter(ActivityDialog.this, new ArrayList<QBChatMessage>());
         messagesContainer.setAdapter(adapter);
-
-        progressBar.setVisibility(View.GONE);
-
+*/
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

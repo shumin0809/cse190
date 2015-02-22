@@ -31,8 +31,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ActivityChat extends ActivityBase {
-    public static final String EXTRA_DIALOG = "dialog";
-
 	private ListView chatDialogsList;
 
 	@SuppressWarnings("unused")
@@ -44,30 +42,7 @@ public class ActivityChat extends ActivityBase {
 		
 		Intent i = getIntent();
 		String origin = i.getStringExtra("originClass");
-		if (origin != null)
-		{
-			if (origin.equals("MyFriends"))
-			{
-				//((ApplicationSingleton)getActivity().getApplication()).addDialogsUsers(usersAdapter.getSelected());
-				
-				String name = i.getStringExtra("name");
-				int id = i.getIntExtra("uid", 0);
-				int myId = ((ApplicationSingleton)getApplication()).getCurrentUser().getId();
-				
-				ArrayList<Integer> occupants = new ArrayList<Integer>();
-				occupants.add(id);
-				occupants.add(myId);
-				
-				QBDialog dialog = new QBDialog();
-				dialog.setName(name);
-				dialog.setOccupantsIds(occupants);
-				
-				i = new Intent(this, ActivityDialog.class);
-				i.putExtra(EXTRA_DIALOG, dialog);
-				startActivity(i);
-				return;
-			}
-		}
+
 		chatDialogsList = (ListView)findViewById(R.id.chatLists);
 		
 		QBRequestGetBuilder builder = new QBRequestGetBuilder();

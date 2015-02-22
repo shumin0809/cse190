@@ -13,7 +13,7 @@ public class ApplicationSingleton extends Application {
     private QBUser currentUser;
 
     private Map<Integer, QBUser> dialogsUsers = new HashMap<Integer, QBUser>();
-    private Map<Integer, QBUser> friendUsers = new HashMap<Integer, QBUser>();
+    private Map<String, QBUser> friendUsers = new HashMap<String, QBUser>();
 
     @Override
     public void onCreate() {
@@ -33,7 +33,7 @@ public class ApplicationSingleton extends Application {
         return dialogsUsers;
     }
     
-    public Map<Integer, QBUser> getFriendUsers()
+    public Map<String, QBUser> getFriendUsers()
     {
     	return friendUsers;
     }
@@ -51,14 +51,14 @@ public class ApplicationSingleton extends Application {
     	this.friendUsers.clear();
 
         for (QBUser user : friendUsers) {
-        	this.friendUsers.put(user.getId(), user);
+        	this.friendUsers.put(user.getFacebookId(), user);
         }
     }
     
     public void addFriendUsers(List<QBUser> friendUsers)
     {
     	for (QBUser user : friendUsers) {
-            this.friendUsers.put(user.getId(), user);
+            this.friendUsers.put(user.getFacebookId(), user);
         }
     }
 
