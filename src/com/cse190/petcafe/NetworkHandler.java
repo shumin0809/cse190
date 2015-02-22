@@ -197,7 +197,7 @@ public final class NetworkHandler extends Application {
 			FriendInformation other = (FriendInformation)params[1];
 			
 			try{
-				api.addFriend(myself, other);
+				api.addFriend(myself, other, false);
 				
 			}
 			catch (JSONException e)
