@@ -19,6 +19,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import cse190.PetInformation;
+import cse190.UserProfileInformation;
+
 //import android.net.http.AndroidHttpClient;
 
 public class Petcafe_api {
@@ -606,16 +609,17 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
+	
 	/*
 	 * PET FUNCTIONS
 	 */
-	public JSONArray addPet(UserProfileInformation person, PetInformation pet) throws JSONException{
+	public JSONArray addPet(PetInformation pet) throws JSONException{
         try {
             client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("owner_id", person.getFacebookUID());
+            jsonObject.put("owner_id", pet.getPetOwnerFacebookID());
             jsonObject.put("name", pet.getPetName());
             jsonObject.put("species", pet.getPetSpecies());
             jsonObject.put("breed", pet.getPetBreed());
@@ -657,13 +661,13 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray modifyPet(UserProfileInformation person, PetInformation pet) throws JSONException{
+	public JSONArray modifyPet(PetInformation pet) throws JSONException{
         try {
             client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("owner_id", person.getFacebookUID());
+            jsonObject.put("owner_id", pet.getPetOwnerFacebookID());
             jsonObject.put("name", pet.getPetName());
             jsonObject.put("species", pet.getPetSpecies());
             jsonObject.put("breed", pet.getPetBreed());
@@ -671,7 +675,7 @@ public class Petcafe_api {
             jsonObject.put("age", pet.getPetAge());
             jsonObject.put("description", pet.getPetDescription());
             
-            jsonObject.put("key", makeKey("owner_id", person.getFacebookUID()));
+            jsonObject.put("key", makeKey("owner_id", pet.getPetOwnerFacebookID()));
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -707,13 +711,13 @@ public class Petcafe_api {
         return new JSONArray(body);
     }
 	
-	public JSONArray deletePet(UserProfileInformation person, PetInformation pet) throws JSONException{
+	public JSONArray deletePet(PetInformation pet) throws JSONException{
         try {
             client = new HttpPost(url+"pet");
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("owner_id", person.getFacebookUID());
+            jsonObject.put("owner_id", pet.getPetOwnerFacebookID());
             jsonObject.put("name", pet.getPetName());
             
 			ja.put(jsonObject);
