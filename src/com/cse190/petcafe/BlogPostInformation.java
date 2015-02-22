@@ -1,21 +1,32 @@
 package com.cse190.petcafe;
 
 public class BlogPostInformation {
+	private int id;
 	private String facebookId;
 	private String title;
 	private String type;
 	private String body;
 	private int rating;
+	private String tag;
 	
-	public BlogPostInformation(String facebookId, String title, String type, String body, int rating)
+	public BlogPostInformation(String facebookId, String title, String type, String body, int rating, String tag)
 	{
 		setFacebookId(facebookId);
 		setTitle(title);
 		setType(type);
 		setBody(body);
 		setRating(rating);
+		setTag(tag);
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getFacebookId() {
 		return facebookId;
 	}
@@ -54,5 +65,13 @@ public class BlogPostInformation {
 	
 	public void setRating(int rating) {
 		this.rating = rating;
+	}
+	
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 }
