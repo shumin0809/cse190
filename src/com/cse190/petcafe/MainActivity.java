@@ -197,6 +197,7 @@ public class MainActivity extends Activity {
     	Log.i(GlobalStrings.LOGTAG, "User information: pass " + "username " + username);
     	QBUser qbUser = null;
 		qbUser = new QBUser(username, GlobalStrings.USER_PASSWORD);
+		qbUser.setFullName(facebookUser.getName());
 		
     	qbUser.setFacebookId(facebookUser.getId());
     	QBUsers.signUp(qbUser, new QBEntityCallbackImpl<QBUser>()

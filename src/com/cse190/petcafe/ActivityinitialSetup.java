@@ -112,11 +112,27 @@ public class ActivityinitialSetup extends Activity {
 		if (id == R.id.done_button) 
 		{
 			// TODO: update the server
+			NetworkHandler handler = NetworkHandler.getInstance();
+			String facebookID = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+			String username = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, "");
+			// gotta change latitude, longitude, status
+			UserProfileInformation profile = new UserProfileInformation(facebookID, username, firstLanguageInput.getText().toString(), secondLanguageInput.getText().toString(), 0.0, 0.0, "");
+			handler.modifyUser(profile);
+			for (PetInformation pet : pets)
+			{
+				handler.addPet(pet);
+			}
 			
+			Intent i = new Intent(getBaseContext(), ActivityBlog.class);
+			startActivity(i);
+			finish();
 		}
 		else if (id == R.id.skip_button)
 		{
 			// TODO: do when skipping the initial setup
+			Intent i = new Intent(getBaseContext(), ActivityBlog.class);
+			startActivity(i);
+			finish();
 		}
 		
 		

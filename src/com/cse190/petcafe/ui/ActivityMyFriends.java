@@ -39,11 +39,8 @@ public class ActivityMyFriends extends ActivityBase {
 		ListView friendList = (ListView) findViewById(R.id.friendslist);
 
 		listValues = new ArrayList<String>();
-		listValues.add("Daniel");
-		listValues.add("Michael");
-		listValues.add("Shumin");
-		listValues.add("Scott");
-		listValues.add("Lucia");
+		listValues.add("Dong Sung Chang");
+		listValues.add("Michael Chang");
 
 		// initiate the listadapter
 		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,
@@ -59,7 +56,11 @@ public class ActivityMyFriends extends ActivityBase {
 					int position, long id) {
 				// create a new chat dialog;;;;;
 				// this is hardcode. Need to change this later ====
-				String fbuid = "10153670628264152";
+				String fbuid = "";
+				if (position == 0)
+					fbuid = "1542339792686537";
+				else
+					fbuid = "10153670628264152";
 				ApplicationSingleton data = (ApplicationSingleton)getApplication();
 				QBUser currUser = data.getCurrentUser();
 				QBUser selectedUser = data.getFriendUsers().get(fbuid);
