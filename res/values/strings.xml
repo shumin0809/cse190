@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">petcafe</string>
-    <string name="hello_world">Hello world!</string>
+	<string name="actionbar_title">Pet Cafe</string>
+	<string name="icon_content_description">This is the content description.</string>
+    <string name="cat">Meow</string>
+	<string name="dog">Bark</string>
+    <string name="cat_description">This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. </string>
+	<string name="dog_description">This is a dog.</string>
+        
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -12,21 +18,29 @@
     <string-array name="nav_drawer_items">
         <item>Blogs</item>
         <item>Profile</item>
-        <item>Post Blog</item>
+        <item>New Post</item>
+        <item>Search Posts</item>
         <item>My Friends</item>
         <item>Find Friends</item>
         <item>Chats</item>
+    </string-array>
+    
+        <string-array name="posttype_arrays">
+        <item>Stories</item>
+        <item>Tips</item>
+        <item>News</item>
+        <item>Wiki</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
-        <item>@drawable/ic_blog</item>
-        <item>@drawable/ic_profile</item>
-        <item>@drawable/ic_postblog</item>
-        <item>@drawable/ic_myfriends</item>
-        <item>@drawable/ic_findfriends</item>
-        <item>@drawable/ic_room</item>
+        <item>@drawable/ic_wiki</item>
+        <item>@drawable/ic_wiki</item>
+        <item>@drawable/ic_wiki</item>
+        <item>@drawable/ic_wiki</item>
+        <item>@drawable/ic_wiki</item>
+        <item>@drawable/ic_wiki</item>
     </array>
 
     <!-- Content Description -->
