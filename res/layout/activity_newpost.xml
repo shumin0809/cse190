@@ -52,12 +52,6 @@
         android:paddingLeft="10dp"
         android:layout_marginLeft="10dp" />
 
-    <TextView
-        android:id="@+id/txt_story"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:text="Details:" />
 
     <EditText
         android:id="@+id/story"
@@ -65,8 +59,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
         android:ems="10"
-        android:inputType="text" />
+        android:lines="10"
+        android:minLines="5"
+        android:hint="Type your story here..."
+        android:gravity="top|left"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        android:scrollHorizontally="false"
+        android:background="@drawable/blog_input_style"/>
 
     <Button
         android:id="@+id/post_button"
