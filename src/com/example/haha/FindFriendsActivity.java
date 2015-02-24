@@ -43,6 +43,8 @@ public class FindFriendsActivity extends Activity {
 	private FriendsAdapter friendsAdapter;
 
 	private ArrayList<Friend> friends = new ArrayList<Friend>();
+	
+	private Location location;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,14 +59,12 @@ public class FindFriendsActivity extends Activity {
 				MINIMUM_TIME_BETWEEN_UPDATES,
 				MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, new MyLocationListener());
 
-		// testing current user location method, could be removed
-		retrieveLocationButton = (Button) findViewById(R.id.retrieve_location_button);
-		retrieveLocationButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showCurrentLocation();
-			}
-		});
+		
+		// send current location of current user
+		location = locationManager
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		
+		sendMyLocation("facebookUID",location.getLongitude(),location.getLatitude());
 
 		// display friends that within 5 miles distance
 
@@ -79,35 +79,10 @@ public class FindFriendsActivity extends Activity {
 	}
 
 	/******** call this method to send current user location **********/
-	public void sendMyLocation() {
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		// int user_id = current_user.getId();
+	public void sendMyLocation(String facebookUID, double longitude, double latitude) {
 
-		// send(location.getLongitude(), location.getLatitude(), user_id);
-	}
-
-	protected void showCurrentLocation() {
-
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-		if (location != null) {
-
-			String message = String.format(
-
-			"Current Location \n Longitude: %1$s \n Latitude: %2$s",
-
-			location.getLongitude(), location.getLatitude()
-
-			);
-
-			Toast.makeText(FindFriendsActivity.this, message,
-
-			Toast.LENGTH_LONG).show();
-
-		}
-
+		// send(facebookUID,longitude, latitude);   => send to server
+		
 	}
 
 	private class MyLocationListener implements LocationListener {
@@ -227,5 +202,39 @@ public class FindFriendsActivity extends Activity {
 			}
 		});
 	}
+	
+	// test sending location
+	
+//	protected void showCurrentLocation() {
+//
+////		// testing current user location method, could be removed
+////		retrieveLocationButton = (Button) findViewById(R.id.retrieve_location_button);
+////		retrieveLocationButton.setOnClickListener(new OnClickListener() {
+////			@Override
+////			public void onClick(View v) {
+////				showCurrentLocation();
+////			}
+////		});
+//		
+//		Location location = locationManager
+//				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//
+//		if (location != null) {
+//
+//			String message = String.format(
+//
+//			"Current Location \n Longitude: %1$s \n Latitude: %2$s",
+//
+//			location.getLongitude(), location.getLatitude()
+//
+//			);
+//
+//			Toast.makeText(FindFriendsActivity.this, message,
+//
+//			Toast.LENGTH_LONG).show();
+//
+//		}
+//
+//	}
 
 }
