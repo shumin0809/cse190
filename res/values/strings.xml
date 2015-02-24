@@ -16,6 +16,7 @@
     <string-array name="nav_drawer_items">
         <item>Blogs</item>
         <item>Profile</item>
+        <item>My Blog</item>
         <item>New Post</item>
         <item>Search Posts</item>
         <item>My Friends</item>
@@ -37,9 +38,11 @@
         <item>@drawable/ic_wiki</item>
         <item>@drawable/ic_wiki</item>
         <item>@drawable/ic_wiki</item>
+        <item>@drawable/ic_wiki</item>
     </array>
 
     <string name="title_activity_activity_single_post">ActivitySinglePost</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_activity_my_blog">ActivityMyBlog</string>
 
 </resources>

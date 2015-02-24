@@ -48,6 +48,10 @@
             android:name=".ui.ActivitySinglePost"
             android:label="@string/title_activity_activity_single_post" >
         </activity>
+        <activity
+            android:name="com.cse190.petcafe.ui.ActivityMyBlog"
+            android:label="@string/title_activity_activity_my_blog" >
+        </activity>
     </application>
 
 </manifest>
