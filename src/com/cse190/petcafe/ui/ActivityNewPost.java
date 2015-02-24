@@ -16,55 +16,75 @@ import com.cse190.petcafe.R;
 
 public class ActivityNewPost extends ActivityBase {
 
-	private Spinner spinner;
-	private Button btnSubmit;
+    private Spinner spinnerType;
+    private Spinner spinnerTag;
+    private Button btnSubmit;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-		getLayoutInflater().inflate(R.layout.activity_newpost, content, true);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.activity_newpost, content, true);
 
-		addItemsOnSpinner();
-		addListenerOnButton();
+        addItemsOnSpinner();
+        addListenerOnButton();
 
-	}
+    }
 
-	// add items into spinner dynamically
-	public void addItemsOnSpinner() {
+    // add items into spinner dynamically
+    public void addItemsOnSpinner() {
 
-		spinner = (Spinner) findViewById(R.id.spinner_type);
-		List<String> list = new ArrayList<String>();
-		list.add("Stories");
-		list.add("Tips");
-		list.add("News");
-		list.add("Wiki");
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, list);
-		dataAdapter
-				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(dataAdapter);
-	}
+        spinnerType = (Spinner) findViewById(R.id.spinner_type);
+        List<String> listType = new ArrayList<String>();
+        listType.add("Stories");
+        listType.add("Tips");
+        listType.add("News");
+        listType.add("Wiki");
+        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, listType);
+        typeAdapter
+        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerType.setAdapter(typeAdapter);
 
-	// get the selected dropdown list value
-	public void addListenerOnButton() {
+        spinnerTag = (Spinner) findViewById(R.id.spinner_tag);
+        List<String> listTag = new ArrayList<String>();
+        listTag.add("Dog");
+        listTag.add("Cat");
+        listTag.add("Pig");
+        listTag.add("Rabbit");
+        listTag.add("Other");
+        ArrayAdapter<String> tagAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, listTag);
+        tagAdapter
+        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerTag.setAdapter(tagAdapter);
+    }
 
-		spinner = (Spinner) findViewById(R.id.spinner_type);
-		btnSubmit = (Button) findViewById(R.id.post_button);
+    // get the selected dropdown list value
+    public void addListenerOnButton() {
 
-		btnSubmit.setOnClickListener(new OnClickListener() {
+        spinnerType = (Spinner) findViewById(R.id.spinner_type);
+        spinnerTag = (Spinner) findViewById(R.id.spinner_tag);
+        btnSubmit = (Button) findViewById(R.id.post_button);
 
-			@Override
-			public void onClick(View v) {
+        btnSubmit.setOnClickListener(new OnClickListener() {
 
-				Toast.makeText(
-						ActivityNewPost.this,
-						"Spinner : "
-								+ String.valueOf(spinner.getSelectedItem()),
-						Toast.LENGTH_SHORT).show();
-			}
+            @Override
+            public void onClick(View v) {
 
-		});
-	}
+                Toast.makeText(
+                        ActivityNewPost.this,
+                        "Spinner : "
+                                + String.valueOf(spinnerType.getSelectedItem()),
+                                Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        ActivityNewPost.this,
+                        "Spinner : "
+                                + String.valueOf(spinnerTag.getSelectedItem()),
+                                Toast.LENGTH_SHORT).show();
+            }
+
+        });
+    }
 
 }

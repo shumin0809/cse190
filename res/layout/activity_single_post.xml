@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:paddingLeft="20dp"
-                android:text="tag A, tag B, tag C"
+                android:text="tag cat"
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
