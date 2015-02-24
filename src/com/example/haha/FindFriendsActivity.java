@@ -30,7 +30,6 @@ public class FindFriendsActivity extends Activity {
 
 	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 10; // in
 																		// Meters
-
 	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in
 																	// Milliseconds
 
@@ -59,7 +58,7 @@ public class FindFriendsActivity extends Activity {
 		// send current location of current user
 		location = locationManager
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		sendMyLocation("facebookUID", location.getLongitude(),
+		sendMyLocation("user.getId", location.getLongitude(),
 				location.getLatitude());
 
 		// display friends that within 5 miles distance
@@ -71,6 +70,15 @@ public class FindFriendsActivity extends Activity {
 
 		showFriends(friends);
 
+		// // testing current user location method, could be removed
+		retrieveLocationButton = (Button) findViewById(R.id.retrieve_location_button);
+		retrieveLocationButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showCurrentLocation();
+			}
+		});
+
 	}
 
 	/******** call this method to send current user location **********/
@@ -78,7 +86,6 @@ public class FindFriendsActivity extends Activity {
 			double latitude) {
 
 		// send(facebookUID,longitude, latitude); => send to server
-
 	}
 
 	private class MyLocationListener implements LocationListener {
@@ -201,39 +208,29 @@ public class FindFriendsActivity extends Activity {
 
 	// test sending location
 
-	// private Button retrieveLocationButton;
+	private Button retrieveLocationButton;
 
-	// protected void showCurrentLocation() {
-	//
-	// // // testing current user location method, could be removed
-	// // retrieveLocationButton = (Button)
-	// findViewById(R.id.retrieve_location_button);
-	// // retrieveLocationButton.setOnClickListener(new OnClickListener() {
-	// // @Override
-	// // public void onClick(View v) {
-	// // showCurrentLocation();
-	// // }
-	// // });
-	//
-	// Location location = locationManager
-	// .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-	//
-	// if (location != null) {
-	//
-	// String message = String.format(
-	//
-	// "Current Location \n Longitude: %1$s \n Latitude: %2$s",
-	//
-	// location.getLongitude(), location.getLatitude()
-	//
-	// );
-	//
-	// Toast.makeText(FindFriendsActivity.this, message,
-	//
-	// Toast.LENGTH_LONG).show();
-	//
-	// }
-	//
-	// }
+	protected void showCurrentLocation() {
+
+		Location location = locationManager
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+		if (location != null) {
+
+			String message = String.format(
+
+			"Current Location \n Longitude: %1$s \n Latitude: %2$s",
+
+			location.getLongitude(), location.getLatitude()
+
+			);
+
+			Toast.makeText(FindFriendsActivity.this, message,
+
+			Toast.LENGTH_LONG).show();
+
+		}
+
+	}
 
 }
