@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -64,6 +65,8 @@ public class MainActivity extends Activity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
+            	Intent intent = new Intent(MainActivity.this, FindFriendsActivity.class);
+            	startActivity(intent);
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
