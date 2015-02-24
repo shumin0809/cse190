@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.cse190.petcafe.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/app_name" >
             <intent-filter>
@@ -24,26 +24,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityNewPost"
+            android:name=".ui.ActivityNewPost"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityEditProfile"
+            android:name=".ui.ActivityEditProfile"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityFindFriends"
+            android:name=".ui.ActivityFindFriends"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityProfile"
+            android:name=".ui.ActivityProfile"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityMyFriends"
+            android:name=".ui.ActivityMyFriends"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivitySearchPosts"
+            android:name=".ui.ActivitySearchPosts"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityMyFriendsPosts"
+            android:name=".ui.ActivityMyFriendsPosts"
             android:noHistory="true" />
+        <activity
+            android:name=".ui.ActivitySinglePost"
+            android:label="@string/title_activity_activity_single_post" >
+        </activity>
     </application>
 
 </manifest>

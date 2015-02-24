@@ -2,17 +2,21 @@ package com.cse190.petcafe;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cse190.petcafe.adapter.ListViewAdapter;
+import com.cse190.petcafe.ui.ActivitySinglePost;
 
 public class SampleListFragment extends ScrollTabHolderFragment implements
 OnScrollListener {
@@ -118,6 +122,29 @@ OnScrollListener {
         View placeHolderView = inflater.inflate(
                 R.layout.view_header_placeholder, mListView, false);
         mListView.addHeaderView(placeHolderView);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+                    long arg3) {
+                // TODO Auto-generated method stub
+                Log.d("listitem","clicked");
+                int itemPosition     = position;
+                //String  itemValue    = (String) mListView.getItemAtPosition(position);
+                //Log.d("2", "2");
+                Intent intent;
+                switch (itemPosition) {
+                case 0:
+                    break;
+                default:
+                    Log.d("item","Now position:"+itemPosition);
+                    //bundle...
+                    intent= new Intent(getActivity(), ActivitySinglePost.class);
+                    startActivity(intent);
+                    break;
+                }
+            }
+
+        });
         return v;
     }
 

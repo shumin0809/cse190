@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-  <string name="app_name">Pet Cafe</string>
-  <string name="actionbar_title">Pet Cafe</string>
-  <string name="icon_content_description">This is the content description.</string>
+    <string name="app_name">Pet Cafe</string>
+    <string name="actionbar_title">Pet Cafe</string>
+    <string name="icon_content_description">This is the content description.</string>
     <string name="cat">Meow</string>
-  <string name="dog">Bark</string>
+    <string name="dog">Bark</string>
     <string name="cat_description">This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. </string>
-  <string name="dog_description">This is a dog.</string>
-
+    <string name="dog_description">This is a dog.</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -22,8 +21,7 @@
         <item>My Friends</item>
         <item>Find Friends</item>
     </string-array>
-
-        <string-array name="posttype_arrays">
+    <string-array name="posttype_arrays">
         <item>Stories</item>
         <item>Tips</item>
         <item>News</item>
@@ -41,5 +39,7 @@
         <item>@drawable/ic_wiki</item>
     </array>
 
+    <string name="title_activity_activity_single_post">ActivitySinglePost</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
