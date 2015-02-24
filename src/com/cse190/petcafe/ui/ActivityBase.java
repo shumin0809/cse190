@@ -43,7 +43,7 @@ public class ActivityBase extends ActionBarActivity {
 	protected FrameLayout actContent;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
 		// Action Bar Toolbar

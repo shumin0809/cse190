@@ -1,6 +1,10 @@
 package com.cse190.petcafe.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Build;
@@ -27,8 +31,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.cse190.petcafe.ApplicationSingleton;
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
+import com.cse190.petcafe.ObjectDrawerItem;
+import com.cse190.petcafe.R;
+import com.cse190.petcafe.SampleListFragment;
+import com.cse190.petcafe.ScrollTabHolder;
+import com.cse190.petcafe.ScrollTabHolderFragment;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 import com.cse190.petcafe.ui.ActivityFindFriends;
 import com.cse190.petcafe.ui.ActivityMyFriends;
@@ -38,7 +48,6 @@ import com.cse190.petcafe.ui.ActivitySearchPosts;
 import com.flavienlaurent.notboringactionbar.AlphaForegroundColorSpan;
 import com.flavienlaurent.notboringactionbar.KenBurnsSupportView;
 import com.nineoldandroids.view.ViewHelper;
-
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.core.QBEntityCallbackImpl;
@@ -47,7 +56,7 @@ import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
-public class MainActivity extends ActionBarActivity implements ScrollTabHolder,
+public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 		ViewPager.OnPageChangeListener {
 
 	private static AccelerateDecelerateInterpolator sSmoothInterpolator = new AccelerateDecelerateInterpolator();
@@ -96,7 +105,7 @@ public class MainActivity extends ActionBarActivity implements ScrollTabHolder,
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_blog);
 
 		// Paging Slider Strip
 		mMinHeaderHeight = getResources().getDimensionPixelSize(

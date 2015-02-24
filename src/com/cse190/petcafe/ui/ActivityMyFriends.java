@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.R;
-import com.cse190.petcafe.drawer.ActivityBase;
+import com.cse190.petcafe.ui.ActivityBase;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.chat.model.QBDialogType;
@@ -41,6 +41,7 @@ public class ActivityMyFriends extends ActivityBase {
 
 		listValues = new ArrayList<String>();
 		listValues.add("Dong Sung Chang");
+		listValues.add("David Nguyen");
 		listValues.add("Michael Chang");
 
 		// initiate the listadapter
@@ -60,8 +61,11 @@ public class ActivityMyFriends extends ActivityBase {
 				String fbuid = "";
 				if (position == 0)
 					fbuid = "1542339792686537";
+				else if (position == 1)
+					fbuid = "10202613710098479";
 				else
 					fbuid = "10153670628264152";
+				
 				ApplicationSingleton data = (ApplicationSingleton)getApplication();
 				QBUser currUser = data.getCurrentUser();
 				QBUser selectedUser = data.getFriendUsers().get(fbuid);
@@ -136,23 +140,4 @@ public class ActivityMyFriends extends ActivityBase {
         }
         return ids;
     }
-    
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main1, menu);
-		return true;
-	}
-	
-	
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		switch (item.getItemId()) {
-
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
 }

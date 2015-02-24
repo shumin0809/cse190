@@ -18,7 +18,7 @@ import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.adapter.ChatDialogAdapter;
-import com.cse190.petcafe.drawer.ActivityBase;
+import com.cse190.petcafe.ui.ActivityBase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
