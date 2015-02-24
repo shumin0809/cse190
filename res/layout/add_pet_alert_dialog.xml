@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout
+        android:minWidth="35dp"
+        android:minHeight="35dp"
+        android:layout_width="fill_parent"
+        android:layout_height="400dp"
+        android:id="@+id/relativeLayout1">
+        
+        <EditText
+            android:id="@+id/petNameInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petNameLabel"
+            android:layout_toRightOf="@+id/petNameLabel"
+            android:layout_alignParentTop="true"
+            android:ems="10"
+        	android:inputType="text"
+        	android:hint="@string/addPetDialogPetNameHint"
+            />
+
+        <TextView
+            android:id="@+id/petNameLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petNameInput"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/addPetDialogPetName"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <EditText
+            android:id="@+id/petSpeciesInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petSpeciesLabel"
+            android:layout_toRightOf="@+id/petSpeciesLabel"
+            android:layout_below="@+id/petNameInput"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/addPetDialogPetSpeciesHint"
+            />
+        
+        <TextView
+            android:id="@+id/petSpeciesLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petSpeciesInput"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/addPetDialogPetSpecies"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+        <EditText
+            android:id="@+id/petBreedInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petBreedLabel"
+            android:layout_toRightOf="@+id/petBreedLabel"
+            android:layout_below="@+id/petSpeciesInput"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/addPetDialogPetBreedHint"
+            />
+        
+        <TextView
+            android:id="@+id/petBreedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petBreedInput"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/addPetDialogPetBreed"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+		<EditText
+            android:id="@+id/petGenderInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petGenderLabel"
+            android:layout_toRightOf="@+id/petGenderLabel"
+            android:layout_below="@+id/petBreedInput"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/addPetDialogPetGenderHint"
+            />
+        
+        <TextView
+            android:id="@+id/petGenderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petGenderInput"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/addPetDialogPetGender"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+        
+		<EditText
+            android:id="@+id/petAgeInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petAgeLabel"
+            android:layout_toRightOf="@+id/petAgeLabel"
+            android:layout_below="@+id/petGenderInput"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/addPetDialogPetAgeHint"
+            />
+        
+        <TextView
+            android:id="@+id/petAgeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petAgeInput"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/addPetDialogPetAge"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <EditText
+            android:id="@+id/petDescriptionInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petDescriptionLabel"
+            android:layout_toRightOf="@+id/petDescriptionLabel"
+            android:layout_below="@+id/petAgeInput"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:hint="@string/addPetDialogDescriptionHint" />
+        
+       <TextView
+            android:id="@+id/petDescriptionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/petDescriptionInput"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:text="@string/addPetDialogDescription"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
+
+</LinearLayout>

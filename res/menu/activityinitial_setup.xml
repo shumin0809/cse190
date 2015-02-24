@@ -1,0 +1,16 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.cse190.petcafe.ActivityinitialSetup" >
+
+    <item
+        android:id="@+id/done_button"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/doneButtonLabel"/>
+    <item
+        android:id="@+id/skip_button"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        android:title="@string/skipButtonLabel"/>
+
+</menu>
