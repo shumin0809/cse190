@@ -16,8 +16,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.cse190.petcafe.R;
-import com.cse190.petcafe.R.id;
-import com.cse190.petcafe.R.layout;
 import com.cse190.petcafe.adapter.ListViewAdapter;
 
 public class PostListFragment
@@ -30,10 +28,27 @@ public class PostListFragment
 
     private int mPosition;
 
+    /**
+     * @param position the tab position on the main post page
+     * @return Fragment of a post list of a type
+     */
     public static Fragment newInstance(int position) {
         PostListFragment f = new PostListFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
+        f.setArguments(b);
+        return f;
+    }
+
+    /**
+     * @return Fragment of a post list from search result
+     */
+    public static Fragment newInstance(String searchText, String tag, String type) {
+        PostListFragment f = new PostListFragment();
+        Bundle b = new Bundle();
+        b.putString("title", searchText);
+        b.putString("tag", tag);
+        b.putString("type", type);
         f.setArguments(b);
         return f;
     }
@@ -48,6 +63,7 @@ public class PostListFragment
         mListItems = new ArrayList<ListViewItem>();
         Resources resources = getResources();
 
+        //JSONArray postsArr =
         //for (int i = 1; i <= 100; i++) {
         //mListItems.add(i + ". item - currnet page: " + (mPosition + 1));
         // }
