@@ -361,7 +361,7 @@ public class ActivityBlog extends ActionBarActivity
         @Override
         public Fragment getItem(int position) {
             ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) PostListFragment
-                    .newInstance(position);
+                    .newInstance(PostListFragment.TABBED_POSTS, position);
 
             mScrollTabHolders.put(position, fragment);
             if (mListener != null) {
