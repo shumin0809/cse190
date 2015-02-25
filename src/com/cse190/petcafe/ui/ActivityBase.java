@@ -57,34 +57,29 @@ public class ActivityBase extends ActionBarActivity {
         // New Post Menu Item
         newpost = (ImageView) findViewById(R.id.new_post);
         newpost.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 Intent newPostIntent = new Intent(ActivityBase.this, ActivityNewPost.class);
                 startActivity(newPostIntent);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
             }
         });
 
-
         // Navigation Drawer
-
         mDrawerLayout = (DrawerLayout) findViewById(R.id.my_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
         mDrawerView = (LinearLayout) findViewById(R.id.drawer);
-        ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[7];
-        drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_launcher, "Blogs");
-        drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_launcher, "Profile");
-        drawerItem[2] = new ObjectDrawerItem(R.drawable.ic_launcher, "My Blog");
-        drawerItem[3] = new ObjectDrawerItem(R.drawable.ic_launcher, "New Post");
-        drawerItem[4] = new ObjectDrawerItem(R.drawable.ic_launcher, "Search Posts");
-        drawerItem[5] = new ObjectDrawerItem(R.drawable.ic_launcher,
-                "My Friends");
-        drawerItem[6] = new ObjectDrawerItem(R.drawable.ic_launcher,
-                "Find Friends");
+
+        String [] drawerItemNames = {
+                "Blogs", "Profile", "My Blog", "New Post", "Search Posts",
+                "My Friends", "Find Friends"};
+
+        ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[drawerItemNames.length];
+        for (int i = 0; i < drawerItemNames.length; ++i) {
+            drawerItem[i] = new ObjectDrawerItem(R.drawable.ic_launcher, drawerItemNames[i]);
+        }
 
         DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
                 R.layout.listitem_drawer, drawerItem);
@@ -94,11 +89,8 @@ public class ActivityBase extends ActionBarActivity {
     }
 
     /*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
+     * @Override public boolean onCreateOptionsMenu(Menu menu) {
+     * getMenuInflater().inflate(R.menu.toolbar_menu, menu); return true; }
      */
 
     @Override
@@ -106,13 +98,11 @@ public class ActivityBase extends ActionBarActivity {
         Intent intent = null;
         switch (item.getItemId()) {
         case R.id.new_post:
-            intent = new Intent(ActivityBase.this,
-                    ActivityNewPost.class);
+            intent = new Intent(ActivityBase.this, ActivityNewPost.class);
             startActivity(intent);
             return true;
         case R.id.action_settings:
-            Toast.makeText(ActivityBase.this, "Settings",
-                    Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityBase.this, "Settings", Toast.LENGTH_SHORT).show();
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -155,15 +145,12 @@ public class ActivityBase extends ActionBarActivity {
         mDrawerLayout.closeDrawer(mDrawerView);
     }
 
-
     private class DrawerItemClickListener implements
-    ListView.OnItemClickListener {
+            ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view, int position,
                 long id) {
             selectItem(position);
         }
     }
-
-
 }

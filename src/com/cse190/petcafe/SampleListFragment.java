@@ -48,66 +48,6 @@ OnScrollListener {
 
         //for (int i = 1; i <= 100; i++) {
         //mListItems.add(i + ". item - currnet page: " + (mPosition + 1));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_1836), getString(R.string.dog),
-                getString(R.string.dog_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
-        mListItems.add(new ListViewItem(resources
-                .getDrawable(R.drawable.noun_2015), getString(R.string.cat),
-                getString(R.string.cat_description)));
         // }
         // setListAdapter(new ListViewAdapter(getActivity(), mListItems));
     }

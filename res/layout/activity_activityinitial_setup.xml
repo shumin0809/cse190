@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.cse190.petcafe.ActivityinitialSetup" >
+
+    <TextView
+        android:id="@+id/firstLanguageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="@string/initialSetupFirstLanguage"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/firstLanguageInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/firstLanguageLabel"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/initialSetupFirstLanguageHint"
+        />
+
+    <TextView
+        android:id="@+id/secondLanguageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/firstLanguageInput"
+        android:text="@string/initialSetupSecondLanguage"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <EditText
+        android:id="@+id/secondLanguageInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/secondLanguageLabel"
+        android:ems="10" 
+        android:inputType="text"
+        android:hint="@string/initialSetupSecondLanguageHint"
+        />
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/secondLanguageInput"
+        android:text="@string/initialSetupStatus"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+   <EditText
+        android:id="@+id/statusInput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/statusLabel"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="@string/initialSetupStatusHint" />
+
+   <Button
+       android:id="@+id/addPetButton"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentLeft="true"
+       android:layout_below="@+id/statusInput"
+       android:text="@string/initialSetupAddPet" />
+
+   <ListView
+       android:id="@+id/petList"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentLeft="true"
+       android:layout_below="@+id/addPetButton" >
+   </ListView>
+
+</RelativeLayout>

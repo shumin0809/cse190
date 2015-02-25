@@ -6,16 +6,15 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cse190.petcafe.MainActivity" 
-    android:background="#ffffff">
+    tools:context="com.cse190.petcafe.ui.ActivityChat" >
 
-    <com.facebook.widget.LoginButton
-        android:id="@+id/fbLoginButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        />
-
+  <ListView
+       android:id="@+id/chatLists"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_alignParentStart="true"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentTop="true" >
+   </ListView>
+   
 </RelativeLayout>
