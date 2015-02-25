@@ -2,10 +2,10 @@ package com.cse190.petcafe.adapter;
 
 import java.util.List;
 
-import com.cse190.petcafe.ListViewItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.R.id;
 import com.cse190.petcafe.R.layout;
+import com.cse190.petcafe.ui.ListViewItem;
 
 import android.content.Context;
 import android.view.LayoutInflater;

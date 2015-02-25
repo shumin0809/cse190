@@ -31,9 +31,6 @@ import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
-import com.cse190.petcafe.SampleListFragment;
-import com.cse190.petcafe.ScrollTabHolder;
-import com.cse190.petcafe.ScrollTabHolderFragment;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 import com.flavienlaurent.notboringactionbar.AlphaForegroundColorSpan;
 import com.flavienlaurent.notboringactionbar.KenBurnsSupportView;
@@ -363,7 +360,7 @@ public class ActivityBlog extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
-            ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) SampleListFragment
+            ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) PostListFragment
                     .newInstance(position);
 
             mScrollTabHolders.put(position, fragment);

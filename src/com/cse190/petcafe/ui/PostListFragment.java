@@ -1,4 +1,4 @@
-package com.cse190.petcafe;
+package com.cse190.petcafe.ui;
 
 import java.util.ArrayList;
 
@@ -15,11 +15,13 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.cse190.petcafe.R;
+import com.cse190.petcafe.R.id;
+import com.cse190.petcafe.R.layout;
 import com.cse190.petcafe.adapter.ListViewAdapter;
-import com.cse190.petcafe.ui.ActivitySinglePost;
 
-public class SampleListFragment extends ScrollTabHolderFragment implements
-OnScrollListener {
+public class PostListFragment
+        extends ScrollTabHolderFragment implements OnScrollListener {
 
     private static final String ARG_POSITION = "position";
 
@@ -29,7 +31,7 @@ OnScrollListener {
     private int mPosition;
 
     public static Fragment newInstance(int position) {
-        SampleListFragment f = new SampleListFragment();
+        PostListFragment f = new PostListFragment();
         Bundle b = new Bundle();
         b.putInt(ARG_POSITION, position);
         f.setArguments(b);
