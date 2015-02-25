@@ -1,6 +1,7 @@
 package com.cse190.petcafe;
 
 public class PetInformation {
+	private String petID;
 	private String petName;
 	private String petSpecies;
 	private String petBreed;
@@ -74,6 +75,14 @@ public class PetInformation {
 
 	public void setPetOwnerFacebookID(String petOwnerFacebookID) {
 		this.petOwnerFacebookID = petOwnerFacebookID;
+	}
+
+	public String getPetID() {
+		return petID;
+	}
+
+	public void setPetID(String petID) {
+		this.petID = petID;
 	}
 }
 
