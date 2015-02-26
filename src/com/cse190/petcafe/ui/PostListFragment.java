@@ -126,11 +126,6 @@ public class PostListFragment
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                Log.e("item", "Now position:" + position);
-                // String itemValue = (String)
-                Object o = mListView.getItemAtPosition(position);
-                Log.e("mListView Object", o.toString());
-
                 switch (position) {
                 case 0:
                     break;
