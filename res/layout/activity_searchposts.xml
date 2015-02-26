@@ -1,34 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/act_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txt_search"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingTop="10dp"
-        android:text="Search Post:" />
+        android:layout_margin="20dp"
+        android:orientation="horizontal" >
 
-    <EditText
-        android:id="@+id/input"
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="14dp"
+            android:src="@drawable/noun_1836" />
+
+        <EditText
+            android:id="@+id/search_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/search_icon"
+            android:ems="10"
+            android:hint="Input a keyword"
+            android:inputType="textCapSentences"
+            android:paddingLeft="10dp" >
+
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_toRightOf="@id/search_input"
+            android:layout_alignParentRight="true"
+            android:text="!" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:ems="10"
-        android:inputType="textCapSentences" >
+        android:orientation="horizontal" >
 
-        <requestFocus />
-    </EditText>
+        <TextView
+            android:id="@+id/choose_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="14dp"
+            android:gravity="center_vertical"
+            android:text="Choose a type:"
+            android:textColor="#FFA375"
+            android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/search_spinner_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/choose_type" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Search" />
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/choose_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="14dp"
+            android:layout_toRightOf="@id/search_spinner_type"
+            android:gravity="center_vertical"
+            android:text="Choose a tag:"
+            android:textColor="#FFA375"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/search_spinner_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/choose_tag" />
+    </LinearLayout>
+>
 
 </LinearLayout>
