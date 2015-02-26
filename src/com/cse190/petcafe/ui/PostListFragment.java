@@ -60,6 +60,7 @@ public class PostListFragment
     private ListView mListView;
     private ArrayList<ListViewItem> mListItems;
 
+    private View mLoadingIcon;
     private int mPosition;
     private int mPostListType;
     private String [] mRequestArgs;
@@ -102,7 +103,6 @@ public class PostListFragment
         mOffset = 0;
         mListItems = new ArrayList<ListViewItem>();
 
-        new GetPostListTask().execute(mPostListType, mRequestArgs);
         //setListAdapter(new ListViewAdapter(getActivity(), mListItems));
     }
 
@@ -137,6 +137,10 @@ public class PostListFragment
                 }
             }
         });
+
+        mLoadingIcon = v.findViewById(R.id.loadingPanel);
+        new GetPostListTask().execute(mPostListType, mRequestArgs);
+
         return v;
     }
 
@@ -176,6 +180,11 @@ public class PostListFragment
     private class GetPostListTask extends AsyncTask<Object, Void, JSONArray> {
 
         @Override
+        protected void onPreExecute () {
+            mLoadingIcon.setVisibility(View.VISIBLE);
+        }
+
+        @Override
         protected JSONArray doInBackground(Object... params) {
             int arrIndex = 0;
             JSONArray postArr = null;
@@ -209,6 +218,7 @@ public class PostListFragment
         @Override
         protected void onPostExecute (JSONArray postArr) {
             updatePostList(postArr);   // update UI
+            mLoadingIcon.setVisibility(View.GONE);
         }
     }
 
