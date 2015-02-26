@@ -25,7 +25,7 @@
         <item>Chats</item>
     </string-array>
     
-        <string-array name="posttype_arrays">
+	<string-array name="posttype_arrays">
         <item>Stories</item>
         <item>Tips</item>
         <item>News</item>
@@ -41,6 +41,14 @@
         <item>@drawable/ic_wiki</item>
         <item>@drawable/ic_wiki</item>
         <item>@drawable/ic_wiki</item>
+    </array>
+    
+    <array name="petSpecies">
+        <item>Dog</item>
+        <item>Cat</item>
+        <item>Pig</item>
+        <item>Rabbit</item>
+        <item>Other</item>
     </array>
 
     <!-- Content Description -->

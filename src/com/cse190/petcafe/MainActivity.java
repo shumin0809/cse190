@@ -38,6 +38,7 @@ import com.quickblox.users.model.QBUser;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -63,6 +64,8 @@ public class MainActivity extends Activity {
     
     private ArrayList<String> fbFriendUIDs;
     private HashMap<String, String> fbFriendNamesWUIDs;
+    
+    private ProgressDialog progressBar;
 	
 	private static final List<String> PERMISSIONS = Arrays.asList("publish_actions");
 	
@@ -70,6 +73,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progressBar = new ProgressDialog(this);
 
     	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
     	firstInstall = false;
@@ -103,6 +107,11 @@ public class MainActivity extends Activity {
                 if (user != null) {
                 	Log.i(GlobalStrings.LOGTAG, "You are now logged in");
 //                	final GraphUser userToPass = user;
+                    progressBar.setMessage("Logging in...");
+                    progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressBar.setIndeterminate(true);
+                    progressBar.show();
+                    
                 	facebookUser = user;
                 	
                 	SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
@@ -200,32 +209,47 @@ public class MainActivity extends Activity {
 		qbUser.setFullName(facebookUser.getName());
 		
     	qbUser.setFacebookId(facebookUser.getId());
-    	QBUsers.signUp(qbUser, new QBEntityCallbackImpl<QBUser>()
-    	{
-    		@Override
-    		public void onSuccess(QBUser user, Bundle args)
-    		{
-    			Log.i(GlobalStrings.LOGTAG, "Successfully added user to quickblox");
-    			signInUserToQuickblox();
-    	    	/*((ApplicationSingleton)getApplication()).setCurrentUser(user);
-    	        QBUser qbUser = new QBUser();
-    	        
-    	        qbUser.setId(user.getId());
-    	        qbUser.setLogin(facebookUser.getId());
-    	        qbUser.setPassword(GlobalStrings.USER_PASSWORD);
-    	        
-            	checkChatServiceStatus(qbUser);
-            	
-    	    	getAllFriendUsers();
-    			goToBlog();8*/
-    		}
-    		
-    		@Override
-    		public void onError(List<String> errors)
-    		{
-    			Log.e(GlobalStrings.LOGTAG, "Something went horribly wrong!");
-    		}
-    	});
+    	
+		boolean isUserOnQuickblox = false;
+		try {
+			isUserOnQuickblox = new ValidateUserOnQuickblox().execute(username).get();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (!isUserOnQuickblox)
+		{
+	    	QBUsers.signUp(qbUser, new QBEntityCallbackImpl<QBUser>()
+	    	{
+	    		@Override
+	    		public void onSuccess(QBUser user, Bundle args)
+	    		{
+	    			Log.i(GlobalStrings.LOGTAG, "Successfully added user to quickblox");
+	    			signInUserToQuickblox();
+	    	    	/*((ApplicationSingleton)getApplication()).setCurrentUser(user);
+	    	        QBUser qbUser = new QBUser();
+	    	        
+	    	        qbUser.setId(user.getId());
+	    	        qbUser.setLogin(facebookUser.getId());
+	    	        qbUser.setPassword(GlobalStrings.USER_PASSWORD);
+	    	        
+	            	checkChatServiceStatus(qbUser);
+	            	
+	    	    	getAllFriendUsers();
+	    			goToBlog();8*/
+	    		}
+	    		
+	    		@Override
+	    		public void onError(List<String> errors)
+	    		{
+	    			Log.e(GlobalStrings.LOGTAG, "Something went horribly wrong!");
+	    		}
+	    	});
+		}
+		else
+		{
+			signInUserToQuickblox();
+		}
     }
     
     private void signInUserToQuickblox()
@@ -252,7 +276,6 @@ public class MainActivity extends Activity {
 	            	checkChatServiceStatus(qbUser);
 	            	
 	    	    	getAllFriendUsers();
-	    			goToBlog();
     	    	//}
     			
     			Log.i(GlobalStrings.LOGTAG, "Successfully signed into quickblox");
@@ -309,6 +332,7 @@ public class MainActivity extends Activity {
     	
 		try {
 			chatFriendsList = new RetrieveFacebookFriends().execute("").get();
+	        getAllChatDialogs();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -318,6 +342,55 @@ public class MainActivity extends Activity {
         	((ApplicationSingleton)getApplication()).setFriendUsers(chatFriendsList);
     }
     
+    private void getAllChatDialogs()
+    {
+        QBRequestGetBuilder builder = new QBRequestGetBuilder();
+        builder.setPagesLimit(100);
+        
+        QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
+        {
+            @Override
+            public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
+            {
+                List<Integer> userIDs = new ArrayList<Integer>();
+                for (QBDialog dialog : dialogs)
+                {
+                    userIDs.addAll(dialog.getOccupants());
+                }
+                
+                QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();
+                requestBuilder.setPage(1);
+                requestBuilder.setPerPage(userIDs.size());
+                //
+                QBUsers.getUsersByIDs(userIDs, requestBuilder, new QBEntityCallbackImpl<ArrayList<QBUser>>() {
+                    @Override
+                    public void onSuccess(ArrayList<QBUser> users, Bundle params) {
+
+                        ((ApplicationSingleton)getApplication()).setDialogsUsers(users);
+            			goToBlog();
+                        // build list view
+                        //
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                        dialog.setMessage("get occupants errors: " + errors).create().show();
+                    }
+
+                });
+            }
+            
+            @Override
+            public void onError(List<String> errors)
+            {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                dialog.setMessage("get dialogs errors: " + errors).create().show();
+            }
+        });
+    }
+
+    
     private void goToBlog()
     {
     	Intent i = null;
@@ -326,6 +399,7 @@ public class MainActivity extends Activity {
     	else
     		i = new Intent(this, ActivityBlog.class);
     	startActivity(i);
+    	progressBar.dismiss();
     	finish();
     }
     
@@ -395,7 +469,6 @@ public class MainActivity extends Activity {
     
     private class RetrieveFacebookFriends extends AsyncTask<String, Void, List<QBUser>>
     {
-
 		@Override
 		protected List<QBUser> doInBackground(String... params) {
 	        QBPagedRequestBuilder requestBuilder = null;
@@ -411,8 +484,26 @@ public class MainActivity extends Activity {
 					e.printStackTrace();
 				}
 	        }
-			
 			return chatFriendsList;
+		}
+    }
+    
+    private class ValidateUserOnQuickblox extends AsyncTask<String, Void, Boolean>
+    {
+
+		@Override
+		protected Boolean doInBackground(String... params) {
+			String username = params[0];
+			QBUser user = null;
+			try {
+				user = QBUsers.getUserByFacebookId(username);
+			} catch (QBResponseException e) {
+				e.printStackTrace();
+			}
+			if (user == null)
+				return false;
+			else
+				return true;
 		}
     }
 }

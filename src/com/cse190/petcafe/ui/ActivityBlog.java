@@ -162,58 +162,7 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 
 		mDrawerList.setAdapter(adapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        getAllChatDialogs();
-
 	}
-
-        private void getAllChatDialogs()
-    {
-        QBRequestGetBuilder builder = new QBRequestGetBuilder();
-        builder.setPagesLimit(100);
-        
-        QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
-        {
-            @Override
-            public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
-            {
-                List<Integer> userIDs = new ArrayList<Integer>();
-                for (QBDialog dialog : dialogs)
-                {
-                    userIDs.addAll(dialog.getOccupants());
-                }
-                
-                QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();
-                requestBuilder.setPage(1);
-                requestBuilder.setPerPage(userIDs.size());
-                //
-                QBUsers.getUsersByIDs(userIDs, requestBuilder, new QBEntityCallbackImpl<ArrayList<QBUser>>() {
-                    @Override
-                    public void onSuccess(ArrayList<QBUser> users, Bundle params) {
-
-                        ((ApplicationSingleton)getApplication()).setDialogsUsers(users);
-
-                        // build list view
-                        //
-                    }
-
-                    @Override
-                    public void onError(List<String> errors) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityBlog.this);
-                        dialog.setMessage("get occupants errors: " + errors).create().show();
-                    }
-
-                });
-            }
-            
-            @Override
-            public void onError(List<String> errors)
-            {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityBlog.this);
-                dialog.setMessage("get dialogs errors: " + errors).create().show();
-            }
-        });
-    }
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {

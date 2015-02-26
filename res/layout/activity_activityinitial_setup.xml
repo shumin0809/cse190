@@ -6,8 +6,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cse190.petcafe.ActivityinitialSetup" >
-
+    tools:context="com.cse190.petcafe.ActivityinitialSetup"
+    android:background="#fff8f5" >
+    
+<!--  TODO: Add user name and user profile picture at the top of the this page
+	Add transition buttons "Done" and "Skip"
+	For add pet, add drop downs for Gender & Species. Species options
+	should already be in the string resource -->
+	
     <TextView
         android:id="@+id/firstLanguageLabel"
         android:layout_width="wrap_content"
