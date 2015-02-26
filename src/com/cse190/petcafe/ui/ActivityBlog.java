@@ -16,6 +16,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -29,6 +30,7 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
@@ -87,7 +89,7 @@ public class ActivityBlog extends ActionBarActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_blog);
 
         // Paging Slider Strip
         mMinHeaderHeight = getResources().getDimensionPixelSize(
@@ -103,9 +105,10 @@ public class ActivityBlog extends ActionBarActivity
 
         mHeaderPicture = (KenBurnsSupportView) findViewById(R.id.header_picture);
         mHeaderPicture.setResourceIds(R.drawable.pic0, R.drawable.pic1);
+
         mHeaderLogo = (ImageView) findViewById(R.id.header_logo);
         mHeader = findViewById(R.id.header);
-        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setOffscreenPageLimit(4);
 
@@ -113,11 +116,11 @@ public class ActivityBlog extends ActionBarActivity
         mPagerAdapter.setTabHolderScrollingContent(this);
         mViewPager.setAdapter(mPagerAdapter);
 
+        mPagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
         mPagerSlidingTabStrip.setOnPageChangeListener(this);
 
-        mSpannableString = new SpannableString(
-                getString(R.string.actionbar_title));
+        mSpannableString = new SpannableString(getString(R.string.actionbar_title));
         mAlphaForegroundColorSpan = new AlphaForegroundColorSpan(0xffffffff);
         ViewHelper.setAlpha(getActionBarIconView(), 0f);
 
@@ -129,9 +132,8 @@ public class ActivityBlog extends ActionBarActivity
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerView = (LinearLayout) findViewById(R.id.drawer);
 
-        String [] drawerItemNames = {
-                "Blogs", "Profile", "My Blog", "New Post", "Search Posts",
-                "My Friends", "Find Friends"};
+        String [] drawerItemNames = {"Blogs", "Profile", "My Blog", "New Post",
+                "Search Posts", "My Friends", "Find Friends"};
 
         ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[drawerItemNames.length];
         for (int i = 0; i < drawerItemNames.length; ++i) {
@@ -169,6 +171,9 @@ public class ActivityBlog extends ActionBarActivity
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
             int visibleItemCount, int totalItemCount, int pagePosition) {
+        Log.e("ActivityBlog", "onScroll");
+        Log.e("pagePosition", pagePosition+"");
+        Log.e("mViewPager.getCurrentItem()", mViewPager.getCurrentItem()+"");
         if (mViewPager.getCurrentItem() == pagePosition) {
             int scrollY = getScrollY(view);
             ViewHelper.setTranslationY(mHeader,
@@ -329,12 +334,11 @@ public class ActivityBlog extends ActionBarActivity
         }
     }
 
-    public class PagerAdapter extends FragmentPagerAdapter implements
-    IconTabProvider {
+    public class PagerAdapter
+            extends FragmentPagerAdapter implements IconTabProvider {
 
         private SparseArrayCompat<ScrollTabHolder> mScrollTabHolders;
-        private final String[] TITLES = { "Stories", "Experience", "News",
-        "Wiki" };
+        private final String[] TITLES = { "Stories", "Tips", "News", "Wiki" };
         private int[] resources = { R.drawable.ic_stories, R.drawable.ic_tips,
                 R.drawable.ic_news, R.drawable.ic_wiki };
         private ScrollTabHolder mListener;
@@ -360,6 +364,8 @@ public class ActivityBlog extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
+            Log.e("PagerAdapter", "getItem");
+            Log.e("PagerAdapter pos", ""+position);
             ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) PostListFragment
                     .newInstance(PostListFragment.TABBED_POSTS, position);
 
