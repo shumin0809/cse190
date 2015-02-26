@@ -22,83 +22,32 @@ import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 
 public class ActivityBase extends ActionBarActivity {
 
-    private final int ACTIVITY_BLOG = 0;
-    private final int ACTIVITY_PROFILE = 1;
-    private final int ACTIVITY_MYBLOG = 2;
-    private final int ACTIVITY_NEWPOST = 3;
-    private final int ACTIVITY_SEARCHPOSTS = 4;
-    private final int ACTIVITY_MYFRIENDS = 5;
-    private final int ACTIVITY_FINDFRIENDS = 6;
+    private static final int ACTIVITY_BLOG        = 0;
+    private static final int ACTIVITY_PROFILE     = 1;
+    private static final int ACTIVITY_MYBLOG      = 2;
+    private static final int ACTIVITY_SEARCHPOSTS = 3;
+    private static final int ACTIVITY_MYFRIENDS   = 4;
+    private static final int ACTIVITY_FINDFRIENDS = 5;
 
-    public String[] mDrawerTitles;
-    public DrawerLayout mDrawerLayout;
-    public ListView mDrawerList;
-    public LinearLayout mDrawerView;
-    public CharSequence mTitle;
-    public ActionBarDrawerToggle mDrawerToggle;
-    public Toolbar toolbar;
-    public ImageView newpost;
+    private Intent mPendingIntent;
+
+    private String[] mDrawerTitles;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private LinearLayout mDrawerView;
+    private CharSequence mTitle;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
 
-    private Intent mPendingIntent;
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
-        // Action Bar Toolbar
-        toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setLogo(R.drawable.ic_launcher);
-        // Disables title
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // New Post Menu Item
-        newpost = (ImageView) findViewById(R.id.new_post);
-        newpost.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                Intent newPostIntent = new Intent(ActivityBase.this, ActivityNewPost.class);
-                startActivity(newPostIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-            }
-        });
-
-        // Navigation Drawer
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.my_drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-        mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
-        mDrawerView = (LinearLayout) findViewById(R.id.drawer);
-
-        String [] drawerItemNames = {
-                "Blogs", "Profile", "My Blog", "New Post", "Search Posts",
-                "My Friends", "Find Friends"};
-
-        ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[drawerItemNames.length];
-        for (int i = 0; i < drawerItemNames.length; ++i) {
-            drawerItem[i] = new ObjectDrawerItem(R.drawable.ic_launcher, drawerItemNames[i]);
-        }
-
-        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
-                R.layout.listitem_drawer, drawerItem);
-
-        mDrawerList.setAdapter(adapter);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View view) {
-                if (mPendingIntent != null) {
-                    startActivity(mPendingIntent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupActionBar();
+        setupNewPostMenu();
+        setupNavDrawer();
     }
 
     /*
@@ -138,9 +87,6 @@ public class ActivityBase extends ActionBarActivity {
         case ACTIVITY_MYBLOG:
             mPendingIntent = new Intent(this, ActivityMyBlog.class);
             break;
-        case ACTIVITY_NEWPOST:
-            mPendingIntent = new Intent(this, ActivityNewPost.class);
-            break;
         case ACTIVITY_SEARCHPOSTS:
             mPendingIntent = new Intent(this, ActivitySearchPosts.class);
             break;
@@ -154,12 +100,65 @@ public class ActivityBase extends ActionBarActivity {
         }
     }
 
-    private class DrawerItemClickListener implements
+    protected class DrawerItemClickListener implements
             ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView parent, View view, int position,
-                long id) {
+        public void onItemClick(AdapterView parent,
+                View view, int position, long id) {
             selectItem(position);
         }
+    }
+
+    void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setLogo(R.drawable.ic_launcher);
+        // Disables title
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    void setupNewPostMenu () {
+        ImageView newpost = (ImageView) findViewById(R.id.new_post);
+        newpost.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent newPostIntent = new Intent(ActivityBase.this,
+                        ActivityNewPost.class);
+                startActivity(newPostIntent);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        });
+    }
+
+    void setupNavDrawer() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.my_drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
+        mDrawerView = (LinearLayout) findViewById(R.id.drawer);
+
+        ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[mDrawerTitles.length];
+        for (int i = 0; i < mDrawerTitles.length; ++i) {
+            drawerItem[i] = new ObjectDrawerItem(R.drawable.ic_launcher,
+                    mDrawerTitles[i]);
+        }
+
+        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
+                R.layout.listitem_drawer, drawerItem);
+
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open,
+                R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View view) {
+                if (mPendingIntent != null) {
+                    startActivity(mPendingIntent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 }
