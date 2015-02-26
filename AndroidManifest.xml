@@ -34,26 +34,33 @@
             android:noHistory="true" />
         <activity
             android:name=".ui.ActivityFindFriends"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.ActivityProfile"
             android:noHistory="true" />
         <activity
             android:name=".ui.ActivityMyFriends"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.ActivitySearchPosts"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.ActivityMyFriendsPosts"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.ActivityViewPost"
             android:label="@string/title_activity_activity_viewpost" />
         <activity
             android:name=".ui.ActivityMyBlog"
-            android:label="@string/title_activity_activity_my_blog" />
-        <activity android:name=".ui.ActivityBlog" />
+            android:label="@string/title_activity_activity_my_blog"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".ui.ActivityBlog"
+            android:launchMode="singleTask" />
         <activity
             android:name="com.facebook.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
