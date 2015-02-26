@@ -43,7 +43,7 @@
         <item>@drawable/ic_wiki</item>
     </array>
 
-    <string name="title_activity_activity_single_post">ActivitySinglePost</string>
+    <string name="title_activity_activity_viewpost">ActivityViewPost</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_activity_my_blog">ActivityMyBlog</string>
 

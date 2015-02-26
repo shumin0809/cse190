@@ -30,7 +30,6 @@ import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.Petcafe_api;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.ListViewAdapter;
-import com.quickblox.users.model.QBUser;
 
 public class PostListFragment
         extends ScrollTabHolderFragment implements OnScrollListener {
@@ -130,7 +129,7 @@ public class PostListFragment
                 case 0:
                     break;
                 default:
-                    Intent intent = new Intent(getActivity(), ActivitySinglePost.class);
+                    Intent intent = new Intent(getActivity(), ActivityViewPost.class);
                     try {
                         // bundle containg post info
                         Bundle b = new Bundle();

@@ -284,7 +284,8 @@ public class ActivityBlog extends ActionBarActivity
         Intent intent = null;
         switch (position) {
         case ACTIVITY_BLOG:
-            // self, ignore
+            // self
+            intent = new Intent(this, ActivityBlog.class);
             break;
         case ACTIVITY_PROFILE:
             intent = new Intent(this, ActivityProfile.class);

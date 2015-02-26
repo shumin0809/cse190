@@ -114,7 +114,7 @@ public class ActivityBase extends ActionBarActivity {
         Intent intent = null;
         switch (position) {
         case ACTIVITY_BLOG:
-            intent = new Intent(this, MainActivity.class);
+            intent = new Intent(this, ActivityBlog.class);
             break;
         case ACTIVITY_PROFILE:
             intent = new Intent(this, ActivityProfile.class);

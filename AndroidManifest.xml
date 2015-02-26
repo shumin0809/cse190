@@ -48,8 +48,8 @@
             android:name=".ui.ActivityMyFriendsPosts"
             android:noHistory="true" />
         <activity
-            android:name=".ui.ActivitySinglePost"
-            android:label="@string/title_activity_activity_single_post" />
+            android:name=".ui.ActivityViewPost"
+            android:label="@string/title_activity_activity_viewpost" />
         <activity
             android:name=".ui.ActivityMyBlog"
             android:label="@string/title_activity_activity_my_blog" />

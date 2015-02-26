@@ -15,9 +15,10 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.R;
 
-public class ActivitySinglePost extends ActivityBase {
+public class ActivityViewPost extends ActivityBase {
 
     public static final Map<String, Integer> BKGRND_RES;
     static {
@@ -34,7 +35,7 @@ public class ActivitySinglePost extends ActivityBase {
         super.onCreate(savedInstanceState);
 
         ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_single_post, content, true);
+        getLayoutInflater().inflate(R.layout.activity_viewpost, content, true);
 
         // receive the arguments from the previous Activity
         Bundle extras = getIntent().getBundleExtra(PostListFragment.KEY_POST);
