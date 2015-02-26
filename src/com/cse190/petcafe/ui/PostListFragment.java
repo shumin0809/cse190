@@ -9,7 +9,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -24,8 +23,8 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.Petcafe_api;
 import com.cse190.petcafe.R;
@@ -69,8 +68,6 @@ public class PostListFragment
     private int mOffset;
     private JSONArray mPostJArr;
     private ListViewAdapter mPostListAdapter;
-
-    private ProgressDialog mProgressDialog;
 
     /**
      * @param position
@@ -182,12 +179,6 @@ public class PostListFragment
     private class GetPostListTask extends AsyncTask<Object, Void, JSONArray> {
 
         @Override
-        protected void onPreExecute() {
-            // start spinning icon
-            mProgressDialog = ProgressDialog.show(getActivity(), "Loading", "Wait...");
-        }
-
-        @Override
         protected JSONArray doInBackground(Object... params) {
             Log.e("PostListAsync", "doInBackground");
             int arrIndex = 0;
@@ -222,7 +213,6 @@ public class PostListFragment
         @Override
         protected void onPostExecute (JSONArray postArr) {
             Log.e("GetPostAsync", "onPostExecute");
-            mProgressDialog.dismiss(); // turn off spinning icon
             updatePostList(postArr);   // update UI
         }
     }
@@ -231,7 +221,11 @@ public class PostListFragment
     // Helper Functions
     // -----------------------------------------------------------
     private void updatePostList(JSONArray postArr) {
-        if (postArr == null) return;
+        if (postArr == null) {
+            Toast.makeText(getActivity(), "Network error! Please check your connection.",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
         // store post information
         mPostJArr = postArr;
         // fill up UI list
@@ -243,8 +237,8 @@ public class PostListFragment
                 Drawable petIconRes = resources.getDrawable(
                         POST_RESOURCES.get(postObj.getString("tag")));
                 String title = postObj.getString("title");
-                String body = postObj.getString("body").substring(0, 150) + "...";
-
+                String body = postObj.getString("body");
+                body = body.substring(0, Math.min(body.length(), 150)) + "...";
                 mListItems.add(new ListViewItem(petIconRes, title, body));
             } catch (JSONException e) {
                 Log.e(GlobalStrings.LOGTAG, e.toString());
