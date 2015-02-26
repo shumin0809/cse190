@@ -96,7 +96,7 @@ public class ActivityBlog extends ActionBarActivity
                 R.dimen.min_header_height);
         mHeaderHeight = getResources().getDimensionPixelSize(
                 R.dimen.header_height);
-        mMinHeaderTranslation = -mMinHeaderHeight + getActionBarHeight();
+        mMinHeaderTranslation = (int) (-mMinHeaderHeight + getActionBarHeight() * 1.5);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -171,19 +171,15 @@ public class ActivityBlog extends ActionBarActivity
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem,
             int visibleItemCount, int totalItemCount, int pagePosition) {
-        Log.e("ActivityBlog", "onScroll");
-        Log.e("pagePosition", pagePosition+"");
-        Log.e("mViewPager.getCurrentItem()", mViewPager.getCurrentItem()+"");
-        if (mViewPager.getCurrentItem() == pagePosition) {
-            int scrollY = getScrollY(view);
-            ViewHelper.setTranslationY(mHeader,
-                    Math.max(-scrollY, mMinHeaderTranslation));
-            float ratio = clamp(ViewHelper.getTranslationY(mHeader)
-                    / mMinHeaderTranslation, 0.0f, 1.0f);
-            interpolate(mHeaderLogo, getActionBarIconView(),
-                    sSmoothInterpolator.getInterpolation(ratio));
-            setTitleAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
-        }
+
+        int scrollY = getScrollY(view);
+        ViewHelper.setTranslationY(mHeader,
+                Math.max(-scrollY, mMinHeaderTranslation));
+        float ratio = clamp(ViewHelper.getTranslationY(mHeader)
+                / mMinHeaderTranslation, 0.0f, 1.0f);
+        interpolate(mHeaderLogo, getActionBarIconView(),
+                sSmoothInterpolator.getInterpolation(ratio));
+        setTitleAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
     }
 
     @Override
@@ -328,8 +324,8 @@ public class ActivityBlog extends ActionBarActivity
     private class DrawerItemClickListener implements
     ListView.OnItemClickListener {
         @Override
-        public void onItemClick(AdapterView parent, View view, int position,
-                long id) {
+        public void onItemClick(AdapterView parent, View view,
+                int position, long id) {
             selectItem(position);
         }
     }
@@ -364,8 +360,6 @@ public class ActivityBlog extends ActionBarActivity
 
         @Override
         public Fragment getItem(int position) {
-            Log.e("PagerAdapter", "getItem");
-            Log.e("PagerAdapter pos", ""+position);
             ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) PostListFragment
                     .newInstance(PostListFragment.TABBED_POSTS, position);
 
@@ -373,7 +367,6 @@ public class ActivityBlog extends ActionBarActivity
             if (mListener != null) {
                 fragment.setScrollTabHolder(mListener);
             }
-
             return fragment;
         }
 
@@ -383,9 +376,7 @@ public class ActivityBlog extends ActionBarActivity
 
         @Override
         public int getPageIconResId(int position) {
-
             return resources[position];
         }
-
     }
 }

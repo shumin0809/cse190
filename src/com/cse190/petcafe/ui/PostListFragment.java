@@ -249,7 +249,7 @@ public class PostListFragment
                 Drawable petIconRes = resources.getDrawable(
                         POST_RESOURCES.get(postObj.getString("tag")));
                 String title = postObj.getString("title");
-                String body = postObj.getString("body").substring(0, 50) + "...";
+                String body = postObj.getString("body").substring(0, 150) + "...";
 
                 mListItems.add(new ListViewItem(petIconRes, title, body));
             } catch (JSONException e) {
