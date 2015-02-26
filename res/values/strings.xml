@@ -18,17 +18,18 @@
         <item>Blogs</item>
         <item>Profile</item>
         <item>My Blog</item>
-        <item>New Post</item>
         <item>Search Posts</item>
         <item>My Friends</item>
         <item>Find Friends</item>
         <item>Chats</item>
     </string-array>
-    <string-array name="posttype_arrays">
+
+    <string-array name="post_type_list">
         <item>Stories</item>
         <item>Tips</item>
         <item>News</item>
         <item>Wiki</item>
+        <item>All</item>
     </string-array>
 
     <!-- Nav Drawer List Item Icons -->

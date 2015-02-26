@@ -44,8 +44,6 @@ public class PostListFragment
     public static final String KEY_POSTLIST = "postlist";
     public static final String KEY_POST = "post";
 
-    public static final String [] POST_TYPES = {"Stories", "Tips", "News", "Wiki"};
-
     public static final Map<String, Integer> POST_RESOURCES;
     static {
         Map<String, Integer> resMap = new HashMap<String, Integer>();
@@ -74,11 +72,11 @@ public class PostListFragment
      *            the tab position on the main post page
      * @return Fragment of a post list of a type
      */
-    public static Fragment newInstance(int postListType, int position) {
+    public static Fragment newInstance(int postListType, String postType) {
         PostListFragment f = new PostListFragment();
         Bundle b = new Bundle();
         b.putInt(KEY_POST_TYPE, postListType);
-        b.putStringArray(KEY_POSTLIST, new String[]{POST_TYPES[position]});
+        b.putStringArray(KEY_POSTLIST, new String[]{postType});
         f.setArguments(b);
         return f;
     }
@@ -105,7 +103,6 @@ public class PostListFragment
         mListItems = new ArrayList<ListViewItem>();
 
         new GetPostListTask().execute(mPostListType, mRequestArgs);
-        Log.e("PostListFragment", "onCreate");
         //setListAdapter(new ListViewAdapter(getActivity(), mListItems));
     }
 
@@ -180,7 +177,6 @@ public class PostListFragment
 
         @Override
         protected JSONArray doInBackground(Object... params) {
-            Log.e("PostListAsync", "doInBackground");
             int arrIndex = 0;
             JSONArray postArr = null;
             int postListType = (Integer)params[arrIndex++];
@@ -212,7 +208,6 @@ public class PostListFragment
 
         @Override
         protected void onPostExecute (JSONArray postArr) {
-            Log.e("GetPostAsync", "onPostExecute");
             updatePostList(postArr);   // update UI
         }
     }

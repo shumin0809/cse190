@@ -1,26 +1,23 @@
 package com.cse190.petcafe.ui;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,14 +26,12 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
-import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
-import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 import com.flavienlaurent.notboringactionbar.AlphaForegroundColorSpan;
 import com.flavienlaurent.notboringactionbar.KenBurnsSupportView;
 import com.nineoldandroids.view.ViewHelper;
 
-public class ActivityBlog extends ActionBarActivity
+public class ActivityBlog extends ActivityBase
         implements ScrollTabHolder, ViewPager.OnPageChangeListener {
 
     private static AccelerateDecelerateInterpolator sSmoothInterpolator
@@ -66,27 +61,15 @@ public class ActivityBlog extends ActionBarActivity
     private TextView title;
     private ImageView icon;
 
-    private final int ACTIVITY_BLOG = 0;
-    private final int ACTIVITY_PROFILE = 1;
-    private final int ACTIVITY_MYBLOG = 2;
-    private final int ACTIVITY_NEWPOST = 3;
-    private final int ACTIVITY_SEARCHPOSTS = 4;
-    private final int ACTIVITY_MYFRIENDS = 5;
-    private final int ACTIVITY_FINDFRIENDS = 6;
-
     public String[] mDrawerTitles;
     public DrawerLayout mDrawerLayout;
     public ListView mDrawerList;
     public LinearLayout mDrawerView;
     public CharSequence mTitle;
-    public ActionBarDrawerToggle mDrawerToggle;
 
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
 
-    private Intent mPendingIntent;
-
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,38 +110,14 @@ public class ActivityBlog extends ActionBarActivity
 
         getSupportActionBar().setBackgroundDrawable(null);
 
-        // Navigation Drawer
-        mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerView = (LinearLayout) findViewById(R.id.drawer);
-
-        String [] drawerItemNames = {"Blogs", "Profile", "My Blog", "New Post",
-                "Search Posts", "My Friends", "Find Friends"};
-
-        ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[drawerItemNames.length];
-        for (int i = 0; i < drawerItemNames.length; ++i) {
-            drawerItem[i] = new ObjectDrawerItem(R.drawable.ic_launcher, drawerItemNames[i]);
-        }
-
-        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
-                R.layout.listitem_drawer, drawerItem);
-
-        mDrawerList.setAdapter(adapter);
-        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerClosed(View view) {
-                if (mPendingIntent != null) {
-                    startActivity(mPendingIntent);
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                }
-            }
-        };
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        setupNavDrawer();
     }
+
+    @Override
+    void setupNewPostMenu () {}
+
+    @Override
+    void setupActionBar() {}
 
     @Override
     public void onPageScrollStateChanged(int arg0) {
@@ -292,58 +251,16 @@ public class ActivityBlog extends ActionBarActivity
         return icon;
     }
 
-    private void selectItem(int position) {
-        // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
-        mDrawerList.setItemChecked(position, true);
-        setTitle(mDrawerTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerView);
-
-        switch (position) {
-        case ACTIVITY_BLOG:
-            // self
-            // intent = new Intent(this, ActivityBlog.class);
-            break;
-        case ACTIVITY_PROFILE:
-            mPendingIntent = new Intent(this, ActivityProfile.class);
-            break;
-        case ACTIVITY_MYBLOG:
-            mPendingIntent = new Intent(this, ActivityMyBlog.class);
-            break;
-        case ACTIVITY_NEWPOST:
-            mPendingIntent = new Intent(this, ActivityNewPost.class);
-            break;
-        case ACTIVITY_SEARCHPOSTS:
-            mPendingIntent = new Intent(this, ActivitySearchPosts.class);
-            break;
-        case ACTIVITY_MYFRIENDS:
-            mPendingIntent = new Intent(this, ActivityMyFriends.class);
-            break;
-        case ACTIVITY_FINDFRIENDS:
-            mPendingIntent = new Intent(this, ActivityFindFriends.class);
-            break;
-        default:
-        }
-    }
-
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-    }
-
-    private class DrawerItemClickListener
-        implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView parent, View view,
-                int position, long id) {
-            selectItem(position);
-        }
     }
 
     public class PagerAdapter
             extends FragmentPagerAdapter implements IconTabProvider {
 
         private SparseArrayCompat<ScrollTabHolder> mScrollTabHolders;
-        private final String[] TITLES = { "Stories", "Tips", "News", "Wiki" };
+        private final String[] TITLES = getResources().getStringArray(R.array.post_type_list);
         private int[] resources = { R.drawable.ic_stories, R.drawable.ic_tips,
                 R.drawable.ic_news, R.drawable.ic_wiki };
         private ScrollTabHolder mListener;
@@ -364,13 +281,13 @@ public class ActivityBlog extends ActionBarActivity
 
         @Override
         public int getCount() {
-            return TITLES.length;
+            return TITLES.length - 1;
         }
 
         @Override
         public Fragment getItem(int position) {
             ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) PostListFragment
-                    .newInstance(PostListFragment.TABBED_POSTS, position);
+                    .newInstance(PostListFragment.TABBED_POSTS, TITLES[position]);
 
             mScrollTabHolders.put(position, fragment);
             if (mListener != null) {
