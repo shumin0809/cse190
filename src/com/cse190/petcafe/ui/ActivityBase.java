@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
@@ -42,6 +41,8 @@ public class ActivityBase extends ActionBarActivity {
 
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
+
+    private Intent mPendingIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,18 @@ public class ActivityBase extends ActionBarActivity {
 
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View view) {
+                if (mPendingIntent != null) {
+                    startActivity(mPendingIntent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     /*
@@ -111,38 +124,34 @@ public class ActivityBase extends ActionBarActivity {
 
     private void selectItem(int position) {
         // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
-        Intent intent = null;
-        switch (position) {
-        case ACTIVITY_BLOG:
-            intent = new Intent(this, ActivityBlog.class);
-            break;
-        case ACTIVITY_PROFILE:
-            intent = new Intent(this, ActivityProfile.class);
-            break;
-        case ACTIVITY_MYBLOG:
-            intent = new Intent(this, ActivityMyBlog.class);
-            break;
-        case ACTIVITY_NEWPOST:
-            intent = new Intent(this, ActivityNewPost.class);
-            break;
-        case ACTIVITY_SEARCHPOSTS:
-            intent = new Intent(this, ActivitySearchPosts.class);
-            break;
-        case ACTIVITY_MYFRIENDS:
-            intent = new Intent(this, ActivityMyFriends.class);
-            break;
-        case ACTIVITY_FINDFRIENDS:
-            intent = new Intent(this, ActivityFindFriends.class);
-            break;
-        default:
-            break;
-        }
-        startActivity(intent);
-        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
         mDrawerList.setItemChecked(position, true);
         setTitle(mDrawerTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerView);
+
+        switch (position) {
+        case ACTIVITY_BLOG:
+            mPendingIntent = new Intent(this, ActivityBlog.class);
+            break;
+        case ACTIVITY_PROFILE:
+            mPendingIntent = new Intent(this, ActivityProfile.class);
+            break;
+        case ACTIVITY_MYBLOG:
+            mPendingIntent = new Intent(this, ActivityMyBlog.class);
+            break;
+        case ACTIVITY_NEWPOST:
+            mPendingIntent = new Intent(this, ActivityNewPost.class);
+            break;
+        case ACTIVITY_SEARCHPOSTS:
+            mPendingIntent = new Intent(this, ActivitySearchPosts.class);
+            break;
+        case ACTIVITY_MYFRIENDS:
+            mPendingIntent = new Intent(this, ActivityMyFriends.class);
+            break;
+        case ACTIVITY_FINDFRIENDS:
+            mPendingIntent = new Intent(this, ActivityFindFriends.class);
+            break;
+        default:
+        }
     }
 
     private class DrawerItemClickListener implements

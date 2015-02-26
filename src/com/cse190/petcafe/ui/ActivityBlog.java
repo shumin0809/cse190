@@ -16,7 +16,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -30,7 +29,6 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
-import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
@@ -86,6 +84,9 @@ public class ActivityBlog extends ActionBarActivity
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
 
+    private Intent mPendingIntent;
+
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,6 +146,18 @@ public class ActivityBlog extends ActionBarActivity
 
         mDrawerList.setAdapter(adapter);
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerClosed(View view) {
+                if (mPendingIntent != null) {
+                    startActivity(mPendingIntent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                }
+            }
+        };
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
     @Override
@@ -281,40 +294,35 @@ public class ActivityBlog extends ActionBarActivity
 
     private void selectItem(int position) {
         // Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
-        Intent intent = null;
-        switch (position) {
-        case ACTIVITY_BLOG:
-            // self
-            intent = new Intent(this, ActivityBlog.class);
-            break;
-        case ACTIVITY_PROFILE:
-            intent = new Intent(this, ActivityProfile.class);
-            break;
-        case ACTIVITY_MYBLOG:
-            intent = new Intent(this, ActivityMyBlog.class);
-            break;
-        case ACTIVITY_NEWPOST:
-            intent = new Intent(this, ActivityNewPost.class);
-            break;
-        case ACTIVITY_SEARCHPOSTS:
-            intent = new Intent(this, ActivitySearchPosts.class);
-            break;
-        case ACTIVITY_MYFRIENDS:
-            intent = new Intent(this, ActivityMyFriends.class);
-            break;
-        case ACTIVITY_FINDFRIENDS:
-            intent = new Intent(this, ActivityFindFriends.class);
-            break;
-        default:
-            break;
-        }
-        if (intent != null) {
-            startActivity(intent);
-            overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-        }
         mDrawerList.setItemChecked(position, true);
         setTitle(mDrawerTitles[position]);
         mDrawerLayout.closeDrawer(mDrawerView);
+
+        switch (position) {
+        case ACTIVITY_BLOG:
+            // self
+            // intent = new Intent(this, ActivityBlog.class);
+            break;
+        case ACTIVITY_PROFILE:
+            mPendingIntent = new Intent(this, ActivityProfile.class);
+            break;
+        case ACTIVITY_MYBLOG:
+            mPendingIntent = new Intent(this, ActivityMyBlog.class);
+            break;
+        case ACTIVITY_NEWPOST:
+            mPendingIntent = new Intent(this, ActivityNewPost.class);
+            break;
+        case ACTIVITY_SEARCHPOSTS:
+            mPendingIntent = new Intent(this, ActivitySearchPosts.class);
+            break;
+        case ACTIVITY_MYFRIENDS:
+            mPendingIntent = new Intent(this, ActivityMyFriends.class);
+            break;
+        case ACTIVITY_FINDFRIENDS:
+            mPendingIntent = new Intent(this, ActivityFindFriends.class);
+            break;
+        default:
+        }
     }
 
     @Override
