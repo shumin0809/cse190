@@ -16,16 +16,16 @@
             android:layout_height="wrap_content"
             android:background="#FFCFB9"
             android:minHeight="?attr/actionBarSize" >
-            
+
             <TextView
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="Pet Cafe"
-        	android:textColor="#FFFFFF"
-        	android:textSize="24dp"
-        	android:layout_gravity="center"
-        	android:id="@+id/toolbar_title" />
-            
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/actionbar_title"
+                android:textColor="#FFFFFF"
+                android:textSize="24dp" />
+
             <ImageView
                 android:id="@+id/new_post"
                 android:layout_width="46dp"
@@ -33,7 +33,6 @@
                 android:layout_gravity="right"
                 android:layout_marginRight="14dp"
                 android:src="@drawable/ic_newpost" />
-
         </android.support.v7.widget.Toolbar>
 
         <RelativeLayout

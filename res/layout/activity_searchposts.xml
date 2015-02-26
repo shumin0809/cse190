@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/search_icon"
             android:ems="10"
-            android:hint="Input a keyword"
+            android:hint="@string/viewpost_input_hint"
             android:inputType="textCapSentences"
             android:paddingLeft="10dp" >
 
@@ -45,6 +45,7 @@
             android:text="!" />
     </LinearLayout>
 
+    <!-- type spinner -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,7 +60,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="14dp"
             android:gravity="center_vertical"
-            android:text="Choose a type:"
+            android:text="@string/viewpost_choose_type"
             android:textColor="#FFA375"
             android:textSize="16sp" />
 
@@ -70,7 +71,7 @@
             android:layout_toRightOf="@id/choose_type" />
     </LinearLayout>
 
-
+    <!-- tag spinner -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -85,7 +86,7 @@
             android:layout_marginRight="14dp"
             android:layout_toRightOf="@id/search_spinner_type"
             android:gravity="center_vertical"
-            android:text="Choose a tag:"
+            android:text="@string/viewpost_choose_tag"
             android:textColor="#FFA375"
             android:textSize="16sp" />
 
@@ -95,6 +96,11 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/choose_tag" />
     </LinearLayout>
->
+
+    <!-- list fragment -->
+    <android.support.v4.view.ViewPager
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
 </LinearLayout>
