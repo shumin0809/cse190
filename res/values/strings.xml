@@ -77,7 +77,7 @@
     <string name="title_activity_activity_chat">ActivityChat</string>
     <string name="title_activity_actvitiy_dialog">ActvitiyDialog</string>
 
-    <string name="viewpost_choose_tag">Choose a tag:</string>
+    <string name="viewpost_choose_tag">Choose a tag: </string>
     <string name="viewpost_choose_type">Choose a type:</string>
     <string name="viewpost_input_hint">Input a keyword here</string>
 

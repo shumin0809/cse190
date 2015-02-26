@@ -4,9 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/friendslistposts"
+    <!-- list fragment -->
+    <FrameLayout
+        android:id="@+id/postlist_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content" >
+    </FrameLayout>
 
 </LinearLayout>

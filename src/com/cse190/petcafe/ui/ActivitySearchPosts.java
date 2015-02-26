@@ -1,8 +1,14 @@
 package com.cse190.petcafe.ui;
 
+import static com.cse190.petcafe.ui.PostListFragment.*;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,10 +23,10 @@ import com.cse190.petcafe.R;
 
 public class ActivitySearchPosts extends ActivityBase {
 
-    private Button search;
-    private EditText input;
-    private Spinner spinnerType;
-    private Spinner spinnerTag;
+    private Button   mSearchBtn;
+    private EditText mInput;
+    private Spinner  mSpinnerType;
+    private Spinner  mSpinnerTag;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,75 +35,69 @@ public class ActivitySearchPosts extends ActivityBase {
         getLayoutInflater().inflate(R.layout.activity_searchposts, content,
                 true);
 
-        input = (EditText) findViewById(R.id.search_input);
-        search = (Button) findViewById(R.id.search_button);
+        mInput       = (EditText) findViewById(R.id.search_input);
+        mSearchBtn   = (Button) findViewById(R.id.search_button);
+        mSpinnerType = (Spinner) findViewById(R.id.search_spinner_type);
+        mSpinnerTag  = (Spinner) findViewById(R.id.search_spinner_tag);
 
-        search.setOnClickListener(new OnClickListener() {
+        mSearchBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ActivitySearchPosts.this, input.getText().toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ActivitySearchPosts.this,
+                        mInput.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
         addItemsOnSpinner();
         addListenerOnButton();
+//
+//        ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
+//        mViewPager.setOffscreenPageLimit(4);
+//
+//        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
+//        mViewPager.setAdapter(mPagerAdapter);
     }
 
     // add items into spinner dynamically
-    public void addItemsOnSpinner() {
+    private void addItemsOnSpinner() {
 
-        spinnerType = (Spinner) findViewById(R.id.search_spinner_type);
-        List<String> listType = new ArrayList<String>();
-        listType.add("All");
-        listType.add("Stories");
-        listType.add("Tips");
-        listType.add("News");
-        listType.add("Wiki");
-        ArrayAdapter<String> typeAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, listType);
-        typeAdapter
-        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerType.setAdapter(typeAdapter);
+        int rSpinnerItem = android.R.layout.simple_spinner_item;
+        int rSpinnerDropdownItem = android.R.layout.simple_spinner_dropdown_item;
 
-        spinnerTag = (Spinner) findViewById(R.id.search_spinner_tag);
-        List<String> listTag = new ArrayList<String>();
-        listTag.add("All");
-        listTag.add("Dog");
-        listTag.add("Cat");
-        listTag.add("Pig");
-        listTag.add("Rabbit");
-        listTag.add("Other");
-        ArrayAdapter<String> tagAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, listTag);
-        tagAdapter
-        .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTag.setAdapter(tagAdapter);
+        // type dropdown menu
+        String [] postTypes = getResources().getStringArray(R.array.post_type_list);
+        ArrayAdapter<String> typeAdapter =
+                new ArrayAdapter<String>(this, rSpinnerItem, postTypes);
+        typeAdapter.setDropDownViewResource(rSpinnerDropdownItem);
+        mSpinnerType.setAdapter(typeAdapter);
+
+        // tag dropdown menu
+        List<String> listTag = new ArrayList<String>(POST_RESOURCES.keySet());
+        ArrayAdapter<String> tagAdapter =
+                new ArrayAdapter<String>(this, rSpinnerItem, listTag);
+        tagAdapter.setDropDownViewResource(rSpinnerDropdownItem);
+        mSpinnerTag.setAdapter(tagAdapter);
     }
 
     // get the selected dropdown list value
-    public void addListenerOnButton() {
-
-        spinnerType = (Spinner) findViewById(R.id.search_spinner_type);
-        spinnerTag = (Spinner) findViewById(R.id.search_spinner_tag);
-        search = (Button) findViewById(R.id.search_button);
-
-        search.setOnClickListener(new OnClickListener() {
-
+    private void addListenerOnButton() {
+        mSearchBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                String searchText = mInput.getText().toString();
+                String type = String.valueOf(mSpinnerType.getSelectedItem());
+                String tag  = String.valueOf(mSpinnerTag.getSelectedItem());
 
-                Toast.makeText(
-                        ActivitySearchPosts.this,
-                        "Spinner : "
-                                + String.valueOf(spinnerType.getSelectedItem()),
-                                Toast.LENGTH_SHORT).show();
-                Toast.makeText(
-                        ActivitySearchPosts.this,
-                        "Spinner : "
-                                + String.valueOf(spinnerTag.getSelectedItem()),
-                                Toast.LENGTH_SHORT).show();
+                // use the fragment to display the list
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                Fragment fragment = (Fragment) PostListFragment
+                        .newInstance(FILTERED_POSTS, searchText, tag, type);
+
+                fragmentTransaction.replace(R.id.postlist_fragment, fragment);
+                fragmentTransaction.commit();
             }
-
         });
     }
 }

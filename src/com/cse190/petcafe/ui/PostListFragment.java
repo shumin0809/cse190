@@ -102,7 +102,7 @@ public class PostListFragment
         mRequestArgs = getArguments().getStringArray(KEY_POSTLIST);
         mOffset = 0;
         mListItems = new ArrayList<ListViewItem>();
-
+        Log.e("PostListFragment", "onCreate");
         //setListAdapter(new ListViewAdapter(getActivity(), mListItems));
     }
 
@@ -113,9 +113,13 @@ public class PostListFragment
 
         mListView = (ListView) v.findViewById(R.id.listView);
 
-        View placeHolderView = inflater.inflate(
-                R.layout.view_header_placeholder, mListView, false);
-        mListView.addHeaderView(placeHolderView);
+        // extra space cushion for the header in Main Post List
+        if (mPostListType == TABBED_POSTS) {
+            View placeHolderView = inflater.inflate(
+                    R.layout.view_header_placeholder, mListView, false);
+            mListView.addHeaderView(placeHolderView);
+        }
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
@@ -245,6 +249,8 @@ public class PostListFragment
                 String body = postObj.getString("body");
                 body = body.substring(0, Math.min(body.length(), 150)) + "...";
                 mListItems.add(new ListViewItem(petIconRes, title, body));
+                Log.e("post title", title);
+
             } catch (JSONException e) {
                 Log.e(GlobalStrings.LOGTAG, e.toString());
             }
