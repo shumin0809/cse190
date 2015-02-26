@@ -1,8 +1,13 @@
 package com.cse190.petcafe.ui;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.cse190.petcafe.R;
 
@@ -16,9 +21,26 @@ public class ActivitySinglePost extends ActivityBase {
         getLayoutInflater().inflate(R.layout.activity_single_post, content, true);
 
         // receive the arguments from the previous Activity
-        Bundle extras = getIntent().getExtras();
-        if (extras == null) {
-            return;
+        Bundle extras = getIntent().getBundleExtra(PostListFragment.KEY_POST);
+        if (extras != null) {
+            try {
+                JSONObject postObj = new JSONObject(
+                        extras.getString(PostListFragment.KEY_POST));
+
+                TextView authorText = (TextView) findViewById(R.id.post_author);
+                authorText.setText(postObj.getString("author_id"));
+
+                TextView tagText = (TextView) findViewById(R.id.post_tags);
+                tagText.setText(postObj.getString("tag"));
+
+                TextView bodyText = (TextView) findViewById(R.id.post_body);
+                bodyText.setText(postObj.getString("body"));
+
+                TextView titleText = (TextView) findViewById(R.id.post_title);
+                titleText.setText(postObj.getString("title"));
+            } catch (JSONException e) {
+                Log.e("ViewPost onCreate Error", e.toString());
+            }
         }
     }
 
