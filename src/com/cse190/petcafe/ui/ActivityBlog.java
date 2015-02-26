@@ -284,7 +284,7 @@ public class ActivityBlog extends ActionBarActivity
         Intent intent = null;
         switch (position) {
         case ACTIVITY_BLOG:
-            // intent = new Intent(this, ActivityBlogPost.class);
+            // self, ignore
             break;
         case ACTIVITY_PROFILE:
             intent = new Intent(this, ActivityProfile.class);
@@ -321,8 +321,8 @@ public class ActivityBlog extends ActionBarActivity
         mTitle = title;
     }
 
-    private class DrawerItemClickListener implements
-    ListView.OnItemClickListener {
+    private class DrawerItemClickListener
+        implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView parent, View view,
                 int position, long id) {

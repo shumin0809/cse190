@@ -43,12 +43,12 @@ public class PostListFragment
 
     // keys for bundles
     public final static String KEY_POST_TYPE = "posttype";
-    private static final String KEY_POSTLIST = "postlist";
-    private static final String KEY_POST = "post";
+    public static final String KEY_POSTLIST = "postlist";
+    public static final String KEY_POST = "post";
 
-    private static final String [] POST_TYPES = {"Stories", "Tips", "News", "Wiki"};
+    public static final String [] POST_TYPES = {"Stories", "Tips", "News", "Wiki"};
 
-    private static final Map<String, Integer> POST_RESOURCES;
+    public static final Map<String, Integer> POST_RESOURCES;
     static {
         Map<String, Integer> resMap = new HashMap<String, Integer>();
         resMap.put("Cat",    R.drawable.noun_1836);
