@@ -72,9 +72,9 @@ public class ActivitySearchPosts extends ActivityBase {
         mSpinnerType.setAdapter(typeAdapter);
 
         // tag dropdown menu
-        List<String> listTag = new ArrayList<String>(POST_RESOURCES.keySet());
+        String [] postTags = getResources().getStringArray(R.array.post_tag_list);
         ArrayAdapter<String> tagAdapter =
-                new ArrayAdapter<String>(this, rSpinnerItem, listTag);
+                new ArrayAdapter<String>(this, rSpinnerItem, postTags);
         tagAdapter.setDropDownViewResource(rSpinnerDropdownItem);
         mSpinnerTag.setAdapter(tagAdapter);
     }

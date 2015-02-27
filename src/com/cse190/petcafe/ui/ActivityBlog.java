@@ -113,10 +113,14 @@ public class ActivityBlog extends ActivityBase
     }
 
     @Override
-    void setupNewPostMenu () {}
+    void setupNewPostMenu () {
+        // nothing
+    }
 
     @Override
-    void setupActionBar() {}
+    void setupActionBar() {
+        // nothing
+    }
 
     @Override
     public void onPageScrollStateChanged(int arg0) {
@@ -130,13 +134,18 @@ public class ActivityBlog extends ActivityBase
     }
 
     @Override
+    public void adjustScroll(int scrollHeight) {
+        // nothing
+    }
+
+    @Override
     public void onPageSelected(int position) {
         SparseArrayCompat<ScrollTabHolder> scrollTabHolders = mPagerAdapter
                 .getScrollTabHolders();
         ScrollTabHolder currentHolder = scrollTabHolders.valueAt(position);
 
-        currentHolder.adjustScroll((int) (mHeader.getHeight() + ViewHelper
-                .getTranslationY(mHeader)));
+        currentHolder.adjustScroll((int) (mHeader.getHeight()
+                + ViewHelper.getTranslationY(mHeader)));
     }
 
     @Override
@@ -151,10 +160,6 @@ public class ActivityBlog extends ActivityBase
         interpolate(mHeaderLogo, getActionBarIconView(),
                 sSmoothInterpolator.getInterpolation(ratio));
         setTitleAlpha(clamp(5.0F * ratio - 4.0F, 0.0F, 1.0F));
-    }
-
-    @Override
-    public void adjustScroll(int scrollHeight) {
     }
 
     public int getScrollY(AbsListView view) {
@@ -275,18 +280,20 @@ public class ActivityBlog extends ActivityBase
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return TITLES[position];
+            return TITLES[position + 1]; // Skips "All" at pos 0
         }
 
         @Override
         public int getCount() {
-            return TITLES.length - 1;
+            return TITLES.length - 1; // "All" doesn't count
         }
 
         @Override
         public Fragment getItem(int position) {
-            ScrollTabHolderFragment fragment = (ScrollTabHolderFragment) PostListFragment
-                    .newInstance(PostListFragment.TABBED_POSTS, TITLES[position]);
+            ScrollTabHolderFragment fragment =
+            		(ScrollTabHolderFragment) PostListFragment.newInstance(
+            				PostListFragment.TABBED_POSTS,
+            				getPageTitle(position).toString());
 
             mScrollTabHolders.put(position, fragment);
             if (mListener != null) {

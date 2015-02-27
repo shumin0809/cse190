@@ -40,9 +40,9 @@ public class PostListFragment
     public final static int TABBED_POSTS   = 3;
 
     // keys for bundles
+    public final static String KEY_POST      = "post";
     public final static String KEY_POST_TYPE = "posttype";
-    public static final String KEY_POSTLIST = "postlist";
-    public static final String KEY_POST = "post";
+    public final static String KEY_POSTLIST  = "postlist";
 
     public static final Map<String, Integer> POST_RESOURCES;
     static {
@@ -52,6 +52,7 @@ public class PostListFragment
         resMap.put("Rabbit", R.drawable.noun_2015);
         resMap.put("Pig",    R.drawable.noun_2015);
         resMap.put("All",    R.drawable.noun_2015);
+        resMap.put("Other",  R.drawable.noun_2015);
         POST_RESOURCES = Collections.unmodifiableMap(resMap);
     }
 
@@ -99,7 +100,7 @@ public class PostListFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPostListType = getArguments().getInt(KEY_POST_TYPE);
-        mRequestArgs = getArguments().getStringArray(KEY_POSTLIST);
+        mRequestArgs  = getArguments().getStringArray(KEY_POSTLIST);
         mOffset = 0;
         mListItems = new ArrayList<ListViewItem>();
         Log.e("PostListFragment", "onCreate");
@@ -122,17 +123,21 @@ public class PostListFragment
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-                switch (position) {
-                case 0:
-                    break;
-                default:
+            public void onItemClick(AdapterView<?> arg0, View arg1,
+                    int position, long arg3) {
+                if (position == 0 && mPostListType == TABBED_POSTS) {
+                    // ignore, this is the background header
+                    // Tabbed_Posts has header at position 0
+
+                } else {
+                    int objIndex = mPostListType == TABBED_POSTS
+                            ? position - 1 : position;
                     Intent intent = new Intent(getActivity(), ActivityViewPost.class);
                     try {
                         // bundle containg post info
                         Bundle b = new Bundle();
                         b.putString(KEY_POST,
-                                mPostJArr.getJSONObject(position - 1).toString());
+                                mPostJArr.getJSONObject(objIndex).toString());
                         intent.putExtra(KEY_POST, b);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -249,7 +254,6 @@ public class PostListFragment
                 String body = postObj.getString("body");
                 body = body.substring(0, Math.min(body.length(), 150)) + "...";
                 mListItems.add(new ListViewItem(petIconRes, title, body));
-                Log.e("post title", title);
 
             } catch (JSONException e) {
                 Log.e(GlobalStrings.LOGTAG, e.toString());

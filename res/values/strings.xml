@@ -4,10 +4,7 @@
     <string name="app_name">petcafe</string>
     <string name="actionbar_title">Pet Cafe</string>
     <string name="icon_content_description">This is the content description.</string>
-    <string name="cat">Meow</string>
-    <string name="dog">Bark</string>
-    <string name="cat_description">This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. </string>
-    <string name="dog_description">This is a dog.</string>
+
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -24,14 +21,6 @@
         <item>Chats</item>
     </string-array>
 
-    <string-array name="post_type_list">
-        <item>Stories</item>
-        <item>Tips</item>
-        <item>News</item>
-        <item>Wiki</item>
-        <item>All</item>
-    </string-array>
-
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
     <array name="nav_drawer_icons">
@@ -43,6 +32,24 @@
         <item>@drawable/ic_wiki</item>
         <item>@drawable/ic_wiki</item>
     </array>
+
+    <!-- post-related -->
+    <string-array name="post_type_list">
+        <item>All</item>
+        <item>Stories</item>
+        <item>Tips</item>
+        <item>News</item>
+        <item>Wiki</item>
+    </string-array>
+
+    <string-array name="post_tag_list">
+        <item>All</item>
+        <item>Cat</item>
+        <item>Dog</item>
+        <item>Rabbit</item>
+        <item>Pig</item>
+        <item>Other</item>
+    </string-array>
 
     <string name="title_activity_activity_viewpost">ActivityViewPost</string>
     <string name="hello_world">Hello world!</string>
