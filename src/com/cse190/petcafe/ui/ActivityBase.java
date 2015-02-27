@@ -22,12 +22,14 @@ import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 
 public class ActivityBase extends ActionBarActivity {
 
-    private static final int ACTIVITY_BLOG        = 0;
-    private static final int ACTIVITY_PROFILE     = 1;
-    private static final int ACTIVITY_MYBLOG      = 2;
-    private static final int ACTIVITY_SEARCHPOSTS = 3;
-    private static final int ACTIVITY_MYFRIENDS   = 4;
-    private static final int ACTIVITY_FINDFRIENDS = 5;
+    private static final int ACTIVITY_BLOG         = 0;
+    private static final int ACTIVITY_PROFILE      = 1;
+    private static final int ACTIVITY_MYBLOG       = 2;
+    private static final int ACTIVITY_FRIENDSPOSTS = 3;
+    private static final int ACTIVITY_SEARCHPOSTS  = 4;
+    private static final int ACTIVITY_MYFRIENDS    = 5;
+    private static final int ACTIVITY_FINDFRIENDS  = 6;
+
 
     private Intent mPendingIntent;
 
@@ -95,6 +97,9 @@ public class ActivityBase extends ActionBarActivity {
             break;
         case ACTIVITY_FINDFRIENDS:
             mPendingIntent = new Intent(this, ActivityFindFriends.class);
+            break;
+        case ACTIVITY_FRIENDSPOSTS:
+            mPendingIntent = new Intent(this, ActivityMyFriendsPosts.class);
             break;
         default:
         }

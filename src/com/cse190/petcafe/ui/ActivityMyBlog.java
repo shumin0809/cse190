@@ -1,9 +1,13 @@
 package com.cse190.petcafe.ui;
 
+import static com.cse190.petcafe.ui.PostListFragment.MY_POSTS;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
+import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.R;
 
 public class ActivityMyBlog extends ActivityBase {
@@ -11,17 +15,15 @@ public class ActivityMyBlog extends ActivityBase {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-        // getLayoutInflater().inflate(R.layout.activity_myblog, content, true);
-        getLayoutInflater().inflate(R.layout.fragment_blog_list, content, true);
+        getLayoutInflater().inflate(R.layout.activity_postlist, content, true);
 
-        // receive the arguments from the previous Activity
-        Bundle extras = getIntent().getExtras();
-        if (extras == null) {
-            return;
-        }
+        Log.e("ActivityMyBlog", "onCreate");
+        String fbID = ((ApplicationSingleton)getApplication())
+                .getCurrentUser().getFacebookId();
 
+        Fragment fragment = PostListFragment.newInstance(MY_POSTS, fbID);
+        ((PostListFragment) fragment).loadFragment(ActivityMyBlog.this);
     }
 
     //    @Override

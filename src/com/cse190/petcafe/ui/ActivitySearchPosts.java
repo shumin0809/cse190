@@ -1,15 +1,8 @@
 package com.cse190.petcafe.ui;
 
-import static com.cse190.petcafe.ui.PostListFragment.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import static com.cse190.petcafe.ui.PostListFragment.FILTERED_POSTS;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -23,7 +16,7 @@ import com.cse190.petcafe.R;
 
 public class ActivitySearchPosts extends ActivityBase {
 
-    private Button   mSearchBtn;
+    private Button   mBtnSearch;
     private EditText mInput;
     private Spinner  mSpinnerType;
     private Spinner  mSpinnerTag;
@@ -32,15 +25,14 @@ public class ActivitySearchPosts extends ActivityBase {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_searchposts, content,
-                true);
+        getLayoutInflater().inflate(R.layout.activity_searchposts, content, true);
 
         mInput       = (EditText) findViewById(R.id.search_input);
-        mSearchBtn   = (Button) findViewById(R.id.search_button);
-        mSpinnerType = (Spinner) findViewById(R.id.search_spinner_type);
-        mSpinnerTag  = (Spinner) findViewById(R.id.search_spinner_tag);
+        mBtnSearch   = (Button)   findViewById(R.id.search_button);
+        mSpinnerType = (Spinner)  findViewById(R.id.search_spinner_type);
+        mSpinnerTag  = (Spinner)  findViewById(R.id.search_spinner_tag);
 
-        mSearchBtn.setOnClickListener(new OnClickListener() {
+        mBtnSearch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ActivitySearchPosts.this,
@@ -50,12 +42,6 @@ public class ActivitySearchPosts extends ActivityBase {
 
         addItemsOnSpinner();
         addListenerOnButton();
-//
-//        ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setOffscreenPageLimit(4);
-//
-//        PagerAdapter mPagerAdapter = new PagerAdapter(getSupportFragmentManager());
-//        mViewPager.setAdapter(mPagerAdapter);
     }
 
     // add items into spinner dynamically
@@ -81,22 +67,16 @@ public class ActivitySearchPosts extends ActivityBase {
 
     // get the selected dropdown list value
     private void addListenerOnButton() {
-        mSearchBtn.setOnClickListener(new OnClickListener() {
+        mBtnSearch.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchText = mInput.getText().toString();
                 String type = String.valueOf(mSpinnerType.getSelectedItem());
                 String tag  = String.valueOf(mSpinnerTag.getSelectedItem());
 
-                // use the fragment to display the list
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
                 Fragment fragment = (Fragment) PostListFragment
                         .newInstance(FILTERED_POSTS, searchText, tag, type);
-
-                fragmentTransaction.replace(R.id.postlist_fragment, fragment);
-                fragmentTransaction.commit();
+                ((PostListFragment) fragment).loadFragment(ActivitySearchPosts.this);
             }
         });
     }

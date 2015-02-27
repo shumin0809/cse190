@@ -15,6 +15,9 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -195,6 +198,7 @@ public class PostListFragment
 
         @Override
         protected JSONArray doInBackground(Object... params) {
+            Log.e("PostListFragment", "fetching from DB");
             int arrIndex = 0;
             JSONArray postArr = null;
             int postListType = (Integer)params[arrIndex++];
@@ -261,6 +265,18 @@ public class PostListFragment
         }
         // update UI
         mPostListAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Helper method for reusing this fragment class to list posts
+     * @param fa - the activity that needs this fragment
+     * remember to add FrameLayout
+     */
+    public void loadFragment (FragmentActivity fa) {
+        FragmentManager fragmentManager = fa.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.postlist_fragment, this);
+        fragmentTransaction.commit();
     }
 
 }
