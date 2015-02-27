@@ -7,7 +7,7 @@
         android:id="@+id/listView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:divider="#ddd"
+        android:divider="@color/frame_background"
         android:dividerHeight="1px"
         android:scrollbars="none" />
 
