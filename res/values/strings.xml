@@ -33,6 +33,14 @@
         <item>@drawable/ic_wiki</item>
     </array>
 
+    <array name="petSpecies">
+        <item>Cat</item>
+        <item>Dog</item>
+        <item>Rabbit</item>
+        <item>Pig</item>
+        <item>Other</item>
+    </array>
+
     <!-- post-related -->
     <string-array name="post_type_list">
         <item>All</item>
