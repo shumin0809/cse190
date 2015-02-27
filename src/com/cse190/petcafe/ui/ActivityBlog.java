@@ -87,7 +87,7 @@ public class ActivityBlog extends ActivityBase
         title = (TextView) findViewById(R.id.title);
 
         mHeaderPicture = (KenBurnsSupportView) findViewById(R.id.header_picture);
-        mHeaderPicture.setResourceIds(R.drawable.pic0, R.drawable.pic1);
+        mHeaderPicture.setResourceIds(R.drawable.header_pic0, R.drawable.header_pic1);
 
         mHeaderLogo = (ImageView) findViewById(R.id.header_logo);
         mHeader = findViewById(R.id.header);

@@ -17,7 +17,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="14dp"
-            android:src="@drawable/noun_1836" />
+            android:src="@drawable/icon_cat" />
 
         <EditText
             android:id="@+id/search_input"

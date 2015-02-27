@@ -50,12 +50,12 @@ public class PostListFragment
     public static final Map<String, Integer> POST_RESOURCES;
     static {
         Map<String, Integer> resMap = new HashMap<String, Integer>();
-        resMap.put("Cat",    R.drawable.noun_1836);
-        resMap.put("Dog",    R.drawable.noun_2015);
-        resMap.put("Rabbit", R.drawable.noun_2015);
-        resMap.put("Pig",    R.drawable.noun_2015);
-        resMap.put("All",    R.drawable.noun_2015);
-        resMap.put("Other",  R.drawable.noun_2015);
+        resMap.put("Cat",    R.drawable.icon_cat);
+        resMap.put("Dog",    R.drawable.icon_dog);
+        resMap.put("Rabbit", R.drawable.icon_rabbit);
+        resMap.put("Pig",    R.drawable.icon_pig);
+        resMap.put("All",    R.drawable.icon_all);
+        resMap.put("Other",  R.drawable.icon_other);
         POST_RESOURCES = Collections.unmodifiableMap(resMap);
     }
 
