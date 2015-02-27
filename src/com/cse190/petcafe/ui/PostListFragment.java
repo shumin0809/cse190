@@ -247,6 +247,7 @@ public class PostListFragment
         // store post information
         mPostJArr = postArr;
         // fill up UI list
+        mListItems.clear();
         Resources resources = getResources();
         for (int i = 0; i < postArr.length(); i++) {
             try {
