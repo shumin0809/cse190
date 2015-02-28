@@ -35,30 +35,20 @@
         <item>@drawable/ic_wiki</item>
     </array>
 
-    <array name="petSpecies">
+    <string-array name="pet_species">
         <item>Cat</item>
         <item>Dog</item>
         <item>Rabbit</item>
         <item>Pig</item>
         <item>Other</item>
-    </array>
+    </string-array>
 
     <!-- post-related -->
-    <string-array name="post_type_list">
-        <item>All</item>
+    <string-array name="post_types">
         <item>Stories</item>
         <item>Tips</item>
         <item>News</item>
         <item>Wiki</item>
-    </string-array>
-
-    <string-array name="post_tag_list">
-        <item>All</item>
-        <item>Cat</item>
-        <item>Dog</item>
-        <item>Rabbit</item>
-        <item>Pig</item>
-        <item>Other</item>
     </string-array>
 
     <string name="title_activity_activity_viewpost">ActivityViewPost</string>

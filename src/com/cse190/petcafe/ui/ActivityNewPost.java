@@ -48,14 +48,14 @@ public class ActivityNewPost extends ActivityBase {
         int rSpinnerDropdownItem = android.R.layout.simple_spinner_dropdown_item;
 
         // type dropdown menu
-        String [] postTypes = getResources().getStringArray(R.array.post_type_list);
+        String [] postTypes = getResources().getStringArray(R.array.post_types);
         ArrayAdapter<String> typeAdapter =
                 new ArrayAdapter<String>(this, rSpinnerItem, postTypes);
         typeAdapter.setDropDownViewResource(rSpinnerDropdownItem);
         mSpinnerType.setAdapter(typeAdapter);
 
         // tag dropdown menu
-        String [] postTags = getResources().getStringArray(R.array.post_tag_list);
+        String [] postTags = getResources().getStringArray(R.array.pet_species);
         ArrayAdapter<String> tagAdapter =
                 new ArrayAdapter<String>(this, rSpinnerItem, postTags);
         tagAdapter.setDropDownViewResource(rSpinnerDropdownItem);

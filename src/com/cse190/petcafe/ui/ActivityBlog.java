@@ -264,7 +264,7 @@ public class ActivityBlog extends ActivityBase
             extends FragmentPagerAdapter implements IconTabProvider {
 
         private SparseArrayCompat<ScrollTabHolder> mScrollTabHolders;
-        private final String[] TITLES = getResources().getStringArray(R.array.post_type_list);
+        private final String[] TITLES = getResources().getStringArray(R.array.post_types);
         private int[] resources = { R.drawable.ic_stories, R.drawable.ic_tips,
                 R.drawable.ic_news, R.drawable.ic_wiki };
         private ScrollTabHolder mListener;
@@ -280,20 +280,20 @@ public class ActivityBlog extends ActivityBase
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return TITLES[position + 1]; // Skips "All" at pos 0
+            return TITLES[position];
         }
 
         @Override
         public int getCount() {
-            return TITLES.length - 1; // "All" doesn't count
+            return TITLES.length;
         }
 
         @Override
         public Fragment getItem(int position) {
             ScrollTabHolderFragment fragment =
-            		(ScrollTabHolderFragment) PostListFragment.newInstance(
-            				PostListFragment.TABBED_POSTS,
-            				getPageTitle(position).toString());
+                    (ScrollTabHolderFragment) PostListFragment.newInstance(
+                            PostListFragment.TABBED_POSTS,
+                            getPageTitle(position).toString());
 
             mScrollTabHolders.put(position, fragment);
             if (mListener != null) {

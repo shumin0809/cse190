@@ -1,6 +1,10 @@
 package com.cse190.petcafe.ui;
 
 import static com.cse190.petcafe.ui.PostListFragment.FILTERED_POSTS;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -51,14 +55,20 @@ public class ActivitySearchPosts extends ActivityBase {
         int rSpinnerDropdownItem = android.R.layout.simple_spinner_dropdown_item;
 
         // type dropdown menu
-        String [] postTypes = getResources().getStringArray(R.array.post_type_list);
+        ArrayList<String> postTypes = new ArrayList<String>(Arrays.asList(
+                getResources().getStringArray(R.array.post_types)));
+        postTypes.add(0, "All");
+
         ArrayAdapter<String> typeAdapter =
                 new ArrayAdapter<String>(this, rSpinnerItem, postTypes);
         typeAdapter.setDropDownViewResource(rSpinnerDropdownItem);
         mSpinnerType.setAdapter(typeAdapter);
 
         // tag dropdown menu
-        String [] postTags = getResources().getStringArray(R.array.post_tag_list);
+        ArrayList<String> postTags = new ArrayList<String>(Arrays.asList(
+                getResources().getStringArray(R.array.pet_species)));
+        postTags.add(0, "All");
+
         ArrayAdapter<String> tagAdapter =
                 new ArrayAdapter<String>(this, rSpinnerItem, postTags);
         tagAdapter.setDropDownViewResource(rSpinnerDropdownItem);
