@@ -53,6 +53,17 @@ public class ActivityMyFriends extends ActivityBase {
 				
 		friendList.setOnItemClickListener(new OnItemClickListener()
 		{
+			  @Override
+			  public void onItemClick(AdapterView<?> parent, View view,
+			    int position, long id) {
+			    Toast.makeText(getApplicationContext(),
+			      "Friend: " + listValues.get(position).toString(), Toast.LENGTH_LONG)
+			      .show();
+			    Intent intent = new Intent(ActivityMyFriends.this, ActivityMyFriendsProf.class);
+			    startActivity(intent);
+				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			  }
+			/*
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -92,8 +103,9 @@ public class ActivityMyFriends extends ActivityBase {
                         AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityMyFriends.this);
                         dialog.setMessage("dialog creation errors: " + errors).create().show();
                     }
-                });				
+                });	
 			}
+			*/
 		});
 	}
 	
