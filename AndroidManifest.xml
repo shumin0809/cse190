@@ -48,8 +48,10 @@
             android:name="com.cse190.petcafe.ui.ActivityMyFriendsPosts"
             android:noHistory="true" />
         <activity
-            android:name="com.cse190.petcafe.ui.ActivityBlog" />
-		<activity
+            android:name="com.cse190.petcafe.ui.ActivityMyFriendsProf"
+            android:noHistory="true" />
+        <activity android:name="com.cse190.petcafe.ui.ActivityBlog" />
+        <activity
             android:name="com.facebook.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
