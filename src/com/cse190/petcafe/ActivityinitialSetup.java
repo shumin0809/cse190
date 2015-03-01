@@ -44,7 +44,7 @@ public class ActivityinitialSetup extends Activity {
 	
 	private ArrayList<PetInformation> pets;
 	private ArrayList<String> petNames;
-	private ArrayAdapter<String> adapter;
+	private ArrayAdapter<String> petListAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,8 +71,8 @@ public class ActivityinitialSetup extends Activity {
 		
 		petNames = new ArrayList<String>();
 		
-		adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, petNames);
-		petList.setAdapter(adapter);
+		petListAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, petNames);
+		petList.setAdapter(petListAdapter);
 
 		addPetButton.setOnClickListener(new OnClickListener()
 		{
@@ -134,7 +134,7 @@ public class ActivityinitialSetup extends Activity {
 	            	   PetInformation pet = new PetInformation(name, species, breed, gender, age, description, fbuid);
 	            	   pets.add(pet);
 	            	   petNames.add(name);
-	            	   adapter.notifyDataSetChanged();
+	            	   petListAdapter.notifyDataSetChanged();
 	               }
 	           })
 	           .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

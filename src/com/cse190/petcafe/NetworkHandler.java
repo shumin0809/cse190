@@ -1,5 +1,7 @@
 package com.cse190.petcafe;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -64,17 +66,19 @@ public final class NetworkHandler extends Application {
 		new DeleteFriendTask().execute(myself, other);
 	}
 	
-	public void getFriends(UserProfileInformation person)
+	public ArrayList<UserProfileInformation> getFriends(UserProfileInformation person)
 	{
 		try
 		{
-			new GetFriendsTask().execute(person).get();
+			return new GetFriendsTask().execute(person).get();
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			Log.e(GlobalStrings.LOGTAG, e.toString());
 		}
+		
+		return null;
 	}
 	
 	public void addPet(PetInformation pet)
@@ -244,12 +248,13 @@ public final class NetworkHandler extends Application {
 		}
 	}
 	
-	private class GetFriendsTask extends AsyncTask<Object, Void, String>
+	private class GetFriendsTask extends AsyncTask<Object, Void, ArrayList<UserProfileInformation>>
 	{
 		@Override
-		protected String doInBackground(Object... params) {
+		protected ArrayList<UserProfileInformation> doInBackground(Object... params) {
 			UserProfileInformation person = (UserProfileInformation)params[0];
 			
+			ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
 			try
 			{
 				JSONArray ja = api.getFriends(person);
@@ -258,7 +263,9 @@ public final class NetworkHandler extends Application {
 				{
 					for (int i = 0; i < ja.length(); ++i)
 					{
-						
+						JSONObject jo = ja.getJSONObject(i);
+						UserProfileInformation friend = new UserProfileInformation(jo.getString("fb_id"), jo.getString("name"), jo.getString("first_lang"), jo.getString("second_lang"), jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("status"));
+						friends.add(friend);
 					}
 				}
 			}
@@ -267,7 +274,7 @@ public final class NetworkHandler extends Application {
 				e.printStackTrace();
 			}
 			
-			return "It worked";
+			return friends;
 		}
 	}
 

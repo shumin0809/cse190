@@ -19,8 +19,12 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.cse190.petcafe.ApplicationSingleton;
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.R;
+import com.cse190.petcafe.UserProfileInformation;
 import com.cse190.petcafe.ui.ActivityBase;
+import com.qb.gson.Gson;
+import com.qb.gson.reflect.TypeToken;
 import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.chat.model.QBDialogType;
@@ -29,6 +33,7 @@ import com.quickblox.users.model.QBUser;
 
 public class ActivityMyFriends extends ActivityBase {
 
+	private ArrayList<UserProfileInformation> friends;
 	private List<String> listValues;
 
 	@Override
@@ -38,11 +43,21 @@ public class ActivityMyFriends extends ActivityBase {
 		getLayoutInflater().inflate(R.layout.activity_myfriends, content, true);
 
 		ListView friendList = (ListView) findViewById(R.id.friendslist);
-
+		Gson gson = new Gson();
+	    String json = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FRIENDS_LIST_CACHE_KEY, "");
+	    friends = gson.fromJson(json, new TypeToken<ArrayList<UserProfileInformation>>(){}.getType());
+	    
 		listValues = new ArrayList<String>();
+
+	    for (UserProfileInformation user : friends)
+	    {
+	    	listValues.add(user.getUserName());
+	    }
+	    
+	    /*
 		listValues.add("Dong Sung Chang");
 		listValues.add("David Nguyen");
-		listValues.add("Michael Chang");
+		listValues.add("Michael Chang");*/
 
 		// initiate the listadapter
 		ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this,
@@ -58,13 +73,16 @@ public class ActivityMyFriends extends ActivityBase {
 					int position, long id) {
 				// create a new chat dialog;;;;;
 				// this is hardcode. Need to change this later ====
-				String fbuid = "";
-				if (position == 0)
-					fbuid = "1542339792686537";
-				else if (position == 1)
-					fbuid = "10202613710098479";
-				else
-					fbuid = "10153670628264152";
+				//String fbuid = "";
+				//if (position == 0)
+				//	fbuid = "1542339792686537";
+				//else if (position == 1)
+				//	fbuid = "10202613710098479";
+				//else
+				//	fbuid = "10153670628264152";
+				
+				UserProfileInformation user = friends.get(position);
+				String fbuid = user.getFacebookUID();
 				
 				ApplicationSingleton data = (ApplicationSingleton)getApplication();
 				QBUser currUser = data.getCurrentUser();

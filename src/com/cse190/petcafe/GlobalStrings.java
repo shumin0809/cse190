@@ -8,6 +8,7 @@ public class GlobalStrings {
 	
 	public static final String USERNAME_CACHE_KEY = "username";
 	public static final String FACEBOOK_ID_CACHE_KEY = "facebookID";
+	public static final String FRIENDS_LIST_CACHE_KEY = "friends";
 	
 	public static final String APP_ID = "19963";
 	public static final String AUTH_KEY = "Xb2TuFTFttVuu6S";

@@ -245,7 +245,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            if(Integer.parseInt(person1.getFriendFacebookID()) < Integer.parseInt(person2.getFriendFacebookID())) {
+            if(Long.parseLong(person1.getFriendFacebookID()) < Long.parseLong(person2.getFriendFacebookID())) {
             	jsonObject.put("fb_id1", person1.getFriendFacebookID());
             	jsonObject.put("fb_id2", person2.getFriendFacebookID());
             }

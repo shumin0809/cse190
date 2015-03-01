@@ -24,6 +24,7 @@ import com.facebook.widget.LoginButton;
 import com.facebook.widget.LoginButton.UserInfoChangedCallback;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.qb.gson.Gson;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBProvider;
 import com.quickblox.auth.model.QBSession;
@@ -471,8 +472,19 @@ public class MainActivity extends Activity {
 							networkHandler.addFriend(me, friend);
 							Log.i(GlobalStrings.LOGTAG, uid);
 						}
+						
 						UserProfileInformation user = new UserProfileInformation(getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, ""), getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, ""), "", "", 0, 0, "");
-						networkHandler.getFriends(user);
+						ArrayList<UserProfileInformation> friends = networkHandler.getFriends(user);
+						
+						SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
+	                	SharedPreferences.Editor prefEditor = localCache.edit();
+	                	
+	                	Gson gson = new Gson();
+	                	String json = gson.toJson(friends);
+	                	prefEditor.putString(GlobalStrings.FRIENDS_LIST_CACHE_KEY, json);
+	                	prefEditor.commit();
+	                	
+
 						
 						getAllUsersFromChatApi();
 					} catch (JSONException e) {
