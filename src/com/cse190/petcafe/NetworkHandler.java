@@ -64,6 +64,19 @@ public final class NetworkHandler extends Application {
 		new DeleteFriendTask().execute(myself, other);
 	}
 	
+	public void getFriends(UserProfileInformation person)
+	{
+		try
+		{
+			new GetFriendsTask().execute(person).get();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			Log.e(GlobalStrings.LOGTAG, e.toString());
+		}
+	}
+	
 	public void addPet(PetInformation pet)
 	{
 		new AddPetTask().execute(pet);
@@ -227,6 +240,33 @@ public final class NetworkHandler extends Application {
 				e.printStackTrace();
 				Log.e(GlobalStrings.LOGTAG, e.toString());
 			}
+			return "It worked";
+		}
+	}
+	
+	private class GetFriendsTask extends AsyncTask<Object, Void, String>
+	{
+		@Override
+		protected String doInBackground(Object... params) {
+			UserProfileInformation person = (UserProfileInformation)params[0];
+			
+			try
+			{
+				JSONArray ja = api.getFriends(person);
+				
+				if (!ja.isNull(0))
+				{
+					for (int i = 0; i < ja.length(); ++i)
+					{
+						
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
+			
 			return "It worked";
 		}
 	}

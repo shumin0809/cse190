@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -13,14 +14,33 @@
 	Add transition buttons "Done" and "Skip"
 	For add pet, add drop downs for Gender & Species. Species options
 	should already be in the string resource -->
+	<com.facebook.widget.ProfilePictureView
+            android:id="@+id/profile_pic"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            facebook:preset_size="small" />
 	
+	<TextView
+	    android:id="@+id/user_name_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/profile_pic"
+        android:layout_toRightOf="@+id/profile_pic"
+        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/profile_pic"
+        android:text="@string/initialSetupFirstLanguage"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
     <TextView
         android:id="@+id/firstLanguageLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/profile_pic"
         android:text="@string/initialSetupFirstLanguage"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -94,6 +114,24 @@
        android:layout_below="@+id/statusInput"
        android:text="@string/initialSetupAddPet" />
 
+   <Button
+   		android:id="@+id/skipSetUpButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentEnd="true"
+		android:layout_alignBaseline="@+id/addPetButton"
+		android:text="Skip"
+	/>   
+	<Button
+   		android:id="@+id/doneButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@+id/skipSetUpButton"
+		android:layout_toStartOf="@+id/skipSetUpButton"
+		android:layout_alignBaseline="@+id/addPetButton"
+		android:text="Done"
+	/>   
    <ListView
        android:id="@+id/petList"
        android:layout_width="match_parent"

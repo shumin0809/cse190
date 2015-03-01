@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.cse190.petcafe.ApplicationSingleton;
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.SampleListFragment;
@@ -45,6 +46,7 @@ import com.cse190.petcafe.ui.ActivityMyFriends;
 import com.cse190.petcafe.ui.ActivityNewPost;
 import com.cse190.petcafe.ui.ActivityProfile;
 import com.cse190.petcafe.ui.ActivitySearchPosts;
+import com.facebook.widget.ProfilePictureView;
 import com.flavienlaurent.notboringactionbar.AlphaForegroundColorSpan;
 import com.flavienlaurent.notboringactionbar.KenBurnsSupportView;
 import com.nineoldandroids.view.ViewHelper;
@@ -72,7 +74,9 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 	private int mMinHeaderHeight;
 	private int mHeaderHeight;
 	private int mMinHeaderTranslation;
+	private String fbuid;
 	private ImageView mHeaderLogo;
+	private ProfilePictureView profPic;
 
 	private RectF mRect1 = new RectF();
 	private RectF mRect2 = new RectF();
@@ -118,6 +122,12 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 		setSupportActionBar(toolbar);
 		icon = (ImageView) findViewById(R.id.icon);
 		title = (TextView) findViewById(R.id.title);
+		
+		fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+		profPic = (ProfilePictureView)findViewById(R.id.activity_blog_profpic);
+		
+		profPic.setCropped(true);
+		profPic.setProfileId(fbuid);
 
 		mHeaderPicture = (KenBurnsSupportView) findViewById(R.id.header_picture);
 		mHeaderPicture.setResourceIds(R.drawable.pic0, R.drawable.pic1);

@@ -16,10 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
+import com.facebook.widget.ProfilePictureView;
 
 public class ActivityBase extends ActionBarActivity {
 
@@ -38,6 +40,9 @@ public class ActivityBase extends ActionBarActivity {
 	public ActionBarDrawerToggle mDrawerToggle;
 	public Toolbar toolbar;
 	public ImageView newpost;
+	
+	private String fbuid;
+	private ProfilePictureView profPic;
 
 	protected LinearLayout fullLayout;
 	protected FrameLayout actContent;
@@ -85,6 +90,11 @@ public class ActivityBase extends ActionBarActivity {
 			}
 		});
 		
+		fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+		profPic = (ProfilePictureView)findViewById(R.id.activity_base_profpic);
+		
+		profPic.setCropped(true);
+		profPic.setProfileId(fbuid);
 
 		// Navigation Drawer
 
@@ -141,7 +151,7 @@ public class ActivityBase extends ActionBarActivity {
 		Intent intent = null;
 		switch (position) {
 		case ACTIVITY_BLOG:
-			intent = new Intent(this, MainActivity.class);
+			intent = new Intent(this, ActivityBlog.class);
 			break;
 		case ACTIVITY_PROFILE:
 			intent = new Intent(this, ActivityProfile.class);

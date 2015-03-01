@@ -43,13 +43,18 @@
         <item>@drawable/ic_wiki</item>
     </array>
     
-    <array name="petSpecies">
+    <string-array name="petSpecies">
         <item>Dog</item>
         <item>Cat</item>
         <item>Pig</item>
         <item>Rabbit</item>
         <item>Other</item>
-    </array>
+    </string-array >
+    
+    <string-array name="genders">
+        <item>M</item>
+        <item>F</item>
+    </string-array>
 
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
