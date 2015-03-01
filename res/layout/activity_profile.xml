@@ -2,100 +2,68 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:orientation="horizontal" >
+        android:layout_height="240dp"
+        android:background="#FFB894"
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/prof_pic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:clickable="true"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="14dp"
             android:src="@drawable/ic_sponge" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/prof_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:text="David"
-                android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/prof_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:text="David@David.com" />
-
-            <TextView
-                android:id="@+id/prof_phonenumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:text="(555)555-5555" />
-
-            <TextView
-                android:id="@+id/prof_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="30dp"
-                android:text="Costa Verde" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/prof_city"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="30dp"
-                    android:text="San Diego" />
-
-                <TextView
-                    android:id="@+id/prof_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:text="CA" />
-
-                <TextView
-                    android:id="@+id/prof_zip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="5dp"
-                    android:text="92122" />
-            </LinearLayout>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/prof_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:fontFamily="sans-serif-light"
+            android:text="David Nguyen"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/edit_profile"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Edit Profile" />
+        android:background="#FFFFFF"
+        android:orientation="horizontal" >
+
+        <ListView
+            android:id="@+id/infolist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/pets"
-        android:layout_width="wrap_content"
+        android:id="@+id/txt_pets"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="20dp"
-        android:text="PETS:"
-        android:textSize="20sp" />
+        android:layout_marginTop="4dp"
+        android:paddingLeft="14dp"
+        android:text="Pets:"
+        android:textColor="#000000"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="horizontal" >
+
+        <ListView
+            android:id="@+id/petlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="false" />
+    </LinearLayout>
 
 </LinearLayout>
