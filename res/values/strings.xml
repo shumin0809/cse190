@@ -84,5 +84,5 @@
     <string name="addPetDialogDescriptionHint">Enter a brief desription of your pet!</string>
     <string name="title_activity_activity_chat">ActivityChat</string>
     <string name="title_activity_actvitiy_dialog">ActvitiyDialog</string>
-
+    <string name="chatButtonDescription">Button to initiate chat</string>
 </resources>

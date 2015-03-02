@@ -8,51 +8,59 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cse190.petcafe.R;
+import com.cse190.petcafe.ui.ActivityProfile.PetListAdapter;
+import com.cse190.petcafe.ui.ActivityProfile.ProfileListAdapter;
 
-public class ActivityProfile extends ActivityBase {
+public class ActivityMyFriendsProf extends ActivityBase {
+
 	private ListView proflist;
 	private ListView petlist;
 
 	public Integer[] imgid = { R.drawable.ic_email, R.drawable.ic_phone,
 			R.drawable.ic_address };
-	
-	String[] itemname = { "David@ucsd.edu", "(555) 555-5555", "9450 Gilman Dr." };
-	
-	String[] petname = { "Rudolph", "Clifford"};
-	
-	public Integer[] petimgid = { R.drawable.ic_pet, R.drawable.ic_pet};
+
+	String[] itemname = { "Patrick@bikini.edu", "(555) 555-5555",
+			"Bikini Bottom" };
+
+	String[] petname = { "Gary", "Larry" };
+
+	public Integer[] petimgid = { R.drawable.ic_pet, R.drawable.ic_pet };
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-		getLayoutInflater().inflate(R.layout.activity_profile, content, true);
+		getLayoutInflater().inflate(R.layout.activity_myfriendsprof, content,
+				true);
 		// Profile Info
+
 		proflist = (ListView) findViewById(R.id.infolist);
-		ProfileListAdapter profadapter = new ProfileListAdapter(this, itemname, imgid);
+		ProfileListAdapter profadapter = new ProfileListAdapter(this, itemname,
+				imgid);
 		proflist.setAdapter(profadapter);
-		
+
 		// Pet info
 		petlist = (ListView) findViewById(R.id.petlist);
 		PetListAdapter petadapter = new PetListAdapter(this, petname, petimgid);
 		petlist.setAdapter(petadapter);
-		
+
 		// New Post Menu Item
 		newpost = (ImageView) findViewById(R.id.new_post);
-		newpost.setImageResource(R.drawable.ic_editprof);
+		newpost.setImageResource(R.drawable.ic_chat);
 		newpost.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				Intent newPostIntent = new Intent(ActivityProfile.this, ActivityEditProfile.class);
-				startActivity(newPostIntent);
-				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-				
+				Toast.makeText(ActivityMyFriendsProf.this, "Message Patrick",
+						Toast.LENGTH_SHORT).show();
+
 			}
 		});
 	}
@@ -72,11 +80,11 @@ public class ActivityProfile extends ActivityBase {
 			this.itemname = itemname;
 			this.imgid = imgid;
 		}
-		
-		 @Override
-		  public boolean isEnabled (int position) {
-		    return false;
-		  }
+
+		@Override
+		public boolean isEnabled(int position) {
+			return false;
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			LayoutInflater inflater = context.getLayoutInflater();
@@ -91,7 +99,7 @@ public class ActivityProfile extends ActivityBase {
 			return rowView;
 		};
 	}
-	
+
 	public class PetListAdapter extends ArrayAdapter<String> {
 
 		private final Activity context;
@@ -107,16 +115,15 @@ public class ActivityProfile extends ActivityBase {
 			this.itemname = itemname;
 			this.imgid = imgid;
 		}
-		
-		 @Override
-		  public boolean isEnabled (int position) {
-		    return false;
-		  }
+
+		@Override
+		public boolean isEnabled(int position) {
+			return false;
+		}
 
 		public View getView(int position, View view, ViewGroup parent) {
 			LayoutInflater inflater = context.getLayoutInflater();
-			View rowView = inflater.inflate(R.layout.listitem_pet, null,
-					true);
+			View rowView = inflater.inflate(R.layout.listitem_pet, null, true);
 
 			TextView txtTitle = (TextView) rowView.findViewById(R.id.petname);
 			ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
@@ -126,9 +133,9 @@ public class ActivityProfile extends ActivityBase {
 
 			txtTitle.setText(petname[position]);
 			imageView.setImageResource(petimgid[position]);
-			gender.setText("M");
-			age.setText("999");
-			type.setText("Lion");
+			gender.setText("F");
+			age.setText("3");
+			type.setText("Snail");
 			return rowView;
 		};
 	}
