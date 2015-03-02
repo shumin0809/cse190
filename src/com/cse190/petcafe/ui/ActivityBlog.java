@@ -95,6 +95,7 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 	private final int ACTIVITY_SEARCHPOSTS = 3;
 	private final int ACTIVITY_MYFRIENDS = 4;
 	private final int ACTIVITY_FINDFRIENDS = 5;
+	private final int ACTIVITY_CHAT = 6;
 
 	public String[] mDrawerTitles;
 	public DrawerLayout mDrawerLayout;
@@ -156,7 +157,7 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerView = (LinearLayout) findViewById(R.id.drawer);
-		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[6];
+		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[7];
 		drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_launcher, "Blogs");
 		drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_launcher, "Profile");
 		drawerItem[2] = new ObjectDrawerItem(R.drawable.ic_launcher, "New Post");
@@ -166,6 +167,8 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 				"My Friends");
 		drawerItem[5] = new ObjectDrawerItem(R.drawable.ic_launcher,
 				"Find Friends");
+		drawerItem[6] = new ObjectDrawerItem(R.drawable.ic_launcher,
+				"Chats");
 
 		DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
 				R.layout.listitem_drawer, drawerItem);
@@ -328,6 +331,9 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 			break;
 		case ACTIVITY_FINDFRIENDS:
 			intent = new Intent(this, ActivityFindFriends.class);
+			break;
+		case ACTIVITY_CHAT:
+			intent = new Intent(this, ActivityChat.class);
 			break;
 		default:
 			break;
