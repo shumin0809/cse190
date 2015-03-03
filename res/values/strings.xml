@@ -67,6 +67,10 @@
     <string name="initialSetupSecondLanguageHint">Your second language&#8230;</string>
     <string name="initialSetupStatus">Status</string>
     <string name="initialSetupStatusHint">Your message to the world&#8230;?</string>
+    <string name="initialSetupEmail">Email</string>
+    <string name="initialSetupEmailHint">YourEmail@provider.com</string>
+    <string name="initialSetupPhoneNumber">Phone Number</string>
+    <string name="initialSetupPhoneNumberHint">(888)-888-8888</string>
     <string name="initialSetupAddPet">Add Pet</string>
     <string name="doneButtonLabel">Done</string>
     <string name="skipButtonLabel">Skip</string>

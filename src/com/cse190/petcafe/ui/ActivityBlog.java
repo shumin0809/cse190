@@ -319,6 +319,8 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 			break;
 		case ACTIVITY_PROFILE:
 			intent = new Intent(this, ActivityProfile.class);
+			intent.putExtra("username", getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, ""));
+			intent.putExtra("fbuid", getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, ""));
 			break;
 		case ACTIVITY_NEWPOST:
 			intent = new Intent(this, ActivityNewPost.class);

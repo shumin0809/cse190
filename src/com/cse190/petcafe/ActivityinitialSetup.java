@@ -32,6 +32,8 @@ public class ActivityinitialSetup extends Activity {
 	private EditText firstLanguageInput;
 	private EditText secondLanguageInput;
 	private EditText statusInput;
+	private EditText emailInput;
+	private EditText phoneNumberInput;
 	private Button addPetButton;
 	private ListView petList;
 	private ProfilePictureView profPic;
@@ -57,6 +59,8 @@ public class ActivityinitialSetup extends Activity {
 		firstLanguageInput = (EditText)findViewById(R.id.firstLanguageInput);
 		secondLanguageInput = (EditText)findViewById(R.id.secondLanguageInput);
 		statusInput = (EditText)findViewById(R.id.statusInput);
+		emailInput = (EditText)findViewById(R.id.emailInput);
+		phoneNumberInput = (EditText)findViewById(R.id.phoneNumberInput);
 		addPetButton = (Button)findViewById(R.id.addPetButton);
 		petList = (ListView)findViewById(R.id.petList);
 		profPic = (ProfilePictureView)findViewById(R.id.profile_pic);
@@ -159,7 +163,9 @@ public class ActivityinitialSetup extends Activity {
 		NetworkHandler handler = NetworkHandler.getInstance();
 
 		// gotta change latitude, longitude, status
-		UserProfileInformation profile = new UserProfileInformation(fbuid, username, firstLanguageInput.getText().toString(), secondLanguageInput.getText().toString(), 0.0, 0.0, statusInput.getText().toString());
+		UserProfileInformation profile = new UserProfileInformation(fbuid, username, firstLanguageInput.getText().toString(), 
+				secondLanguageInput.getText().toString(), 0.0, 0.0, statusInput.getText().toString(), 
+				emailInput.getText().toString(), phoneNumberInput.getText().toString());
 		handler.modifyUser(profile);
 		for (PetInformation pet : pets)
 		{

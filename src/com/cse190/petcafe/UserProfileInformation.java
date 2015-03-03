@@ -11,7 +11,21 @@ public class UserProfileInformation
 	private String status;
 	//private int age;
 	// need space for profile picture.
+	private String email;
+	private String phoneNumber;
 	
+	public UserProfileInformation(String facebookUID) {
+		setFacebookUID("");
+		setUserName("");
+		setFirstLanguage("");
+		setSecondLanguage("");
+		setLatitude(0.0);
+		setLongitude(0.0);
+		setStatus("");
+		setEmail("");
+		setPhoneNumber("");
+		setFacebookUID(facebookUID);
+	}
 	
 	public UserProfileInformation(String facebookUID, String userName, 
 			String firstLanguage, String secondLanguage, double latitude, double longitude,
@@ -24,6 +38,23 @@ public class UserProfileInformation
 		setLatitude(latitude);
 		setLongitude(longitude);
 		setStatus(status);
+		setEmail("");
+		setPhoneNumber("");
+	}
+	
+	public UserProfileInformation(String facebookUID, String userName, 
+			String firstLanguage, String secondLanguage, double latitude, double longitude,
+			String status, String email, String phoneNumber)
+	{
+		setFacebookUID(facebookUID);
+		setUserName(userName);
+		setFirstLanguage(firstLanguage);
+		setSecondLanguage(secondLanguage);
+		setLatitude(latitude);
+		setLongitude(longitude);
+		setStatus(status);
+		setEmail(email);
+		setPhoneNumber(phoneNumber);
 	}
 	
 	/*
@@ -109,4 +140,20 @@ public class UserProfileInformation
 	public void setAge(int age) {
 		this.age = age;
 	}*/
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 }

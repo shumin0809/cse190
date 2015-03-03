@@ -106,6 +106,21 @@ public final class NetworkHandler extends Application {
 		return result; 
 	}
 	
+	public ArrayList<PetInformation> getMyPets(UserProfileInformation user)
+	{
+		ArrayList<PetInformation> result = null;
+		try
+		{
+			result = new GetMyPetsTask().execute(user).get();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			Log.e(GlobalStrings.LOGTAG, e.toString());
+		}
+		return result; 
+	}
+	
 	/**
 	 ************** ************** ************** **************
 	 ************** ************** ************** **************
@@ -151,7 +166,7 @@ public final class NetworkHandler extends Application {
         		{
         			JSONObject jo = ja.getJSONObject(0);
         			
-        			result = new UserProfileInformation(jo.getString("fb_id"), jo.getString("name"), jo.getString("first_lang"), jo.getString("second_lang"), jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("status"));
+        			result = new UserProfileInformation(jo.getString("fb_id"), jo.getString("name"), jo.getString("first_lang"), jo.getString("second_lang"), jo.getDouble("latitude"), jo.getDouble("longitude"), jo.getString("status"), jo.getString("email"), jo.getString("phone_number"));
         		}
         	}
         	catch (JSONException e)
@@ -336,6 +351,34 @@ public final class NetworkHandler extends Application {
 				{
 					JSONObject jo = ja.getJSONObject(0);
 					result = new PetInformation(jo.getString("name"), jo.getString("species"), jo.getString("breed"), jo.getString("gender"), jo.getInt("age"), jo.getString("description"), jo.getString("fb_id"));
+				}
+			}
+			catch (JSONException e)
+			{
+				e.printStackTrace();
+				Log.e(GlobalStrings.LOGTAG, e.toString());
+			}
+			
+			return result;
+		}
+	}
+	
+	private class GetMyPetsTask extends AsyncTask<Object, Void, ArrayList<PetInformation>>
+	{
+		@Override
+		protected ArrayList<PetInformation> doInBackground(Object... users)
+		{
+			UserProfileInformation user = (UserProfileInformation)users[0];
+			ArrayList<PetInformation> result = new ArrayList<PetInformation>();
+			
+			try
+			{
+				JSONArray ja = api.getMyPets(user);
+				
+				for(int i = 0; i < ja.length(); i++) {
+					JSONObject jo = ja.getJSONObject(i);
+					PetInformation pet = new PetInformation(jo.getString("name"), jo.getString("species"), jo.getString("breed"), jo.getString("gender"), jo.getInt("age"), jo.getString("description"), jo.getString("owner_id"));
+					result.add(pet);
 				}
 			}
 			catch (JSONException e)

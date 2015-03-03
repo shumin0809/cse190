@@ -106,8 +106,9 @@ public class ActivityMyFriends extends ActivityBase {
 					public void onClick(DialogInterface dialog, int which) {
 						if (which == 0)
 						{
-						    Intent intent = new Intent(ActivityMyFriends.this, ActivityMyFriendsProf.class);
-						    
+						    Intent intent = new Intent(ActivityMyFriends.this, ActivityProfile.class);
+						    intent.putExtra("username", listValues.get(position));
+						    intent.putExtra("fbuid", friends.get(position).getFacebookUID());
 						    startActivity(intent);
 							overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 						}

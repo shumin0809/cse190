@@ -142,10 +142,6 @@ public class MainActivity extends Activity {
                 if (user != null) {
                 	Log.i(GlobalStrings.LOGTAG, "You are now logged in");
 //                	final GraphUser userToPass = user;
-                    progressBar.setMessage("Logging in...");
-                    progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressBar.setIndeterminate(true);
-                    progressBar.show();
                     
                 	facebookUser = user;
                 	
@@ -160,7 +156,7 @@ public class MainActivity extends Activity {
                 	// invoke GET method to server to see if user already exists.
                 	// If user not exist invoke POST method to server
                 	
-                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "Korean", "Belgian", 0.0, 0.0, "FML");
+                	UserProfileInformation profile = new UserProfileInformation(user.getId(), user.getName(), "", "", 0.0, 0.0, "");
                 	UserProfileInformation myProfile = networkHandler.getUser(profile);
 
                 	if (myProfile == null)
@@ -576,6 +572,11 @@ public class MainActivity extends Activity {
         public void call(Session session, SessionState state,
                 Exception exception) {
             if (state.isOpened()) {
+                progressBar.setMessage("Logging in...");
+                progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progressBar.setIndeterminate(true);
+                progressBar.show();
+                
             	fbAccessToken = session.getAccessToken();
             	fbSession = session;
             	
