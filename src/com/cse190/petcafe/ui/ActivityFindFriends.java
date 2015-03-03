@@ -28,6 +28,11 @@ import android.widget.Toast;
 import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.R;
 
+/*
+ * Find People around you
+ * Add people to your friend lists
+ */
+
 public class ActivityFindFriends extends ActivityBase {
 
 	private static final String TAG = "ActivityFindFriends";
@@ -51,7 +56,10 @@ public class ActivityFindFriends extends ActivityBase {
 
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_findfriends);
+		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+
+		getLayoutInflater().inflate(R.layout.activity_findfriends, content,
+				true);
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
