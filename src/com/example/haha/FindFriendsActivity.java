@@ -206,7 +206,7 @@ public class FindFriendsActivity extends Activity {
 		});
 	}
 
-	// test sending location
+	// test sending location, could comment out below
 
 	private Button retrieveLocationButton;
 
