@@ -13,7 +13,7 @@
 	<classpathentry kind="lib" path="libs/quickblox-android-sdk-core-2.1.jar"/>
 	<classpathentry kind="lib" path="libs/nineoldandroids-2.4.0.jar"/>
 	<classpathentry kind="lib" path="/android-support-v7-appcompat/libs/android-support-v4.jar"/>
-	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
