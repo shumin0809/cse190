@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,10 +20,11 @@ import com.cse190.petcafe.R;
 
 public class ActivitySearchPosts extends ActivityBase {
 
-    private Button   mBtnSearch;
+    //private Button   mBtnSearch;
     private EditText mInput;
     private Spinner  mSpinnerType;
     private Spinner  mSpinnerTag;
+    private ImageView searchIcon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,11 +33,12 @@ public class ActivitySearchPosts extends ActivityBase {
         getLayoutInflater().inflate(R.layout.activity_searchposts, content, true);
 
         mInput       = (EditText) findViewById(R.id.search_input);
-        mBtnSearch   = (Button)   findViewById(R.id.search_button);
+        //mBtnSearch   = (Button)   findViewById(R.id.search_button);
         mSpinnerType = (Spinner)  findViewById(R.id.search_spinner_type);
         mSpinnerTag  = (Spinner)  findViewById(R.id.search_spinner_tag);
 
-        mBtnSearch.setOnClickListener(new OnClickListener() {
+        searchIcon = (ImageView) findViewById(R.id.search_icon);
+        searchIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(ActivitySearchPosts.this,
@@ -77,14 +79,14 @@ public class ActivitySearchPosts extends ActivityBase {
 
     // get the selected dropdown list value
     private void addListenerOnButton() {
-        mBtnSearch.setOnClickListener(new OnClickListener() {
+        searchIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 String searchText = mInput.getText().toString();
                 String type = String.valueOf(mSpinnerType.getSelectedItem());
                 String tag  = String.valueOf(mSpinnerTag.getSelectedItem());
 
-                Fragment fragment = (Fragment) PostListFragment
+                Fragment fragment = PostListFragment
                         .newInstance(FILTERED_POSTS, searchText, tag, type);
                 ((PostListFragment) fragment).loadFragment(ActivitySearchPosts.this);
             }
