@@ -16,10 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cse190.petcafe.ApplicationSingleton;
+import com.cse190.petcafe.ApplicationSingleton.TrackerName;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class ActivityBase extends ActionBarActivity {
 
@@ -44,10 +48,16 @@ public class ActivityBase extends ActionBarActivity {
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
 
+    protected Tracker mTracker;
+
     @Override
     protected void onStart() {
         super.onStart();
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        mTracker = ((ApplicationSingleton) getApplication()).getTracker(
+                TrackerName.APP_TRACKER);
+        mTracker.setScreenName(this.getClass().getName());
+        mTracker.send(new HitBuilders.AppViewBuilder().build());
     }
 
     @Override

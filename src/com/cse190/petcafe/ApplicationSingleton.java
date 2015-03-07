@@ -7,6 +7,7 @@ import java.util.Map;
 import android.app.Application;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.users.model.QBUser;
@@ -100,6 +101,12 @@ public class ApplicationSingleton extends Application {
             Tracker t = (trackerId == TrackerName.APP_TRACKER)
                                 ? analytics.newTracker(PROPERTY_ID)
                                 : analytics.newTracker(R.xml.global_tracker);
+
+            // setting global config by code since loading xml hangs application
+            analytics.setDryRun(false);
+            analytics.getLogger().setLogLevel(Logger.LogLevel.INFO);
+            analytics.setLocalDispatchPeriod(30);
+
             mTrackers.put(trackerId, t);
 
         }

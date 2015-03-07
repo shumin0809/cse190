@@ -1,7 +1,8 @@
 package com.cse190.petcafe.ui;
 
+import static com.cse190.petcafe.ApplicationSingleton.GA_ACTION_BTN;
+import static com.cse190.petcafe.ApplicationSingleton.GA_CATEGORY_UI;
 import static com.cse190.petcafe.ui.PostListFragment.FILTERED_POSTS;
-import static com.cse190.petcafe.ApplicationSingleton.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +22,6 @@ import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.ApplicationSingleton.TrackerName;
 import com.cse190.petcafe.R;
 import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 
 public class ActivitySearchPosts extends ActivityBase {
 
@@ -30,7 +30,6 @@ public class ActivitySearchPosts extends ActivityBase {
     private Spinner   mSpinnerTag;
     private ImageView mSearchIcon;
 
-    private Tracker mTracker;
     private Map<String, String> mSearchHit;
 
     @Override
