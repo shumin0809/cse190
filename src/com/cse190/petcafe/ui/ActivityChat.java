@@ -22,43 +22,55 @@ import com.cse190.petcafe.ui.ActivityBase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ActivityChat extends ActivityBase {
-    private ListView chatDialogsList;
+	private ListView chatDialogsList;
+	private ActivityChat activity;
+	private ProgressDialog progress;
+	
+	@SuppressWarnings("unused")
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+		getLayoutInflater().inflate(R.layout.activity_activity_chat, content, true);
+		
+		Intent i = getIntent();
+		String origin = i.getStringExtra("originClass");
 
-    @SuppressWarnings("unused")
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_activity_chat, content, true);
-
-        Intent i = getIntent();
-        String origin = i.getStringExtra("originClass");
-
-        chatDialogsList = (ListView)findViewById(R.id.chatLists);
-
-        QBRequestGetBuilder builder = new QBRequestGetBuilder();
-        builder.setPagesLimit(100);
-
-        QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
-        {
-            @Override
-            public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
-            {
-                List<Integer> userIDs = new ArrayList<Integer>();
-                for (QBDialog dialog : dialogs)
-                {
-                    userIDs.addAll(dialog.getOccupants());
-                }
-
+		chatDialogsList = (ListView)findViewById(R.id.chatLists);
+		
+		QBRequestGetBuilder builder = new QBRequestGetBuilder();
+		builder.setPagesLimit(100);
+		
+		activity = this;
+		
+        progress = new ProgressDialog(this);
+        progress.setMessage("Retrieving conversations...");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
+		
+		QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
+		{
+			@Override
+			public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
+			{
+				List<Integer> userIDs = new ArrayList<Integer>();
+				for (QBDialog dialog : dialogs)
+				{
+					userIDs.addAll(dialog.getOccupants());
+				}
+				
                 QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();
                 requestBuilder.setPage(1);
                 requestBuilder.setPerPage(userIDs.size());
@@ -72,6 +84,7 @@ public class ActivityChat extends ActivityBase {
                         // build list view
                         //
                         buildListView(dialogs);
+                        progress.dismiss();;
                     }
 
                     @Override
@@ -81,64 +94,60 @@ public class ActivityChat extends ActivityBase {
                     }
 
                 });
-            }
-
-            @Override
-            public void onError(List<String> errors)
-            {
+			}
+			
+			@Override
+			public void onError(List<String> errors)
+			{
                 AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityChat.this);
                 dialog.setMessage("get dialogs errors: " + errors).create().show();
-            }
-        });
-    }
-
+			}
+		});
+	}
+	
     private void buildListView(List<QBDialog> dialogs){
         final ChatDialogAdapter adapter = new ChatDialogAdapter(dialogs, ActivityChat.this);
         chatDialogsList.setAdapter(adapter);
-
         // choose dialog
         //
-        /*
+        
         chatDialogsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+            
+        	@Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 QBDialog selectedDialog = (QBDialog)adapter.getItem(position);
-
+                
+                Intent i = new Intent(activity.getBaseContext(), ActivityDialog.class);
+                
+                
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ChatActivity.EXTRA_DIALOG, (QBDialog)adapter.getItem(position));
-
-                // group
-                if(selectedDialog.getType().equals(QBDialogType.GROUP)){
-                    bundle.putSerializable(ChatActivity.EXTRA_MODE, ChatActivity.Mode.GROUP);
-
-                // private
-                } else {
-                    bundle.putSerializable(ChatActivity.EXTRA_MODE, ChatActivity.Mode.PRIVATE);
-                }
+                bundle.putSerializable(ActivityDialog.EXTRA_DIALOG, selectedDialog);
 
                 // Open chat activity
                 //
-                ChatActivity.start(DialogsActivity.this, bundle);
+                i.putExtras(bundle);
+                startActivity(i);            
             }
-        });*/
+
+        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.activity_chat, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.activity_chat, menu);
+		return true;
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Handle action bar item clicks here. The action bar will
+		// automatically handle clicks on the Home/Up button, so long
+		// as you specify a parent activity in AndroidManifest.xml.
+		int id = item.getItemId();
+		if (id == R.id.action_settings) {
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

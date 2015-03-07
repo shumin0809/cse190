@@ -4,7 +4,10 @@
     <string name="app_name">petcafe</string>
     <string name="actionbar_title">Pet Cafe</string>
     <string name="icon_content_description">This is the content description.</string>
-
+    <string name="cat">Meow</string>
+    <string name="dog">Bark</string>
+    <string name="cat_description">This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. This is a cat. </string>
+    <string name="dog_description">This is a dog.</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
@@ -16,6 +19,7 @@
         <item>Profile</item>
         <item>My Blog</item>
         <item>Friends Posts</item>
+        <item>New Post</item>
         <item>Search Posts</item>
         <item>My Friends</item>
         <item>Find Friends</item>
@@ -36,11 +40,15 @@
     </array>
 
     <string-array name="pet_species">
-        <item>Cat</item>
         <item>Dog</item>
+        <item>Cat</item>
         <item>Rabbit</item>
         <item>Pig</item>
         <item>Other</item>
+    </string-array>
+    <string-array name="genders">
+        <item>M</item>
+        <item>F</item>
     </string-array>
 
     <!-- post-related -->
@@ -66,6 +74,10 @@
     <string name="initialSetupSecondLanguageHint">Your second language&#8230;</string>
     <string name="initialSetupStatus">Status</string>
     <string name="initialSetupStatusHint">Your message to the world&#8230;?</string>
+    <string name="initialSetupEmail">Email</string>
+    <string name="initialSetupEmailHint">YourEmail@provider.com</string>
+    <string name="initialSetupPhoneNumber">Phone Number</string>
+    <string name="initialSetupPhoneNumberHint">(888)-888-8888</string>
     <string name="initialSetupAddPet">Add Pet</string>
     <string name="doneButtonLabel">Done</string>
     <string name="skipButtonLabel">Skip</string>
@@ -83,6 +95,9 @@
     <string name="addPetDialogDescriptionHint">Enter a brief desription of your pet!</string>
     <string name="title_activity_activity_chat">ActivityChat</string>
     <string name="title_activity_actvitiy_dialog">ActvitiyDialog</string>
+    <string name="chatButtonDescription">Button to initiate chat</string>
+    <string name="title_activity_activity_friend_request_reject">ActivityFriendRequestReject</string>
+    <string name="hello_world">Hello world!</string>
 
     <string name="viewpost_choose_tag">Choose a tag: </string>
     <string name="viewpost_choose_type">Choose a type:</string>

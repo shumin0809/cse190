@@ -32,7 +32,7 @@
             android:text="@string/addPetDialogPetName"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         
-        <EditText
+        <!-- EditText
             android:id="@+id/petSpeciesInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,6 +42,16 @@
             android:ems="10"
             android:inputType="text"
             android:hint="@string/addPetDialogPetSpeciesHint"
+            /-->
+        
+        <Spinner 
+            android:id="@+id/petSpeciesInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petSpeciesLabel"
+            android:layout_toRightOf="@+id/petSpeciesLabel"
+            android:layout_below="@+id/petNameInput"
+            android:spinnerMode="dropdown"
             />
         
         <TextView
@@ -76,7 +86,7 @@
             android:text="@string/addPetDialogPetBreed"
             android:textAppearance="?android:attr/textAppearanceSmall" />
         
-		<EditText
+		<!-- EditText
             android:id="@+id/petGenderInput"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -86,7 +96,15 @@
             android:ems="10"
             android:inputType="text"
             android:hint="@string/addPetDialogPetGenderHint"
-            />
+            /-->
+        
+        <Spinner
+			android:id="@+id/petGenderInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/petGenderLabel"
+            android:layout_toRightOf="@+id/petGenderLabel"
+            android:layout_below="@+id/petBreedInput" />
         
         <TextView
             android:id="@+id/petGenderLabel"
@@ -106,7 +124,7 @@
             android:layout_toRightOf="@+id/petAgeLabel"
             android:layout_below="@+id/petGenderInput"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="number"
             android:hint="@string/addPetDialogPetAgeHint"
             />
         
