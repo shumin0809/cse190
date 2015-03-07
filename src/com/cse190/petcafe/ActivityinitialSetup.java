@@ -112,7 +112,7 @@ public class ActivityinitialSetup extends Activity {
 	    final View view = inflater.inflate(R.layout.add_pet_alert_dialog, null);
 	    final Spinner speciesList = (Spinner) view.findViewById(R.id.petSpeciesInput);
 	    final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-	            R.array.petSpecies, android.R.layout.simple_spinner_item);
+	            R.array.pet_species, android.R.layout.simple_spinner_item);
 	    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	    speciesList.setAdapter(adapter);
 	    

@@ -80,6 +80,7 @@ public class ActivityProfile extends ActivityBase {
 		PetListAdapter petadapter = new PetListAdapter(this, petArrList, petNames, petimgid);
 		petlist.setAdapter(petadapter);
 		
+		/*
 		// New Post Menu Item
 		newpost = (ImageView) findViewById(R.id.new_post);
 		newpost.setImageResource(R.drawable.ic_editprof);
@@ -92,7 +93,7 @@ public class ActivityProfile extends ActivityBase {
 				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 				
 			}
-		});
+		});*/
 	}
 
 	public class ProfileListAdapter extends ArrayAdapter<String> {

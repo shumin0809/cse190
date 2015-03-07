@@ -75,8 +75,7 @@ public class ActivityViewPost extends ActivityBase {
                 // author name
                 TextView authorText = (TextView) findViewById(R.id.post_author);
 
-                mUserProfile = new UserProfileInformation();
-                mUserProfile.setFacebookUID(postObj.getString("author_id"));
+                mUserProfile = new UserProfileInformation(postObj.getString("author_id"));
                 mUserProfile = NetworkHandler.getInstance().getUser(mUserProfile);
 
                 authorText.setText(mUserProfile.getUserName());
