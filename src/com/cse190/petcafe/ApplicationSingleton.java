@@ -13,9 +13,10 @@ import com.quickblox.users.model.QBUser;
 
 public class ApplicationSingleton extends Application {
 
-    private String PROPERTY_ID = "UA-53522450-2";
-    private static final String TAG = "MyApp";
+    private static final String PROPERTY_ID = "UA-53522450-2";
     public static int GENERAL_TRACKER = 0;
+    public static String GA_CATEGORY_UI = "UI Action";
+    public static String GA_ACTION_BTN = "Button Clicked";
 
     private QBUser currentUser;
 
@@ -24,8 +25,8 @@ public class ApplicationSingleton extends Application {
 
     // GoOgle Analytics Tracker
     public enum TrackerName {
-      APP_TRACKER,
-      GLOBAL_TRACKER,
+        APP_TRACKER,
+        GLOBAL_TRACKER,
     }
 
     HashMap<TrackerName, Tracker> mTrackers = new HashMap<TrackerName, Tracker>();
@@ -93,7 +94,7 @@ public class ApplicationSingleton extends Application {
         return opponentID;
     }
 
-    synchronized Tracker getTracker(TrackerName trackerId) {
+    public synchronized Tracker getTracker(TrackerName trackerId) {
         if (!mTrackers.containsKey(trackerId)) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             Tracker t = (trackerId == TrackerName.APP_TRACKER)

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
+import com.google.android.gms.analytics.GoogleAnalytics;
 
 public class ActivityBase extends ActionBarActivity {
 
@@ -42,6 +43,18 @@ public class ActivityBase extends ActionBarActivity {
 
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
