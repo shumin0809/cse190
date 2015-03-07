@@ -3,13 +3,18 @@ package com.cse190.petcafe.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,8 +30,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse190.petcafe.BlogPostInformation;
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.MainActivity;
+import com.cse190.petcafe.Petcafe_api;
 import com.cse190.petcafe.R;
+import com.cse190.petcafe.UserProfileInformation;
+
+/*
+ * 1. Find People around you
+ * 2. Add people to your friend lists
+ */
 
 public class ActivityFindFriends extends ActivityBase {
 
@@ -38,20 +52,28 @@ public class ActivityFindFriends extends ActivityBase {
 																	// Milliseconds
 
 	// Send My Location
-	private Location location;
 	private LocationManager locationManager;
 
 	// Find Friends
 	private ListView friendsList;
 	private FriendsAdapter friendsAdapter;
-	private ArrayList<Friend> friends = new ArrayList<Friend>();
+	// private ArrayList<UserProfileInformation> friends = new
+	// ArrayList<UserProfileInformation>();
+	private UserProfileInformation user = new UserProfileInformation();
+
+	private final Petcafe_api api = new Petcafe_api();
+	private JSONArray mNearPeople;
+	private JSONArray mPerson;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.activity_findfriends);
+		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+
+		getLayoutInflater().inflate(R.layout.activity_findfriends, content,
+				true);
 
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -59,51 +81,79 @@ public class ActivityFindFriends extends ActivityBase {
 				MINIMUM_TIME_BETWEEN_UPDATES,
 				MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, new MyLocationListener());
 
-		// send current location of current user
-		location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		sendMyLocation("user.getId", location.getLongitude(),
-				location.getLatitude());
+		String facebookUID = getSharedPreferences(GlobalStrings.PREFNAME, 0)
+				.getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
 
-		// display friends that within 5 miles distance
-		friends = getFriends(123); // pass in facebookUID
-		showFriends(friends);
+		Location location = locationManager
+				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+		user.setFacebookUID(facebookUID);
+		user.setLatitude(location.getLatitude());
+		user.setLongitude(location.getLongitude());
+		new UpdateLocationTask().execute(user);
+		new GetNearPeopleTask().execute(user);
 
 		// // testing current user location method, could be removed
-		retrieveLocationButton = (Button) findViewById(R.id.retrieve_location_button);
-		retrieveLocationButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showCurrentLocation();
-			}
-		});
+		// retrieveLocationButton = (Button)
+		// findViewById(R.id.retrieve_location_button);
+		// retrieveLocationButton.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View v) {
+		// showCurrentLocation();
+		// }
+		// });
+	}
 
+	private class UpdateLocationTask extends AsyncTask<Object, Void, Void> {
+		@Override
+		protected Void doInBackground(Object... params) {
+			UserProfileInformation user = (UserProfileInformation) params[0];
+			try {
+				mPerson = api.modifyUser(user);
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.d(TAG, e.toString());
+			}
+			return null;
+		}
+	}
+
+	private class GetNearPeopleTask extends
+			AsyncTask<Object, Void, ArrayList<UserProfileInformation>> {
+		@Override
+		protected ArrayList<UserProfileInformation> doInBackground(
+				Object... params) {
+			UserProfileInformation user = (UserProfileInformation) params[0];
+			ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
+			user.setLatitude(0);
+			user.setLongitude(0);
+			try {
+				mNearPeople = api.getNearPeople(user);
+				for (int i = 0; i < mNearPeople.length(); i++) {
+					UserProfileInformation friend = new UserProfileInformation();
+					friend.setUserName(mNearPeople.getJSONObject(i).getString(
+							"name"));
+					friend.setStatus(mNearPeople.getJSONObject(i).getString(
+							"status"));
+					friends.add(friend);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.d(TAG, e.toString());
+			}
+			return friends;
+		}
+
+		@Override
+		protected void onPostExecute(ArrayList<UserProfileInformation> friends) {
+			showFriends(user, friends);
+		}
 	}
 
 	/******** call this method to send current user location **********/
-	public void sendMyLocation(String facebookUID, double longitude,
-			double latitude) {
-
-		// send(facebookUID,longitude, latitude); => send to server
-	}
-
-	public ArrayList<Friend> getFriends(int facebookUID) {
-		ArrayList<Friend> friends = new ArrayList<Friend>();
-		// should have something like
-		// friends = getFriendListFromServer(facebookUID);
-
-		// hard code data, remove after real call
-		for (int i = 0; i < 4; i++) {
-			Friend friend = new Friend(R.drawable.ic_launcher, "dude " + i, i
-					+ " miles");
-			friends.add(friend);
-		}
-
-		return friends;
-	}
-
 	// click on a friend in friends list
-	public void showFriends(ArrayList<Friend> friends) {
+	public void showFriends(final UserProfileInformation user,
+			ArrayList<UserProfileInformation> friends) {
 		friendsList = (ListView) findViewById(R.id.friends_list);
 		friendsAdapter = new FriendsAdapter(this, friends);
 		friendsList.setAdapter(friendsAdapter);
@@ -113,9 +163,9 @@ public class ActivityFindFriends extends ActivityBase {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO future
-				Friend friend = (Friend) friendsList
+				UserProfileInformation friend = (UserProfileInformation) friendsList
 						.getItemAtPosition(position);
-				openAlert(friend.getUserName(), 123); // 123 is facebookUID
+				openAlert(user, friend);
 			}
 		});
 	}
@@ -126,19 +176,21 @@ public class ActivityFindFriends extends ActivityBase {
 		// sendFriendRequest(facebookUID);
 	}
 
-	private void openAlert(String name, final int facebookUID) {
+	private void openAlert(UserProfileInformation user,
+			UserProfileInformation friend) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				ActivityFindFriends.this);
 
 		alertDialogBuilder.setTitle("Add Friend?");
 
-		alertDialogBuilder.setMessage("Do you want to add " + name + " ?");
+		alertDialogBuilder.setMessage("Do you want to add "
+				+ friend.getUserName() + " ?");
 
 		alertDialogBuilder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-						addFriend(facebookUID);
+//						addFriend(facebookUID);
 					}
 
 				});
@@ -203,8 +255,9 @@ public class ActivityFindFriends extends ActivityBase {
 
 	/****************** Display nearly friends ********************/
 
-	private class FriendsAdapter extends ArrayAdapter<Friend> {
-		public FriendsAdapter(Context context, List<Friend> friends) {
+	private class FriendsAdapter extends ArrayAdapter<UserProfileInformation> {
+		public FriendsAdapter(Context context,
+				List<UserProfileInformation> friends) {
 			super(context, android.R.layout.simple_list_item_1, friends);
 		}
 
@@ -212,7 +265,7 @@ public class ActivityFindFriends extends ActivityBase {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			Log.i("FriendsAdapter", "getView");
 
-			Friend friend = getItem(position);
+			UserProfileInformation friend = getItem(position);
 
 			if (convertView == null) {
 				convertView = LayoutInflater.from(getContext()).inflate(
@@ -226,38 +279,13 @@ public class ActivityFindFriends extends ActivityBase {
 			TextView distance = (TextView) convertView
 					.findViewById(R.id.distance);
 
-			avatar.setImageResource(friend.getProfilePicture());
+			avatar.setImageResource(R.drawable.ic_launcher);
 			username.setText(friend.getUserName());
-			distance.setText(friend.getDistance());
+			distance.setText(friend.getStatus());
 
 			return convertView;
 		}
 
-	}
-
-	private class Friend {
-
-		private int profile_picture;
-		private String username;
-		private String distance;
-
-		public Friend(int profile_picture, String username, String distance) {
-			this.profile_picture = profile_picture;
-			this.username = username;
-			this.distance = distance;
-		}
-
-		public int getProfilePicture() {
-			return this.profile_picture;
-		}
-
-		public String getUserName() {
-			return this.username;
-		}
-
-		public String getDistance() {
-			return this.distance;
-		}
 	}
 
 	// test sending location, could comment out below

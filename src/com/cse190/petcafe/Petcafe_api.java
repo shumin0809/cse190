@@ -1504,4 +1504,50 @@ public class Petcafe_api {
         j.put(key, val);
         return j;
     }
+    
+    
+    // get near people 
+    public JSONArray getUserByLocation(UserProfileInformation person) throws JSONException{
+        try {
+            client = new HttpPost(url + "user");
+            JSONArray ja = new JSONArray();
+            jsonObject = new JSONObject();
+            
+            jsonObject.put("fb_id", person.getFacebookUID());
+            jsonObject.put("longitude", person.getLongitude());
+            jsonObject.put("latitude", person.getLatitude());
+            
+			ja.put(jsonObject);
+			json = ja.toString();
+			
+            StringEntity se = new StringEntity(json);
+            client.setEntity(se);
+	 		client.setHeader("METHOD", "GET");
+			client.setHeader("Content-type", "application/json");
+            
+            httpResponse = httpclient.execute(client);		// execute!
+            
+            /*
+            inputStream = httpResponse.getEntity().getContent();			// response
+ 
+            if(inputStream != null)
+                result = inputStreamToJSON(inputStream);
+            else {
+                result = null;
+                System.out.println("Retuning inputStream is null!");
+            }*/
+            
+            ResponseHandler<String> handler = new BasicResponseHandler();
+			body = handler.handleResponse(httpResponse);
+			
+			int code = httpResponse.getStatusLine().getStatusCode();		// used for debugging
+ 
+        } catch (Exception e) {
+            //Log.d("InputStream", e.getLocalizedMessage());
+			e.printStackTrace();
+			body = "[{msg:\"Request failed\"}]";
+        }
+        
+        return new JSONArray(body);
+	}
 }
