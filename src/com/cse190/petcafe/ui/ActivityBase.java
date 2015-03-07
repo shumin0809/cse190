@@ -130,7 +130,7 @@ public class ActivityBase extends ActionBarActivity {
 		return true;
 	}
 	*/
-	
+	/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
@@ -147,8 +147,8 @@ public class ActivityBase extends ActionBarActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
+	}*/
+	
 	private void selectItem(int position) {
 		// Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
 		Intent intent = null;
