@@ -44,274 +44,274 @@ import com.cse190.petcafe.UserProfileInformation;
 
 public class ActivityFindFriends extends ActivityBase {
 
-	private static final String TAG = "ActivityFindFriends";
+    private static final String TAG = "ActivityFindFriends";
 
-	private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 10; // in
-																		// Meters
-	private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in
-																	// Milliseconds
+    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 10; // in
+                                                                        // Meters
+    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000; // in
+                                                                    // Milliseconds
 
-	// Send My Location
-	private LocationManager locationManager;
+    // Send My Location
+    private LocationManager locationManager;
 
-	// Find Friends
-	private ListView friendsList;
-	private FriendsAdapter friendsAdapter;
-	// private ArrayList<UserProfileInformation> friends = new
-	// ArrayList<UserProfileInformation>();
-	private UserProfileInformation user = new UserProfileInformation();
+    // Find Friends
+    private ListView friendsList;
+    private FriendsAdapter friendsAdapter;
+    // private ArrayList<UserProfileInformation> friends = new
+    // ArrayList<UserProfileInformation>();
+    private UserProfileInformation user = new UserProfileInformation();
 
-	private final Petcafe_api api = new Petcafe_api();
-	private JSONArray mNearPeople;
-	private JSONArray mPerson;
+    private final Petcafe_api api = new Petcafe_api();
+    private JSONArray mNearPeople;
+    private JSONArray mPerson;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
-		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+        ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
 
-		getLayoutInflater().inflate(R.layout.activity_findfriends, content,
-				true);
+        getLayoutInflater().inflate(R.layout.activity_findfriends, content,
+                true);
 
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-				MINIMUM_TIME_BETWEEN_UPDATES,
-				MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, new MyLocationListener());
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                MINIMUM_TIME_BETWEEN_UPDATES,
+                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, new MyLocationListener());
 
-		String facebookUID = getSharedPreferences(GlobalStrings.PREFNAME, 0)
-				.getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+        String facebookUID = getSharedPreferences(GlobalStrings.PREFNAME, 0)
+                .getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
 
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = locationManager
+                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-		user.setFacebookUID(facebookUID);
-		user.setLatitude(location.getLatitude());
-		user.setLongitude(location.getLongitude());
-		new UpdateLocationTask().execute(user);
-		new GetNearPeopleTask().execute(user);
+        user.setFacebookUID(facebookUID);
+        user.setLatitude(location.getLatitude());
+        user.setLongitude(location.getLongitude());
+        new UpdateLocationTask().execute(user);
+        new GetNearPeopleTask().execute(user);
 
-		// // testing current user location method, could be removed
-		// retrieveLocationButton = (Button)
-		// findViewById(R.id.retrieve_location_button);
-		// retrieveLocationButton.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// showCurrentLocation();
-		// }
-		// });
-	}
+        // // testing current user location method, could be removed
+        // retrieveLocationButton = (Button)
+        // findViewById(R.id.retrieve_location_button);
+        // retrieveLocationButton.setOnClickListener(new OnClickListener() {
+        // @Override
+        // public void onClick(View v) {
+        // showCurrentLocation();
+        // }
+        // });
+    }
 
-	private class UpdateLocationTask extends AsyncTask<Object, Void, Void> {
-		@Override
-		protected Void doInBackground(Object... params) {
-			UserProfileInformation user = (UserProfileInformation) params[0];
-			try {
-				mPerson = api.modifyUser(user);
-			} catch (JSONException e) {
-				e.printStackTrace();
-				Log.d(TAG, e.toString());
-			}
-			return null;
-		}
-	}
+    private class UpdateLocationTask extends AsyncTask<Object, Void, Void> {
+        @Override
+        protected Void doInBackground(Object... params) {
+            UserProfileInformation user = (UserProfileInformation) params[0];
+            try {
+                mPerson = api.modifyUser(user);
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d(TAG, e.toString());
+            }
+            return null;
+        }
+    }
 
-	private class GetNearPeopleTask extends
-			AsyncTask<Object, Void, ArrayList<UserProfileInformation>> {
-		@Override
-		protected ArrayList<UserProfileInformation> doInBackground(
-				Object... params) {
-			UserProfileInformation user = (UserProfileInformation) params[0];
-			ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
-			user.setLatitude(0);
-			user.setLongitude(0);
-			try {
-				mNearPeople = api.getNearPeople(user);
-				for (int i = 0; i < mNearPeople.length(); i++) {
-					UserProfileInformation friend = new UserProfileInformation();
-					friend.setUserName(mNearPeople.getJSONObject(i).getString(
-							"name"));
-					friend.setStatus(mNearPeople.getJSONObject(i).getString(
-							"status"));
-					friends.add(friend);
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-				Log.d(TAG, e.toString());
-			}
-			return friends;
-		}
+    private class GetNearPeopleTask extends
+            AsyncTask<Object, Void, ArrayList<UserProfileInformation>> {
+        @Override
+        protected ArrayList<UserProfileInformation> doInBackground(
+                Object... params) {
+            UserProfileInformation user = (UserProfileInformation) params[0];
+            ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
+            user.setLatitude(0);
+            user.setLongitude(0);
+            try {
+                mNearPeople = api.getUserByLocation(user);
+                for (int i = 0; i < mNearPeople.length(); i++) {
+                    UserProfileInformation friend = new UserProfileInformation();
+                    friend.setUserName(mNearPeople.getJSONObject(i).getString(
+                            "name"));
+                    friend.setStatus(mNearPeople.getJSONObject(i).getString(
+                            "status"));
+                    friends.add(friend);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d(TAG, e.toString());
+            }
+            return friends;
+        }
 
-		@Override
-		protected void onPostExecute(ArrayList<UserProfileInformation> friends) {
-			showFriends(user, friends);
-		}
-	}
+        @Override
+        protected void onPostExecute(ArrayList<UserProfileInformation> friends) {
+            showFriends(user, friends);
+        }
+    }
 
-	/******** call this method to send current user location **********/
-	// click on a friend in friends list
-	public void showFriends(final UserProfileInformation user,
-			ArrayList<UserProfileInformation> friends) {
-		friendsList = (ListView) findViewById(R.id.friends_list);
-		friendsAdapter = new FriendsAdapter(this, friends);
-		friendsList.setAdapter(friendsAdapter);
+    /******** call this method to send current user location **********/
+    // click on a friend in friends list
+    public void showFriends(final UserProfileInformation user,
+            ArrayList<UserProfileInformation> friends) {
+        friendsList = (ListView) findViewById(R.id.friends_list);
+        friendsAdapter = new FriendsAdapter(this, friends);
+        friendsList.setAdapter(friendsAdapter);
 
-		friendsList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				// TODO future
-				UserProfileInformation friend = (UserProfileInformation) friendsList
-						.getItemAtPosition(position);
-				openAlert(user, friend);
-			}
-		});
-	}
+        friendsList.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
+                // TODO future
+                UserProfileInformation friend = (UserProfileInformation) friendsList
+                        .getItemAtPosition(position);
+                openAlert(user, friend);
+            }
+        });
+    }
 
-	public void addFriend(int facebookUID) {
-		// send facebookUID request
-		// something like
-		// sendFriendRequest(facebookUID);
-	}
+    public void addFriend(int facebookUID) {
+        // send facebookUID request
+        // something like
+        // sendFriendRequest(facebookUID);
+    }
 
-	private void openAlert(UserProfileInformation user,
-			UserProfileInformation friend) {
+    private void openAlert(UserProfileInformation user,
+            UserProfileInformation friend) {
 
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				ActivityFindFriends.this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                ActivityFindFriends.this);
 
-		alertDialogBuilder.setTitle("Add Friend?");
+        alertDialogBuilder.setTitle("Add Friend?");
 
-		alertDialogBuilder.setMessage("Do you want to add "
-				+ friend.getUserName() + " ?");
+        alertDialogBuilder.setMessage("Do you want to add "
+                + friend.getUserName() + " ?");
 
-		alertDialogBuilder.setPositiveButton("Yes",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
 //						addFriend(facebookUID);
-					}
+                    }
 
-				});
+                });
 
-		alertDialogBuilder.setNegativeButton("No",
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						dialog.cancel();
-					}
+        alertDialogBuilder.setNegativeButton("No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
 
-				});
+                });
 
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		alertDialog.show();
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
 
-	}
+    }
 
-	private class MyLocationListener implements LocationListener {
+    private class MyLocationListener implements LocationListener {
 
-		public void onLocationChanged(Location location) {
+        public void onLocationChanged(Location location) {
 
-			String message = String.format(
+            String message = String.format(
 
-			"New Location \n Longitude: %1$s \n Latitude: %2$s",
+            "New Location \n Longitude: %1$s \n Latitude: %2$s",
 
-			location.getLongitude(), location.getLatitude()
+            location.getLongitude(), location.getLatitude()
 
-			);
+            );
 
-			Toast.makeText(ActivityFindFriends.this, message, Toast.LENGTH_LONG)
-					.show();
+            Toast.makeText(ActivityFindFriends.this, message, Toast.LENGTH_LONG)
+                    .show();
 
-		}
+        }
 
-		public void onStatusChanged(String s, int i, Bundle b) {
+        public void onStatusChanged(String s, int i, Bundle b) {
 
-			Toast.makeText(ActivityFindFriends.this, "Provider status changed",
+            Toast.makeText(ActivityFindFriends.this, "Provider status changed",
 
-			Toast.LENGTH_LONG).show();
-		}
+            Toast.LENGTH_LONG).show();
+        }
 
-		public void onProviderDisabled(String s) {
+        public void onProviderDisabled(String s) {
 
-			Toast.makeText(ActivityFindFriends.this,
+            Toast.makeText(ActivityFindFriends.this,
 
-			"Provider disabled by the user. GPS turned off",
+            "Provider disabled by the user. GPS turned off",
 
-			Toast.LENGTH_LONG).show();
+            Toast.LENGTH_LONG).show();
 
-		}
+        }
 
-		public void onProviderEnabled(String s) {
+        public void onProviderEnabled(String s) {
 
-			Toast.makeText(ActivityFindFriends.this,
+            Toast.makeText(ActivityFindFriends.this,
 
-			"Provider enabled by the user. GPS turned on",
+            "Provider enabled by the user. GPS turned on",
 
-			Toast.LENGTH_LONG).show();
+            Toast.LENGTH_LONG).show();
 
-		}
-	}
+        }
+    }
 
-	/****************** Display nearly friends ********************/
+    /****************** Display nearly friends ********************/
 
-	private class FriendsAdapter extends ArrayAdapter<UserProfileInformation> {
-		public FriendsAdapter(Context context,
-				List<UserProfileInformation> friends) {
-			super(context, android.R.layout.simple_list_item_1, friends);
-		}
+    private class FriendsAdapter extends ArrayAdapter<UserProfileInformation> {
+        public FriendsAdapter(Context context,
+                List<UserProfileInformation> friends) {
+            super(context, android.R.layout.simple_list_item_1, friends);
+        }
 
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			Log.i("FriendsAdapter", "getView");
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            Log.i("FriendsAdapter", "getView");
 
-			UserProfileInformation friend = getItem(position);
+            UserProfileInformation friend = getItem(position);
 
-			if (convertView == null) {
-				convertView = LayoutInflater.from(getContext()).inflate(
-						R.layout.list_item_friends, parent, false);
-			}
+            if (convertView == null) {
+                convertView = LayoutInflater.from(getContext()).inflate(
+                        R.layout.list_item_friends, parent, false);
+            }
 
-			ImageView avatar = (ImageView) convertView
-					.findViewById(R.id.profile_picture);
-			TextView username = (TextView) convertView
-					.findViewById(R.id.user_name);
-			TextView distance = (TextView) convertView
-					.findViewById(R.id.distance);
+            ImageView avatar = (ImageView) convertView
+                    .findViewById(R.id.profile_picture);
+            TextView username = (TextView) convertView
+                    .findViewById(R.id.user_name);
+            TextView distance = (TextView) convertView
+                    .findViewById(R.id.distance);
 
-			avatar.setImageResource(R.drawable.ic_launcher);
-			username.setText(friend.getUserName());
-			distance.setText(friend.getStatus());
+            avatar.setImageResource(R.drawable.ic_launcher);
+            username.setText(friend.getUserName());
+            distance.setText(friend.getStatus());
 
-			return convertView;
-		}
+            return convertView;
+        }
 
-	}
+    }
 
-	// test sending location, could comment out below
+    // test sending location, could comment out below
 
-	private Button retrieveLocationButton;
+    private Button retrieveLocationButton;
 
-	protected void showCurrentLocation() {
+    protected void showCurrentLocation() {
 
-		Location location = locationManager
-				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = locationManager
+                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-		if (location != null) {
+        if (location != null) {
 
-			String message = String.format(
+            String message = String.format(
 
-			"Current Location \n Longitude: %1$s \n Latitude: %2$s",
+            "Current Location \n Longitude: %1$s \n Latitude: %2$s",
 
-			location.getLongitude(), location.getLatitude()
+            location.getLongitude(), location.getLatitude()
 
-			);
+            );
 
-			Toast.makeText(ActivityFindFriends.this, message,
+            Toast.makeText(ActivityFindFriends.this, message,
 
-			Toast.LENGTH_LONG).show();
+            Toast.LENGTH_LONG).show();
 
-		}
+        }
 
-	}
+    }
 }

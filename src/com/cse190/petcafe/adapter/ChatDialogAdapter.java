@@ -73,7 +73,7 @@ public class ChatDialogAdapter extends BaseAdapter {
             Integer opponentID = ((ApplicationSingleton)ctx.getApplication()).getOpponentIDForPrivateDialog(dialog);
             QBUser user = ((ApplicationSingleton)ctx.getApplication()).getDialogsUsers().get(opponentID);
             if(user != null){
-                holder.name.setText(user.getLogin() == null ? user.getFullName() : user.getLogin());
+                holder.name.setText(user.getFullName());
             }
         }
 

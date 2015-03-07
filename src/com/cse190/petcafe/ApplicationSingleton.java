@@ -5,12 +5,18 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Application;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.analytics.Tracker;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.users.model.QBUser;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ApplicationSingleton extends Application {
 
@@ -111,5 +117,15 @@ public class ApplicationSingleton extends Application {
 
         }
         return mTrackers.get(trackerId);
+    }
+
+    public int getAppVersion() {
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            // should never happen
+            throw new RuntimeException("Could not get package name: " + e);
+        }
     }
 }
