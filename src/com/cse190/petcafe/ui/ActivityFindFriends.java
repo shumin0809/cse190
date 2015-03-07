@@ -1,5 +1,7 @@
 package com.cse190.petcafe.ui;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -92,16 +96,6 @@ public class ActivityFindFriends extends ActivityBase {
 		user.setLongitude(location.getLongitude());
 		new UpdateLocationTask().execute(user);
 		new GetNearPeopleTask().execute(user);
-
-		// // testing current user location method, could be removed
-		// retrieveLocationButton = (Button)
-		// findViewById(R.id.retrieve_location_button);
-		// retrieveLocationButton.setOnClickListener(new OnClickListener() {
-		// @Override
-		// public void onClick(View v) {
-		// showCurrentLocation();
-		// }
-		// });
 	}
 
 	private class UpdateLocationTask extends AsyncTask<Object, Void, Void> {
@@ -110,8 +104,7 @@ public class ActivityFindFriends extends ActivityBase {
 			UserProfileInformation user = (UserProfileInformation) params[0];
 			try {
 				api.modifyUser(user);
-				Log.d(TAG, "current user location: "
-						+ api.getUser(user).toString());
+				Log.d(TAG, "current user data: " + api.getUser(user).toString());
 			} catch (JSONException e) {
 				e.printStackTrace();
 				Log.d(TAG, e.toString());
@@ -128,11 +121,7 @@ public class ActivityFindFriends extends ActivityBase {
 			UserProfileInformation user = (UserProfileInformation) params[0];
 			ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
 			try {
-				mNearPeople = api.getNearPeople(user);
-				
-				Log.d(TAG, "user is: "
-						+ api.getUser(user).toString());
-				Log.d(TAG, "near friends are"+ mNearPeople.toString());
+				mNearPeople = api.getUserByLocation(user);
 				for (int i = 0; i < mNearPeople.length(); i++) {
 					UserProfileInformation friend = new UserProfileInformation();
 					friend.setUserName(mNearPeople.getJSONObject(i).getString(
@@ -151,8 +140,36 @@ public class ActivityFindFriends extends ActivityBase {
 		@Override
 		protected void onPostExecute(ArrayList<UserProfileInformation> friends) {
 			showFriends(user, friends);
+			// for(int i=0; i<friends.size(); i++) {
+			// new GetFBProfilePic().execute(friends.get(i).getFacebookUID());
+			// }
 		}
 	}
+
+	// private class GetFBProfilePic extends AsyncTask<Object, Void, Bitmap> {
+	// @Override
+	// protected Bitmap doInBackground(Object... params) {
+	// String authorId = (String) params[0];
+	// Bitmap image = null;
+	// try {
+	// URL imgUrl = new URL("https://graph.facebook.com/"
+	// + authorId + "/picture?type=large");
+	// InputStream in = (InputStream) imgUrl.getContent();
+	// image = BitmapFactory.decodeStream(in);
+	// } catch (Exception e) {
+	// Log.e("Cannot download image", e.toString());
+	// }
+	// return image;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute (Bitmap image) {
+	// if (image != null) {
+	// ImageView profilePic = (ImageView) findViewById(R.id.prof_pic);
+	// profilePic.setImageBitmap(image);
+	// }
+	// }
+	// }
 
 	/******** call this method to send current user location **********/
 	// click on a friend in friends list
@@ -180,8 +197,8 @@ public class ActivityFindFriends extends ActivityBase {
 		// sendFriendRequest(facebookUID);
 	}
 
-	private void openAlert(UserProfileInformation user,
-			UserProfileInformation friend) {
+	private void openAlert(final UserProfileInformation user,
+			final UserProfileInformation friend) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				ActivityFindFriends.this);
@@ -195,6 +212,9 @@ public class ActivityFindFriends extends ActivityBase {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						// addFriend(facebookUID);
+						Toast.makeText(ActivityFindFriends.this,
+								"Add " + friend.getUserName() + " Successfully",
+								Toast.LENGTH_LONG).show();
 					}
 
 				});
@@ -213,47 +233,25 @@ public class ActivityFindFriends extends ActivityBase {
 	}
 
 	private class MyLocationListener implements LocationListener {
-
 		public void onLocationChanged(Location location) {
-
-			String message = String.format(
-
-			"New Location \n Longitude: %1$s \n Latitude: %2$s",
-
-			location.getLongitude(), location.getLatitude()
-
-			);
-
-			Toast.makeText(ActivityFindFriends.this, message, Toast.LENGTH_LONG)
-					.show();
-
+			new UpdateLocationTask().execute(user); // change listener here
 		}
 
 		public void onStatusChanged(String s, int i, Bundle b) {
-
 			Toast.makeText(ActivityFindFriends.this, "Provider status changed",
-
-			Toast.LENGTH_LONG).show();
+					Toast.LENGTH_LONG).show();
 		}
 
 		public void onProviderDisabled(String s) {
-
 			Toast.makeText(ActivityFindFriends.this,
-
-			"Provider disabled by the user. GPS turned off",
-
-			Toast.LENGTH_LONG).show();
-
+					"Provider disabled by the user. GPS turned off",
+					Toast.LENGTH_LONG).show();
 		}
 
 		public void onProviderEnabled(String s) {
-
 			Toast.makeText(ActivityFindFriends.this,
-
-			"Provider enabled by the user. GPS turned on",
-
-			Toast.LENGTH_LONG).show();
-
+					"Provider enabled by the user. GPS turned on",
+					Toast.LENGTH_LONG).show();
 		}
 	}
 

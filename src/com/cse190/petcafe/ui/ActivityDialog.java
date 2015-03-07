@@ -103,7 +103,7 @@ public class ActivityDialog extends Activity {
 
         if (((ApplicationSingleton)getApplication()).getDialogsUsers().get(opponentID) != null)
         {
-        	companionLabel.setText(((ApplicationSingleton)getApplication()).getDialogsUsers().get(opponentID).getLogin());
+        	companionLabel.setText(((ApplicationSingleton)getApplication()).getDialogsUsers().get(opponentID).getFullName());
 	        loadChatHistory();
         }
 /*        
