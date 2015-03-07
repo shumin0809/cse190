@@ -34,6 +34,7 @@ import android.widget.TextView;
 import com.cse190.petcafe.ApplicationSingleton;
 import com.astuetz.PagerSlidingTabStrip;
 import com.astuetz.PagerSlidingTabStrip.IconTabProvider;
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.SampleListFragment;
@@ -45,6 +46,7 @@ import com.cse190.petcafe.ui.ActivityMyFriends;
 import com.cse190.petcafe.ui.ActivityNewPost;
 import com.cse190.petcafe.ui.ActivityProfile;
 import com.cse190.petcafe.ui.ActivitySearchPosts;
+import com.facebook.widget.ProfilePictureView;
 import com.flavienlaurent.notboringactionbar.AlphaForegroundColorSpan;
 import com.flavienlaurent.notboringactionbar.KenBurnsSupportView;
 import com.nineoldandroids.view.ViewHelper;
@@ -72,7 +74,9 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 	private int mMinHeaderHeight;
 	private int mHeaderHeight;
 	private int mMinHeaderTranslation;
+	private String fbuid;
 	private ImageView mHeaderLogo;
+	private ProfilePictureView profPic;
 
 	private RectF mRect1 = new RectF();
 	private RectF mRect2 = new RectF();
@@ -91,6 +95,7 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 	private final int ACTIVITY_SEARCHPOSTS = 3;
 	private final int ACTIVITY_MYFRIENDS = 4;
 	private final int ACTIVITY_FINDFRIENDS = 5;
+	private final int ACTIVITY_CHAT = 6;
 
 	public String[] mDrawerTitles;
 	public DrawerLayout mDrawerLayout;
@@ -118,6 +123,12 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 		setSupportActionBar(toolbar);
 		icon = (ImageView) findViewById(R.id.icon);
 		title = (TextView) findViewById(R.id.title);
+		
+		fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+		profPic = (ProfilePictureView)findViewById(R.id.activity_blog_profpic);
+		
+		profPic.setCropped(true);
+		profPic.setProfileId(fbuid);
 
 		mHeaderPicture = (KenBurnsSupportView) findViewById(R.id.header_picture);
 		mHeaderPicture.setResourceIds(R.drawable.pic0, R.drawable.pic1);
@@ -146,7 +157,7 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		mDrawerView = (LinearLayout) findViewById(R.id.drawer);
-		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[6];
+		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[7];
 		drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_launcher, "Blogs");
 		drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_launcher, "Profile");
 		drawerItem[2] = new ObjectDrawerItem(R.drawable.ic_launcher, "New Post");
@@ -156,64 +167,15 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 				"My Friends");
 		drawerItem[5] = new ObjectDrawerItem(R.drawable.ic_launcher,
 				"Find Friends");
+		drawerItem[6] = new ObjectDrawerItem(R.drawable.ic_launcher,
+				"Chats");
 
 		DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
 				R.layout.listitem_drawer, drawerItem);
 
 		mDrawerList.setAdapter(adapter);
 		mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
-
-        getAllChatDialogs();
-
 	}
-
-        private void getAllChatDialogs()
-    {
-        QBRequestGetBuilder builder = new QBRequestGetBuilder();
-        builder.setPagesLimit(100);
-        
-        QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
-        {
-            @Override
-            public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
-            {
-                List<Integer> userIDs = new ArrayList<Integer>();
-                for (QBDialog dialog : dialogs)
-                {
-                    userIDs.addAll(dialog.getOccupants());
-                }
-                
-                QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();
-                requestBuilder.setPage(1);
-                requestBuilder.setPerPage(userIDs.size());
-                //
-                QBUsers.getUsersByIDs(userIDs, requestBuilder, new QBEntityCallbackImpl<ArrayList<QBUser>>() {
-                    @Override
-                    public void onSuccess(ArrayList<QBUser> users, Bundle params) {
-
-                        ((ApplicationSingleton)getApplication()).setDialogsUsers(users);
-
-                        // build list view
-                        //
-                    }
-
-                    @Override
-                    public void onError(List<String> errors) {
-                        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityBlog.this);
-                        dialog.setMessage("get occupants errors: " + errors).create().show();
-                    }
-
-                });
-            }
-            
-            @Override
-            public void onError(List<String> errors)
-            {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityBlog.this);
-                dialog.setMessage("get dialogs errors: " + errors).create().show();
-            }
-        });
-    }
 
 	@Override
 	public void onPageScrollStateChanged(int arg0) {
@@ -357,6 +319,8 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 			break;
 		case ACTIVITY_PROFILE:
 			intent = new Intent(this, ActivityProfile.class);
+			intent.putExtra("username", getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, ""));
+			intent.putExtra("fbuid", getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, ""));
 			break;
 		case ACTIVITY_NEWPOST:
 			intent = new Intent(this, ActivityNewPost.class);
@@ -369,6 +333,9 @@ public class ActivityBlog extends ActionBarActivity implements ScrollTabHolder,
 			break;
 		case ACTIVITY_FINDFRIENDS:
 			intent = new Intent(this, ActivityFindFriends.class);
+			break;
+		case ACTIVITY_CHAT:
+			intent = new Intent(this, ActivityChat.class);
 			break;
 		default:
 			break;

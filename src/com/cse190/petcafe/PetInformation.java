@@ -9,6 +9,16 @@ public class PetInformation {
 	private String petDescription;
 	private String petOwnerFacebookID;
 	
+	public PetInformation(String petOnwerFacebookID) {
+		this.setPetOwnerFacebookID(petOnwerFacebookID);
+		this.setPetName("");
+		this.setPetSpecies("");
+		this.setPetBreed("");
+		this.setPetGender("");
+		this.setPetAge(0);
+		this.setPetDescription("");
+	}
+	
 	public PetInformation(String petName, String petSpecies, String petBreed, String petGender, int petAge, String petDescription, String petOwnerFacebookID)
 	{
 		this.setPetName(petName);

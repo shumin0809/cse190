@@ -65,6 +65,8 @@ public class Petcafe_api {
             //jsonObject.put("Available Time", person.availableTime());
             jsonObject.put("status", person.getStatus());
             //jsonObject.put("age",  person.getAge());
+            jsonObject.put("email", person.getEmail());
+            jsonObject.put("phone_number", person.getPhoneNumber());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -114,6 +116,8 @@ public class Petcafe_api {
             //jsonObject.put("Available Time", person.availableTime());
             jsonObject.put("status", person.getStatus());
             //jsonObject.put("age",  person.getAge());
+            jsonObject.put("email", person.getEmail());
+            jsonObject.put("phone_number", person.getPhoneNumber());
             
             jsonObject.put("key", makeKey("fb_id", person.getFacebookUID()));
             
@@ -245,7 +249,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
             
-            if(Integer.parseInt(person1.getFriendFacebookID()) < Integer.parseInt(person2.getFriendFacebookID())) {
+            if(Long.parseLong(person1.getFriendFacebookID()) < Long.parseLong(person2.getFriendFacebookID())) {
             	jsonObject.put("fb_id1", person1.getFriendFacebookID());
             	jsonObject.put("fb_id2", person2.getFriendFacebookID());
             }
@@ -761,11 +765,14 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
+            
             jsonObject.put("name", pet.getPetName());
             jsonObject.put("species", pet.getPetSpecies());
             jsonObject.put("breed", pet.getPetBreed());
             jsonObject.put("gender", pet.getPetGender());
             jsonObject.put("age", pet.getPetAge());
+            
+            //jsonObject.put("owner_id", pet.getPetOwnerFacebookID());
             
 			ja.put(jsonObject);
 			json = ja.toString();
@@ -807,7 +814,7 @@ public class Petcafe_api {
             JSONArray ja = new JSONArray();
             jsonObject = new JSONObject();
 
-            jsonObject.put("uid", person.getFacebookUID());
+            jsonObject.put("owner_id", person.getFacebookUID());
             
 			ja.put(jsonObject);
 			json = ja.toString();

@@ -22,17 +22,21 @@ import com.cse190.petcafe.ui.ActivityBase;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ActivityChat extends ActivityBase {
 	private ListView chatDialogsList;
-
+	private ActivityChat activity;
+	private ProgressDialog progress;
+	
 	@SuppressWarnings("unused")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,14 @@ public class ActivityChat extends ActivityBase {
 		
 		QBRequestGetBuilder builder = new QBRequestGetBuilder();
 		builder.setPagesLimit(100);
+		
+		activity = this;
+		
+        progress = new ProgressDialog(this);
+        progress.setMessage("Retrieving conversations...");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(true);
+        progress.show();
 		
 		QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
 		{
@@ -72,6 +84,7 @@ public class ActivityChat extends ActivityBase {
                         // build list view
                         //
                         buildListView(dialogs);
+                        progress.dismiss();;
                     }
 
                     @Override
@@ -95,32 +108,28 @@ public class ActivityChat extends ActivityBase {
     private void buildListView(List<QBDialog> dialogs){
         final ChatDialogAdapter adapter = new ChatDialogAdapter(dialogs, ActivityChat.this);
         chatDialogsList.setAdapter(adapter);
-
         // choose dialog
         //
-        /*
+        
         chatDialogsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
+            
+        	@Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 QBDialog selectedDialog = (QBDialog)adapter.getItem(position);
-
+                
+                Intent i = new Intent(activity.getBaseContext(), ActivityDialog.class);
+                
+                
                 Bundle bundle = new Bundle();
-                bundle.putSerializable(ChatActivity.EXTRA_DIALOG, (QBDialog)adapter.getItem(position));
-
-                // group
-                if(selectedDialog.getType().equals(QBDialogType.GROUP)){
-                    bundle.putSerializable(ChatActivity.EXTRA_MODE, ChatActivity.Mode.GROUP);
-
-                // private
-                } else {
-                    bundle.putSerializable(ChatActivity.EXTRA_MODE, ChatActivity.Mode.PRIVATE);
-                }
+                bundle.putSerializable(ActivityDialog.EXTRA_DIALOG, selectedDialog);
 
                 // Open chat activity
                 //
-                ChatActivity.start(DialogsActivity.this, bundle);
+                i.putExtras(bundle);
+                startActivity(i);            
             }
-        });*/
+
+        });
     }
 
 	@Override

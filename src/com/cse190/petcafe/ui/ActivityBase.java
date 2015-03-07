@@ -16,10 +16,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
+import com.facebook.widget.ProfilePictureView;
 
 public class ActivityBase extends ActionBarActivity {
 
@@ -29,6 +31,7 @@ public class ActivityBase extends ActionBarActivity {
 	private final int ACTIVITY_SEARCHPOSTS = 3;
 	private final int ACTIVITY_MYFRIENDS = 4;
 	private final int ACTIVITY_FINDFRIENDS = 5;
+	private final int ACTIVITY_CHAT = 6;
 
 	public String[] mDrawerTitles;
 	public DrawerLayout mDrawerLayout;
@@ -38,6 +41,9 @@ public class ActivityBase extends ActionBarActivity {
 	public ActionBarDrawerToggle mDrawerToggle;
 	public Toolbar toolbar;
 	public ImageView newpost;
+	
+	private String fbuid;
+	private ProfilePictureView profPic;
 
 	protected LinearLayout fullLayout;
 	protected FrameLayout actContent;
@@ -85,6 +91,11 @@ public class ActivityBase extends ActionBarActivity {
 			}
 		});
 		
+		fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+		profPic = (ProfilePictureView)findViewById(R.id.activity_base_profpic);
+		
+		profPic.setCropped(true);
+		profPic.setProfileId(fbuid);
 
 		// Navigation Drawer
 
@@ -93,7 +104,7 @@ public class ActivityBase extends ActionBarActivity {
 
 		mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
 		mDrawerView = (LinearLayout) findViewById(R.id.drawer);
-		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[6];
+		ObjectDrawerItem[] drawerItem = new ObjectDrawerItem[7];
 		drawerItem[0] = new ObjectDrawerItem(R.drawable.ic_launcher, "Blogs");
 		drawerItem[1] = new ObjectDrawerItem(R.drawable.ic_launcher, "Profile");
 		drawerItem[2] = new ObjectDrawerItem(R.drawable.ic_launcher, "New Post");
@@ -102,7 +113,9 @@ public class ActivityBase extends ActionBarActivity {
 				"My Friends");
 		drawerItem[5] = new ObjectDrawerItem(R.drawable.ic_launcher,
 				"Find Friends");
-
+		drawerItem[6] = new ObjectDrawerItem(R.drawable.ic_launcher,
+				"Chats");
+		
 		DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this,
 				R.layout.listitem_drawer, drawerItem);
 
@@ -117,7 +130,7 @@ public class ActivityBase extends ActionBarActivity {
 		return true;
 	}
 	*/
-	
+	/*
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent intent = null;
@@ -134,14 +147,14 @@ public class ActivityBase extends ActionBarActivity {
 		default:
 			return super.onOptionsItemSelected(item);
 		}
-	}
-
+	}*/
+	
 	private void selectItem(int position) {
 		// Toast.makeText(this, R.string.app_name, Toast.LENGTH_SHORT).show();
 		Intent intent = null;
 		switch (position) {
 		case ACTIVITY_BLOG:
-			intent = new Intent(this, MainActivity.class);
+			intent = new Intent(this, ActivityBlog.class);
 			break;
 		case ACTIVITY_PROFILE:
 			intent = new Intent(this, ActivityProfile.class);
@@ -157,6 +170,9 @@ public class ActivityBase extends ActionBarActivity {
 			break;
 		case ACTIVITY_FINDFRIENDS:
 			intent = new Intent(this, ActivityFindFriends.class);
+			break;
+		case ACTIVITY_CHAT:
+			intent = new Intent(this, ActivityChat.class);
 			break;
 		default:
 			break;
