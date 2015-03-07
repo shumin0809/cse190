@@ -53,6 +53,11 @@
             android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.ActivityMyBlog"
+            android:configChanges="orientation|screenSize"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.ActivityProfile"
             android:configChanges="orientation|screenSize"
             android:noHistory="true"

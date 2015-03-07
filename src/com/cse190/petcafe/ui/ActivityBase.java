@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
 import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.ApplicationSingleton.TrackerName;
 import com.cse190.petcafe.ObjectDrawerItem;
@@ -24,6 +25,10 @@ import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+
+import com.cse190.petcafe.GlobalStrings;
+import com.facebook.widget.ProfilePictureView;
+
 
 public class ActivityBase extends ActionBarActivity {
 
@@ -45,6 +50,8 @@ public class ActivityBase extends ActionBarActivity {
     private LinearLayout mDrawerView;
     private CharSequence mTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+	private ProfilePictureView profPic;
+	private String fbuid;
 
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
@@ -109,6 +116,8 @@ public class ActivityBase extends ActionBarActivity {
             break;
         case ACTIVITY_PROFILE:
             mPendingIntent = new Intent(this, ActivityProfile.class);
+            mPendingIntent.putExtra("fbuid", fbuid);
+            mPendingIntent.putExtra("username", getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, ""));
             break;
         case ACTIVITY_MYBLOG:
             mPendingIntent = new Intent(this, ActivityMyBlog.class);
@@ -163,6 +172,12 @@ public class ActivityBase extends ActionBarActivity {
     }
 
     void setupNavDrawer() {
+		fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
+		profPic = (ProfilePictureView)findViewById(R.id.activity_base_profpic);
+
+		profPic.setCropped(true);
+		profPic.setProfileId(fbuid);
+
         mDrawerLayout = (DrawerLayout) findViewById(R.id.my_drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
         mDrawerTitles = getResources().getStringArray(R.array.nav_drawer_items);
