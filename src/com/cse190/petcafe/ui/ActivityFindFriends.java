@@ -109,7 +109,9 @@ public class ActivityFindFriends extends ActivityBase {
 		protected Void doInBackground(Object... params) {
 			UserProfileInformation user = (UserProfileInformation) params[0];
 			try {
-				mPerson = api.modifyUser(user);
+				api.modifyUser(user);
+				Log.d(TAG, "current user location: "
+						+ api.getUser(user).toString());
 			} catch (JSONException e) {
 				e.printStackTrace();
 				Log.d(TAG, e.toString());
@@ -125,10 +127,12 @@ public class ActivityFindFriends extends ActivityBase {
 				Object... params) {
 			UserProfileInformation user = (UserProfileInformation) params[0];
 			ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
-			user.setLatitude(0);
-			user.setLongitude(0);
 			try {
 				mNearPeople = api.getNearPeople(user);
+				
+				Log.d(TAG, "user is: "
+						+ api.getUser(user).toString());
+				Log.d(TAG, "near friends are"+ mNearPeople.toString());
 				for (int i = 0; i < mNearPeople.length(); i++) {
 					UserProfileInformation friend = new UserProfileInformation();
 					friend.setUserName(mNearPeople.getJSONObject(i).getString(
@@ -190,7 +194,7 @@ public class ActivityFindFriends extends ActivityBase {
 		alertDialogBuilder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
-//						addFriend(facebookUID);
+						// addFriend(facebookUID);
 					}
 
 				});

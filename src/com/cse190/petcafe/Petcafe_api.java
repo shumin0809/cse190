@@ -1435,7 +1435,7 @@ public class Petcafe_api {
 
             jsonObject.put("longitude", user.getLongitude());
             jsonObject.put("latitude", user.getLatitude());
-            //jsonObject.put("radius", );
+            jsonObject.put("radius", 100);
             //jsonObject.put("pets", );
             //jsonObject.put("first_lang", );
             jsonObject.put("fb_id", user.getFacebookUID());
