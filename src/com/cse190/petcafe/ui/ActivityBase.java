@@ -29,6 +29,7 @@ public class ActivityBase extends ActionBarActivity {
     private static final int ACTIVITY_SEARCHPOSTS  = 4;
     private static final int ACTIVITY_MYFRIENDS    = 5;
     private static final int ACTIVITY_FINDFRIENDS  = 6;
+    private static final int ACTIVITY_CHAT = 7;
 
 
     private Intent mPendingIntent;
@@ -100,6 +101,9 @@ public class ActivityBase extends ActionBarActivity {
             break;
         case ACTIVITY_FRIENDSPOSTS:
             mPendingIntent = new Intent(this, ActivityMyFriendsPosts.class);
+            break;
+        case ACTIVITY_CHAT:
+            mPendingIntent = new Intent(this, ActivityChat.class);
             break;
         default:
         }
