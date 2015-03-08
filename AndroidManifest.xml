@@ -117,6 +117,9 @@
             android:name="com.cse190.petcafe.ui.ActivityFriendRequestReject"
             android:label="@string/title_activity_activity_friend_request_reject" >
         </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6537c973a3dbad5d5fb62e8fcc77c6438c6a052d" />
     </application>
 
 </manifest>

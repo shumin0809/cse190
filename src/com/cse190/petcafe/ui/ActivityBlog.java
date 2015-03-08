@@ -93,7 +93,7 @@ public class ActivityBlog extends ActivityBase
 
         mHeaderLogo = (ImageView) findViewById(R.id.header_logo);
         mHeader = findViewById(R.id.header);
-
+        
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setOffscreenPageLimit(4);
 
@@ -110,7 +110,6 @@ public class ActivityBlog extends ActivityBase
         ViewHelper.setAlpha(getActionBarIconView(), 0f);
 
         getSupportActionBar().setBackgroundDrawable(null);
-
 //        setupNavDrawer();
     }
 

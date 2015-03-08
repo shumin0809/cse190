@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:id="@+id/act_layout"
+    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
