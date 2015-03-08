@@ -14,11 +14,7 @@ public class UserProfileInformation
     private String email;
     private String phoneNumber;
 
-    public UserProfileInformation(){
-    }
-
-    public UserProfileInformation(String facebookUID) {
-        setFacebookUID("");
+    public UserProfileInformation() {
         setUserName("");
         setFirstLanguage("");
         setSecondLanguage("");
@@ -27,7 +23,19 @@ public class UserProfileInformation
         setStatus("");
         setEmail("");
         setPhoneNumber("");
+        setFacebookUID("");
+    }
+
+    public UserProfileInformation(String facebookUID) {
         setFacebookUID(facebookUID);
+        setUserName("");
+        setFirstLanguage("");
+        setSecondLanguage("");
+        setLatitude(0.0);
+        setLongitude(0.0);
+        setStatus("");
+        setEmail("");
+        setPhoneNumber("");
     }
 
     public UserProfileInformation(String facebookUID, String userName,
