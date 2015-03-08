@@ -40,6 +40,7 @@ import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.Petcafe_api;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.UserProfileInformation;
+import com.facebook.widget.ProfilePictureView;
 
 /*
  * 1. Find People around you
@@ -68,6 +69,7 @@ public class ActivityFindFriends extends ActivityBase {
 	private final Petcafe_api api = new Petcafe_api();
 	private JSONArray mNearPeople;
 	private JSONArray mPerson;
+	private String facebookUID;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -85,7 +87,7 @@ public class ActivityFindFriends extends ActivityBase {
 				MINIMUM_TIME_BETWEEN_UPDATES,
 				MINIMUM_DISTANCE_CHANGE_FOR_UPDATES, new MyLocationListener());
 
-		String facebookUID = getSharedPreferences(GlobalStrings.PREFNAME, 0)
+		facebookUID = getSharedPreferences(GlobalStrings.PREFNAME, 0)
 				.getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
 
 		Location location = locationManager
@@ -128,6 +130,12 @@ public class ActivityFindFriends extends ActivityBase {
 							"name"));
 					friend.setStatus(mNearPeople.getJSONObject(i).getString(
 							"status"));
+					friend.setFacebookUID(mNearPeople.getJSONObject(i)
+							.getString("fb_id"));
+					friend.setEmail(mNearPeople.getJSONObject(i).getString(
+							"email"));
+					friend.setPhoneNumber(mNearPeople.getJSONObject(i)
+							.getString("phone_number"));
 					friends.add(friend);
 				}
 			} catch (JSONException e) {
@@ -186,7 +194,7 @@ public class ActivityFindFriends extends ActivityBase {
 				// TODO future
 				UserProfileInformation friend = (UserProfileInformation) friendsList
 						.getItemAtPosition(position);
-				openAlert(user, friend);
+				openAlert(friend);
 			}
 		});
 	}
@@ -197,22 +205,33 @@ public class ActivityFindFriends extends ActivityBase {
 		// sendFriendRequest(facebookUID);
 	}
 
-	private void openAlert(final UserProfileInformation user,
-			final UserProfileInformation friend) {
+	private void openAlert(final UserProfileInformation friend) {
 
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 				ActivityFindFriends.this);
 
-		alertDialogBuilder.setTitle("Add Friend?");
+		alertDialogBuilder.setTitle("Add Friend ?");
+		View view = getLayoutInflater().inflate(R.layout.find_friend_dialog,
+				null, false);
+		alertDialogBuilder.setView(view);
 
-		alertDialogBuilder.setMessage("Do you want to add "
-				+ friend.getUserName() + " ?");
+		ProfilePictureView profPic = (ProfilePictureView) view
+				.findViewById(R.id.prof_pic);
+		TextView userName = (TextView) view.findViewById(R.id.prof_name);
+		TextView userEmail = (TextView) view.findViewById(R.id.user_email);
+		TextView userPhone = (TextView) view.findViewById(R.id.user_phone);
+		userName.setText(friend.getUserName());
+		profPic.setCropped(true);
+		profPic.setProfileId(friend.getFacebookUID());
+		userEmail.setText("Email: " + friend.getEmail());
+		userPhone.setText("Phone: " + user.getPhoneNumber());
 
 		alertDialogBuilder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						// addFriend(facebookUID);
-						Toast.makeText(ActivityFindFriends.this,
+						Toast.makeText(
+								ActivityFindFriends.this,
 								"Add " + friend.getUserName() + " Successfully",
 								Toast.LENGTH_LONG).show();
 					}
