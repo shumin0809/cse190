@@ -73,9 +73,9 @@ public class ActivityBlog extends ActivityBase
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_blog);
-		ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
-        getLayoutInflater().inflate(R.layout.activity_blog, content, true);
+        setContentView(R.layout.activity_blog);
+		/*ViewGroup content = (ViewGroup) findViewById(R.id.content_frame);
+        getLayoutInflater().inflate(R.layout.activity_blog, content, true);*/
         // Paging Slider Strip
         mMinHeaderHeight = getResources().getDimensionPixelSize(
                 R.dimen.min_header_height);
@@ -111,7 +111,7 @@ public class ActivityBlog extends ActivityBase
 
         getSupportActionBar().setBackgroundDrawable(null);
 
-//        setupNavDrawer();
+        setupNavDrawer();
     }
 
     @Override
