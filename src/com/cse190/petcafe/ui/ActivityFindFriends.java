@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cse190.petcafe.BlogPostInformation;
+import com.cse190.petcafe.FriendInformation;
 import com.cse190.petcafe.GlobalStrings;
 import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.Petcafe_api;
@@ -120,10 +121,12 @@ public class ActivityFindFriends extends ActivityBase {
 		@Override
 		protected ArrayList<UserProfileInformation> doInBackground(
 				Object... params) {
-			UserProfileInformation user = (UserProfileInformation) params[0];
+			user = (UserProfileInformation) params[0];
 			ArrayList<UserProfileInformation> friends = new ArrayList<UserProfileInformation>();
 			try {
 				mNearPeople = api.getUserByLocation(user);
+				// Log.d(TAG, "my friends are : " +
+				// api.getFriends(user).toString());
 				for (int i = 0; i < mNearPeople.length(); i++) {
 					UserProfileInformation friend = new UserProfileInformation();
 					friend.setUserName(mNearPeople.getJSONObject(i).getString(
@@ -147,42 +150,13 @@ public class ActivityFindFriends extends ActivityBase {
 
 		@Override
 		protected void onPostExecute(ArrayList<UserProfileInformation> friends) {
-			showFriends(user, friends);
-			// for(int i=0; i<friends.size(); i++) {
-			// new GetFBProfilePic().execute(friends.get(i).getFacebookUID());
-			// }
+			showFriends(friends);
 		}
 	}
 
-	// private class GetFBProfilePic extends AsyncTask<Object, Void, Bitmap> {
-	// @Override
-	// protected Bitmap doInBackground(Object... params) {
-	// String authorId = (String) params[0];
-	// Bitmap image = null;
-	// try {
-	// URL imgUrl = new URL("https://graph.facebook.com/"
-	// + authorId + "/picture?type=large");
-	// InputStream in = (InputStream) imgUrl.getContent();
-	// image = BitmapFactory.decodeStream(in);
-	// } catch (Exception e) {
-	// Log.e("Cannot download image", e.toString());
-	// }
-	// return image;
-	// }
-	//
-	// @Override
-	// protected void onPostExecute (Bitmap image) {
-	// if (image != null) {
-	// ImageView profilePic = (ImageView) findViewById(R.id.prof_pic);
-	// profilePic.setImageBitmap(image);
-	// }
-	// }
-	// }
-
 	/******** call this method to send current user location **********/
 	// click on a friend in friends list
-	public void showFriends(final UserProfileInformation user,
-			ArrayList<UserProfileInformation> friends) {
+	public void showFriends(ArrayList<UserProfileInformation> friends) {
 		friendsList = (ListView) findViewById(R.id.friends_list);
 		friendsAdapter = new FriendsAdapter(this, friends);
 		friendsList.setAdapter(friendsAdapter);
@@ -229,11 +203,17 @@ public class ActivityFindFriends extends ActivityBase {
 		alertDialogBuilder.setPositiveButton("Yes",
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
+						UserProfileInformation user = new UserProfileInformation();
+						user.setFacebookUID(facebookUID);
+						new AddFriendTask().execute(user, friend);
 						// addFriend(facebookUID);
-						Toast.makeText(
-								ActivityFindFriends.this,
-								"Add " + friend.getUserName() + " Successfully",
-								Toast.LENGTH_LONG).show();
+						// FriendInformation f2 = new FriendInformation(friend
+						// .getFacebookUID(), friend.getUserName(), friend
+						// .getStatus());
+						// Toast.makeText(ActivityFindFriends.this,
+						// "You are " + user.getUserName(),
+						// Toast.LENGTH_LONG).show();
+						//
 					}
 
 				});
@@ -249,6 +229,46 @@ public class ActivityFindFriends extends ActivityBase {
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		alertDialog.show();
 
+	}
+
+	private class AddFriendTask extends AsyncTask<Object, Void, String> {
+		@Override
+		protected String doInBackground(Object... params) {
+			user = (UserProfileInformation) params[0];
+			UserProfileInformation friend = (UserProfileInformation) params[1];
+			String msg = "";
+			try {
+				JSONArray current_user = api.getUser(user);
+				FriendInformation f1 = new FriendInformation(current_user
+						.getJSONObject(0).getString("fb_id"), current_user
+						.getJSONObject(0).getString("name"), current_user
+						.getJSONObject(0).getString("status"));
+				FriendInformation f2 = new FriendInformation(
+						friend.getFacebookUID(), friend.getUserName(),
+						friend.getStatus());
+				JSONArray currentFriends = api.getFriends(user);
+				boolean alreadyFriend = currentFriends.toString().contains(
+						"\"fb_id\":\"" + friend.getFacebookUID() + "\"");
+				if (alreadyFriend) {
+					msg = "You already added " + friend.getUserName()
+							+ "id is: " + friend.getFacebookUID();
+				} else {
+					api.addFriend(f1, f2, false);
+					msg = "Add " + friend.getUserName() + " Successfully"
+							+ "id is: " + friend.getFacebookUID();
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+				Log.d(TAG, e.toString());
+			}
+			return msg;
+		}
+
+		@Override
+		protected void onPostExecute(String str) {
+			Toast.makeText(ActivityFindFriends.this, str, Toast.LENGTH_LONG)
+					.show();
+		}
 	}
 
 	private class MyLocationListener implements LocationListener {
@@ -335,4 +355,29 @@ public class ActivityFindFriends extends ActivityBase {
 		}
 
 	}
+
+	// private class GetFBProfilePic extends AsyncTask<Object, Void, Bitmap> {
+	// @Override
+	// protected Bitmap doInBackground(Object... params) {
+	// String authorId = (String) params[0];
+	// Bitmap image = null;
+	// try {
+	// URL imgUrl = new URL("https://graph.facebook.com/"
+	// + authorId + "/picture?type=large");
+	// InputStream in = (InputStream) imgUrl.getContent();
+	// image = BitmapFactory.decodeStream(in);
+	// } catch (Exception e) {
+	// Log.e("Cannot download image", e.toString());
+	// }
+	// return image;
+	// }
+	//
+	// @Override
+	// protected void onPostExecute (Bitmap image) {
+	// if (image != null) {
+	// ImageView profilePic = (ImageView) findViewById(R.id.prof_pic);
+	// profilePic.setImageBitmap(image);
+	// }
+	// }
+	// }
 }
