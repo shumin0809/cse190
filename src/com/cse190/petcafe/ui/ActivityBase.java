@@ -16,14 +16,22 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.cse190.petcafe.GlobalStrings;
+
+import com.cse190.petcafe.ApplicationSingleton;
+import com.cse190.petcafe.ApplicationSingleton.TrackerName;
 import com.cse190.petcafe.ObjectDrawerItem;
 import com.cse190.petcafe.R;
 import com.cse190.petcafe.adapter.DrawerItemCustomAdapter;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
+import com.cse190.petcafe.GlobalStrings;
 import com.facebook.widget.ProfilePictureView;
 
+
 public class ActivityBase extends ActionBarActivity {
-	
+
     private static final int ACTIVITY_BLOG         = 0;
     private static final int ACTIVITY_PROFILE      = 1;
     private static final int ACTIVITY_MYBLOG       = 2;
@@ -47,6 +55,24 @@ public class ActivityBase extends ActionBarActivity {
 
     protected LinearLayout fullLayout;
     protected FrameLayout actContent;
+
+    protected Tracker mTracker;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        mTracker = ((ApplicationSingleton) getApplication()).getTracker(
+                TrackerName.APP_TRACKER);
+        mTracker.setScreenName(this.getClass().getName());
+        mTracker.send(new HitBuilders.AppViewBuilder().build());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +119,7 @@ public class ActivityBase extends ActionBarActivity {
             mPendingIntent.putExtra("fbuid", fbuid);
             mPendingIntent.putExtra("username", getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, ""));
             break;
-        case ACTIVITY_MYBLOG:	
+        case ACTIVITY_MYBLOG:
             mPendingIntent = new Intent(this, ActivityMyBlog.class);
             break;
         case ACTIVITY_SEARCHPOSTS:
@@ -148,7 +174,7 @@ public class ActivityBase extends ActionBarActivity {
     void setupNavDrawer() {
 		fbuid = getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, "");
 		profPic = (ProfilePictureView)findViewById(R.id.activity_base_profpic);
-		
+
 		profPic.setCropped(true);
 		profPic.setProfileId(fbuid);
 
