@@ -57,8 +57,8 @@ public class ActivityFindFriends extends ActivityBase {
 	// Find Friends
 	private ListView friendsList;
 	private FriendsAdapter friendsAdapter;
-	// private ArrayList<UserProfileInformation> friends = new
-	// ArrayList<UserProfileInformation>();
+	 private ArrayList<UserProfileInformation> remaining_people = new
+	 ArrayList<UserProfileInformation>();
 	private UserProfileInformation user = new UserProfileInformation();
 
 	private final Petcafe_api api = new Petcafe_api();
@@ -87,11 +87,17 @@ public class ActivityFindFriends extends ActivityBase {
 		Location location = locationManager
 				.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-		user.setFacebookUID(facebookUID);
-		user.setLatitude(location.getLatitude());
-		user.setLongitude(location.getLongitude());
-		new UpdateLocationTask().execute(user);
-		new GetNearPeopleTask().execute(user);
+		if (location == null) {
+			Toast.makeText(
+					ActivityFindFriends.this,
+					"Couldn't find your location", Toast.LENGTH_LONG).show();
+		} else {
+			user.setFacebookUID(facebookUID);
+			user.setLatitude(location.getLatitude());
+			user.setLongitude(location.getLongitude());
+			new UpdateLocationTask().execute(user);
+			new GetNearPeopleTask().execute(user);
+		}
 	}
 
 	private class UpdateLocationTask extends AsyncTask<Object, Void, Void> {
@@ -148,37 +154,13 @@ public class ActivityFindFriends extends ActivityBase {
 		}
 	}
 
-	// private class GetFBProfilePic extends AsyncTask<Object, Void, Bitmap> {
-	// @Override
-	// protected Bitmap doInBackground(Object... params) {
-	// String authorId = (String) params[0];
-	// Bitmap image = null;
-	// try {
-	// URL imgUrl = new URL("https://graph.facebook.com/"
-	// + authorId + "/picture?type=large");
-	// InputStream in = (InputStream) imgUrl.getContent();
-	// image = BitmapFactory.decodeStream(in);
-	// } catch (Exception e) {
-	// Log.e("Cannot download image", e.toString());
-	// }
-	// return image;
-	// }
-	//
-	// @Override
-	// protected void onPostExecute (Bitmap image) {
-	// if (image != null) {
-	// ImageView profilePic = (ImageView) findViewById(R.id.prof_pic);
-	// profilePic.setImageBitmap(image);
-	// }
-	// }
-	// }
-
 	/******** call this method to send current user location **********/
 	// click on a friend in friends list
 	public void showFriends(final UserProfileInformation user,
 			ArrayList<UserProfileInformation> friends) {
+		remaining_people = friends;
 		friendsList = (ListView) findViewById(R.id.friends_list);
-		friendsAdapter = new FriendsAdapter(this, friends);
+		friendsAdapter = new FriendsAdapter(this, remaining_people);
 		friendsList.setAdapter(friendsAdapter);
 
 		friendsList.setOnItemClickListener(new OnItemClickListener() {
@@ -247,8 +229,10 @@ public class ActivityFindFriends extends ActivityBase {
 				new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int id) {
 						addFriend(friend);
+						remaining_people.remove(friend);
+						friendsAdapter.notifyDataSetChanged();
 						Toast.makeText(
-								ActivityFindFriends.this,
+								getApplicationContext(),
 								"Add " + friend.getUserName() + " Successfully",
 								Toast.LENGTH_LONG).show();
 					}
@@ -311,12 +295,12 @@ public class ActivityFindFriends extends ActivityBase {
 					.findViewById(R.id.profile_picture);
 			TextView username = (TextView) convertView
 					.findViewById(R.id.user_name);
-			TextView distance = (TextView) convertView
-					.findViewById(R.id.distance);
+//			TextView distance = (TextView) convertView
+//					.findViewById(R.id.distance);
 
 			avatar.setImageResource(R.drawable.ic_launcher);
 			username.setText(friend.getUserName());
-			distance.setText(friend.getStatus());
+//			distance.setText(friend.getStatus());
 
 			return convertView;
 		}
