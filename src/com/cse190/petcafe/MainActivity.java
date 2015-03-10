@@ -79,8 +79,8 @@ public class MainActivity extends Activity {
     private GraphUser facebookUser;
     private Session fbSession;
     
-    private ArrayList<String> fbFriendUIDs;
-    private HashMap<String, String> fbFriendNamesWUIDs;
+    private ArrayList<String> friendUIDs;
+    private HashMap<String, String> friendWUIDs;
     
     private ProgressDialog progressBar;
     private NetworkHandler networkHandler;
@@ -287,15 +287,7 @@ public class MainActivity extends Activity {
     	    public void onSuccess(QBSession session, Bundle params) {
     	    	
     	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
- /*   	        
-        		gcm = GoogleCloudMessaging.getInstance(MainActivity.this);
-        		gcmRegId = getRegistrationId();
-        		
-                if (gcmRegId.isEmpty())
-                    registerInBackground();
-                else
-                	Log.i(GlobalStrings.LOGTAG, "Already registered");
-*/                
+
     	        if (firstInstall)
     	        	signUpUserToChat();
     	        else
@@ -307,21 +299,6 @@ public class MainActivity extends Activity {
     	    	Log.i("This is", "Stupid");
     	    }
 		});
-    	/*
-        QBAuth.createSessionUsingSocialProvider(QBProvider.FACEBOOK, fbAccessToken, null, new QBEntityCallbackImpl<QBSession>() {
-    	    @Override
-    	    public void onSuccess(QBSession session, Bundle params) {
-    	    	
-    	        Log.i(GlobalStrings.LOGTAG, "Successfully logged into quickblox");
-    	        
-            	signInUserToQuickblox();
-    	    }
-    	    
-    	    @Override
-    	    public void onError(List<String> errors) {
-    	    	Log.i("This is", "Stupid");
-    	    }
-    	});*/
     }
     
 	private void checkChatServiceStatus(final QBUser user)
@@ -373,17 +350,6 @@ public class MainActivity extends Activity {
 	    		{
 	    			Log.i(GlobalStrings.LOGTAG, "Successfully added user to quickblox");
 	    			signInUserToQuickblox();
-	    	    	/*((ApplicationSingleton)getApplication()).setCurrentUser(user);
-	    	        QBUser qbUser = new QBUser();
-	    	        
-	    	        qbUser.setId(user.getId());
-	    	        qbUser.setLogin(facebookUser.getId());
-	    	        qbUser.setPassword(GlobalStrings.USER_PASSWORD);
-	    	        
-	            	checkChatServiceStatus(qbUser);
-	            	
-	    	    	getAllFriendUsers();
-	    			goToBlog();8*/
 	    		}
 	    		
 	    		@Override
@@ -407,22 +373,16 @@ public class MainActivity extends Activity {
     		@Override
     		public void onSuccess(QBUser user, Bundle args)
     		{
-/*    	    	if (firstInstall)
-    	    	{
-    	    		signUpUserToChat();
-    	    	}
-    	    	else
-    	    	{*/
-	    	    	((ApplicationSingleton)getApplication()).setCurrentUser(user);
-	    	        QBUser qbUser = new QBUser();
+	    	    ((ApplicationSingleton)getApplication()).setCurrentUser(user);
+	    	    QBUser qbUser = new QBUser();
 	    	        
-	    	        qbUser.setId(user.getId());
-	    	        qbUser.setLogin(facebookUser.getId());
-	    	        qbUser.setPassword(GlobalStrings.USER_PASSWORD);
+	    	    qbUser.setId(user.getId());
+	    	    qbUser.setLogin(facebookUser.getId());
+	    	    qbUser.setPassword(GlobalStrings.USER_PASSWORD);
 	    	        
-	            	checkChatServiceStatus(qbUser);
+	    	    checkChatServiceStatus(qbUser);
 	            	
-	    	    	getAllFriendUsers();
+	    	    getAllFriendUsers();
     	    	//}
     			
     			Log.i(GlobalStrings.LOGTAG, "Successfully signed into quickblox");
@@ -448,8 +408,12 @@ public class MainActivity extends Activity {
 				@Override
 				public void onCompleted(Response response) {
 					try {
-						fbFriendUIDs = new ArrayList<String>();
-						fbFriendNamesWUIDs = new HashMap<String, String>();
+						ArrayList<String> fbFriendUIDs = new ArrayList<String>();
+						HashMap<String, String> fbFriendNamesWUIDs = new HashMap<String, String>();
+						
+						friendUIDs = new ArrayList<String>();
+						friendWUIDs = new HashMap<String, String>();
+						
 						JSONObject resp = new JSONObject(response.getRawResponse());
 						JSONArray arr = resp.getJSONArray("data");
 						for (int i = 0; i < arr.length(); ++i)
@@ -472,6 +436,12 @@ public class MainActivity extends Activity {
 						UserProfileInformation user = new UserProfileInformation(getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.FACEBOOK_ID_CACHE_KEY, ""), getSharedPreferences(GlobalStrings.PREFNAME, 0).getString(GlobalStrings.USERNAME_CACHE_KEY, ""), "", "", 0, 0, "");
 						ArrayList<UserProfileInformation> friends = networkHandler.getFriends(user);
 						
+						for (UserProfileInformation fUser : friends)
+						{
+							friendUIDs.add(fUser.getFacebookUID());
+							friendWUIDs.put(fUser.getFacebookUID(), fUser.getUserName());
+						}
+						
 						SharedPreferences localCache = getSharedPreferences(GlobalStrings.PREFNAME, 0);
 	                	SharedPreferences.Editor prefEditor = localCache.edit();
 	                	
@@ -479,8 +449,6 @@ public class MainActivity extends Activity {
 	                	String json = gson.toJson(friends);
 	                	prefEditor.putString(GlobalStrings.FRIENDS_LIST_CACHE_KEY, json);
 	                	prefEditor.commit();
-	                	
-
 						
 						getAllUsersFromChatApi();
 					} catch (JSONException e) {
@@ -645,10 +613,10 @@ public class MainActivity extends Activity {
 	        
 	        List<QBUser> chatFriendsList = null;
 
-	        if (!fbFriendUIDs.isEmpty())
+	        if (!friendUIDs.isEmpty())
 	        {
 				try {
-					chatFriendsList = QBUsers.getUsersByFacebookId(fbFriendUIDs, requestBuilder, _params);
+					chatFriendsList = QBUsers.getUsersByFacebookId(friendUIDs, requestBuilder, _params);
 				} catch (QBResponseException e) {
 					e.printStackTrace();
 				}

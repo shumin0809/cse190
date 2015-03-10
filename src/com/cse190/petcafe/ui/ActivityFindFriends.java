@@ -27,8 +27,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cse190.petcafe.ApplicationSingleton;
 import com.cse190.petcafe.FriendInformation;
 import com.cse190.petcafe.GlobalStrings;
+import com.cse190.petcafe.MainActivity;
 import com.cse190.petcafe.NetworkHandler;
 import com.cse190.petcafe.PetInformation;
 import com.cse190.petcafe.Petcafe_api;
@@ -36,6 +38,14 @@ import com.cse190.petcafe.R;
 import com.cse190.petcafe.UserProfileInformation;
 import com.facebook.widget.ProfilePictureView;
 import com.qb.gson.Gson;
+import com.quickblox.chat.QBChatService;
+import com.quickblox.chat.model.QBDialog;
+import com.quickblox.core.QBEntityCallbackImpl;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.core.request.QBPagedRequestBuilder;
+import com.quickblox.core.request.QBRequestGetBuilder;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 
 /*
  * 1. Find People around you
@@ -182,9 +192,17 @@ public class ActivityFindFriends extends ActivityBase {
 				friend.getFacebookUID(), null, null);
 		new NetworkHandler().addFriend(me, newFriend);
 
+		ArrayList<String> friendUIDs = new ArrayList<String>();
 		// update friend list
 		ArrayList<UserProfileInformation> friends = new NetworkHandler()
 				.getFriends(user);
+		
+		for (UserProfileInformation fUser : friends)
+		{
+			friendUIDs.add(fUser.getFacebookUID());
+		}
+		
+		getAllUsersFromChatApi(friendUIDs);
 
 		SharedPreferences localCache = getSharedPreferences(
 				GlobalStrings.PREFNAME, 0);
@@ -195,6 +213,72 @@ public class ActivityFindFriends extends ActivityBase {
 		prefEditor.putString(GlobalStrings.FRIENDS_LIST_CACHE_KEY, json);
 		prefEditor.commit();
 	}
+	
+    @SuppressWarnings("unchecked")
+	private void getAllUsersFromChatApi(ArrayList<String> fbUIDs)
+    {
+    	List<QBUser> chatFriendsList = null;
+    	
+		try {
+			if (fbUIDs != null)
+			{
+				chatFriendsList = new RetrieveFacebookFriends().execute(fbUIDs).get();
+				getAllChatDialogs();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+        if (chatFriendsList != null)
+        	((ApplicationSingleton)getApplication()).setFriendUsers(chatFriendsList);
+    }
+    
+    private void getAllChatDialogs()
+    {
+        QBRequestGetBuilder builder = new QBRequestGetBuilder();
+        builder.setPagesLimit(100);
+        
+        QBChatService.getChatDialogs(null, builder, new QBEntityCallbackImpl<ArrayList<QBDialog>>()
+        {
+            @Override
+            public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle args)
+            {
+                List<Integer> userIDs = new ArrayList<Integer>();
+                for (QBDialog dialog : dialogs)
+                {
+                    userIDs.addAll(dialog.getOccupants());
+                }
+                
+                QBPagedRequestBuilder requestBuilder = new QBPagedRequestBuilder();
+                requestBuilder.setPage(1);
+                requestBuilder.setPerPage(userIDs.size());
+                //
+                QBUsers.getUsersByIDs(userIDs, requestBuilder, new QBEntityCallbackImpl<ArrayList<QBUser>>() {
+                    @Override
+                    public void onSuccess(ArrayList<QBUser> users, Bundle params) {
+
+                        ((ApplicationSingleton)getApplication()).setDialogsUsers(users);
+                        // build list view
+                        //
+                    }
+
+                    @Override
+                    public void onError(List<String> errors) {
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityFindFriends.this);
+                        dialog.setMessage("get occupants errors: " + errors).create().show();
+                    }
+
+                });
+            }
+            
+            @Override
+            public void onError(List<String> errors)
+            {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityFindFriends.this);
+                dialog.setMessage("get dialogs errors: " + errors).create().show();
+            }
+        });
+    }
 
 	private void openAlert(final UserProfileInformation friend) {
 
@@ -324,4 +408,26 @@ public class ActivityFindFriends extends ActivityBase {
 					.show();
 		}
 	}
+	
+    private class RetrieveFacebookFriends extends AsyncTask<ArrayList<String>, Void, List<QBUser>>
+    {
+		@Override
+		protected List<QBUser> doInBackground(ArrayList<String>... params) {
+			ArrayList<String> friendUIDs = params[0];
+	        QBPagedRequestBuilder requestBuilder = null;
+	        Bundle _params = new Bundle();
+	        
+	        List<QBUser> chatFriendsList = null;
+
+	        if (!friendUIDs.isEmpty())
+	        {
+				try {
+					chatFriendsList = QBUsers.getUsersByFacebookId(friendUIDs, requestBuilder, _params);
+				} catch (QBResponseException e) {
+					e.printStackTrace();
+				}
+	        }
+			return chatFriendsList;
+		}
+    }
 }
