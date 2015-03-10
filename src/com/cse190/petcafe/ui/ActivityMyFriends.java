@@ -45,7 +45,7 @@ import com.quickblox.users.model.QBUser;
 public class ActivityMyFriends extends ActivityBase {
 
 	private ArrayList<UserProfileInformation> friends;
-	private List<String> listValues;
+//	private List<String> listValues;
 	private ListView friendList;
 	private String facebookUID;
 	private FriendsAdapter myAdapter;
@@ -73,11 +73,6 @@ public class ActivityMyFriends extends ActivityBase {
 		// listValues.add(user.getUserName());
 		// }
 		// Log.d("testing friends", listValues.toString());
-
-		/*
-		 * listValues.add("Dong Sung Chang"); listValues.add("David Nguyen");
-		 * listValues.add("Michael Chang");
-		 */
 
 		// initiate the listadapter
 		myAdapter = new FriendsAdapter(this, friends);
@@ -153,11 +148,12 @@ public class ActivityMyFriends extends ActivityBase {
 									Intent intent = new Intent(
 											ActivityMyFriends.this,
 											ActivityProfile.class);
+									String friendName = ((UserProfileInformation) friends.get(position)).getUserName();
+									String facebookId = ((UserProfileInformation) friends.get(position)).getFacebookUID();
 									intent.putExtra("username",
-											listValues.get(position));
+											friendName);
 									intent.putExtra("fbuid",
-											friends.get(position)
-													.getFacebookUID());
+											facebookId);
 									startActivity(intent);
 									overridePendingTransition(R.anim.fade_in,
 											R.anim.fade_out);
